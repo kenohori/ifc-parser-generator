@@ -2,14 +2,13 @@
 //  main.cpp
 //  ifc-parser-generator
 //
-//  Created by Ken Arroyo Ohori on 11/04/16.
-//  Copyright © 2016 Ken Arroyo Ohori. All rights reserved.
+//  Copyright © 2016 Ken Arroyo Ohori
 //
 
-#include <iostream>
+#include "Express_parser.hpp"
 
 int main(int argc, const char * argv[]) {
-  // insert code here...
-  std::cout << "Hello, World!\n";
+  Express_parser parser;
+  parser.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC2X3_TC1.exp");
   return 0;
 }

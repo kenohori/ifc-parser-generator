@@ -10,6 +10,8 @@
 Express_parser::Express_parser() {
   unparsed_types = 0;
   unparsed_entities = 0;
+  unparsed_entity_attributes = 0;
+  parsed_entity_attributes = 0;
   
   pod_types["REAL"] = "double";
   pod_types["BOOLEAN"] = "bool";
@@ -17,6 +19,7 @@ Express_parser::Express_parser() {
   pod_types["STRING"] = "std::string";
   pod_types["LOGICAL"] = "int";
   pod_types["NUMBER"] = "unsigned int";
+  pod_types["BINARY(32)"] = "std::uint32_t";
 }
 
 std::string Express_parser::format_attribute(const std::string &ifc_name) {
@@ -81,26 +84,17 @@ void Express_parser::parse_type(const std::string &contents) {
   else {
     
     // Try to parse as a pod type
-    auto const pods = qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER");
+    auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
     std::string::iterator type_position = type_definition.begin();
     qi::phrase_parse(type_position, type_definition.end(), pods, qi::space);
     if (type_position == type_definition.end()) {
       types_code[type_name] = "typedef " + pod_types[type_definition] + " " + format_name(type_name) + ";";
       return;
     }
-    
-    // Try as string of a given length
-    auto const string_with_length = qi::lit("STRING") >> qi::lit('(') >> qi::uint_ >> qi::lit(')') >> -qi::lit("FIXED");
-    type_position = type_definition.begin();
-    qi::phrase_parse(type_position, type_definition.end(), string_with_length, qi::space);
-    if (type_position == type_definition.end()) {
-      types_code[type_name] = "typedef std::string " + format_name(type_name) + ";";
-      return;
-    }
 
     // Try as a container of a pod type
     std::string this_pod;
-    auto const container_types = qi::string("ARRAY") | qi::string("LIST") | qi::string("SET");
+    auto const container_types = qi::string("ARRAY") | qi::string("LIST") | qi::string("SET") | qi::string("BAG");
     auto const container_of_pod = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1];
     type_position = type_definition.begin();
     qi::phrase_parse(type_position, type_definition.end(), container_of_pod, qi::space);
@@ -158,7 +152,212 @@ void Express_parser::parse_type(const std::string &contents) {
     std::cout << "Where: \"" << type_where << "\"" << std::endl;
     ++unparsed_types;
   }
+}
+
+void Express_parser::parse_entity(const std::string &contents) {
   
+  std::string entity_name = "";
+  std::list<std::string> entity_superclasses;
+  std::list<std::string> entity_subclasses;
+  std::string entity_attributes = "";
+  std::string entity_derives = "";
+  std::string entity_inverses = "";
+  std::string entity_uniques = "";
+  std::string entity_wheres = "";
+  bool abstract = false;
+  
+  auto const name = qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(entity_name) = qi::_1];
+  auto const subtype = qi::lit("SUBTYPE") >> qi::lit("OF") >> qi::lit('(') >> (qi::as_string[qi::lexeme[+qi::alnum]][phoenix::push_back(phoenix::ref(entity_superclasses), qi::_1)] % qi::lit(',')) >> qi::lit(')');
+  auto const supertype = -qi::lit("ABSTRACT")[phoenix::ref(abstract) = true] >> qi::lit("SUPERTYPE") >> -(qi::lit("OF") >> qi::lit('(') >> qi::lit("ONEOF") >> qi::lit('(') >> (qi::as_string[qi::lexeme[+qi::alnum]][phoenix::push_back(phoenix::ref(entity_subclasses), qi::_1)] % qi::lit(',')) >> qi::lit(')') >> qi::lit(')'));
+  auto const sub_and_superclasses = -supertype >> -subtype;
+  
+  auto const keywords = qi::lit("DERIVE") | qi::lit("INVERSE") | qi::lit("WHERE") | qi::lit("UNIQUE") | qi::lit("END_ENTITY");
+  auto const key_value = -+qi::space >> !keywords >> +(!qi::space >> qi::char_) >> -+qi::space >> qi::char_(':') >> -+qi::space >> +(!qi::char_(';') >> qi::char_) >> -+qi::space >> qi::char_(';');
+  auto const key_values = +qi::lexeme[key_value];
+  
+  auto const attributes = qi::as_string[key_values][phoenix::ref(entity_attributes) = qi::_1];
+  auto const derive = qi::lit("DERIVE") >> qi::as_string[key_values][phoenix::ref(entity_derives) = qi::_1];
+  auto const inverse = qi::lit("INVERSE") >> qi::as_string[key_values][phoenix::ref(entity_inverses) = qi::_1];
+  auto const unique = qi::lit("UNIQUE") >> qi::as_string[key_values][phoenix::ref(entity_uniques) = qi::_1];
+  auto const where = qi::lit("WHERE") >> qi::as_string[key_values][phoenix::ref(entity_wheres) = qi::_1];
+  auto const entity = qi::lit("ENTITY") >> name >> sub_and_superclasses >> qi::lit(';') >> -attributes >> -derive >> -inverse >> -unique >> -where >> qi::lit("END_ENTITY") >> qi::lit(';');
+  
+  std::string::const_iterator position = contents.begin();
+  qi::phrase_parse(position, contents.end(), entity, qi::space);
+  
+  // Couldn't parse entity
+  if (position != contents.end()) {
+    std::cout << "Entity: \"" << contents << "\"" << std::endl;
+    std::cout << "Stuck at->";
+    while (position != contents.end()) {
+      std::cout << *position;
+      ++position;
+    }
+  }
+  
+  else {
+    
+    // Superclasses
+    for (auto const &sc : entity_superclasses) {
+      dependencies[entity_name].push_back(sc);
+    }
+    
+    // Attributes
+    std::list<std::string> attribute_names;
+    std::list<std::string> attribute_definitions;
+    std::list<bool> attribute_optionals;
+    auto const attributes_parser = +(qi::as_string[qi::lexeme[+(!qi::space >> qi::char_)]][phoenix::push_back(phoenix::ref(attribute_names), qi::_1)] >> qi::lit(':') >> qi::as_string[qi::lexeme[+(!qi::char_(';') >> qi::char_)]][phoenix::push_back(phoenix::ref(attribute_definitions), qi::_1)] >> qi::lit(';'));
+    std::string::iterator attributes_position = entity_attributes.begin();
+    qi::phrase_parse(attributes_position, entity_attributes.end(), attributes_parser, qi::space);
+    
+    // Couldn't parse all attributes
+    if (attributes_position != entity_attributes.end()) {
+      std::cout << "Stuck at->";
+      while (position != contents.end()) {
+        std::cout << *position;
+        ++position;
+      }
+    }
+
+    std::list<std::string>::iterator current_attribute_name = attribute_names.begin();
+    std::list<std::string>::iterator current_attribute_definition = attribute_definitions.begin();
+    bool not_parsed = false;
+    while (current_attribute_name != attribute_names.end()) {
+
+      // Check if it's optional
+      auto const optional = -qi::lit("OPTIONAL");
+      if (current_attribute_definition->substr(0, 8) == "OPTIONAL") attribute_optionals.push_back(true);
+      else attribute_optionals.push_back(false);
+
+      // Try to parse as pod type
+      std::string this_pod = "";
+      auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
+      std::string::iterator attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1], qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        this->entity_attributes[entity_name].push_back(pod_types[this_pod] + " " + format_attribute(*current_attribute_name) + ";");
+        if (this_pod == "REAL") this->entity_parsing_attributes[entity_name].push_back("o->step_parser.parse_double(object_attributes[%d]);");
+        else if (this_pod == "BOOLEAN") this->entity_parsing_attributes[entity_name].push_back("o->step_parser.parse_boolean(object_attributes[%d]);");
+        else if (this_pod == "INTEGER") this->entity_parsing_attributes[entity_name].push_back("o->step_parser.parse_integer(object_attributes[%d]);");
+        else if (this_pod == "STRING") this->entity_parsing_attributes[entity_name].push_back("o->step_parser.parse_string(object_attributes[%d]);");
+        else if (this_pod == "LOGICAL") this->entity_parsing_attributes[entity_name].push_back("//o->step_parser.parse_logical(object_attributes[%d]);");
+        else if (this_pod == "NUMBER") this->entity_parsing_attributes[entity_name].push_back("//o->step_parser.parse_unsigned_integer(object_attributes[%d]);");
+        else this->entity_parsing_attributes[entity_name].push_back("//TODO: parse other pod\n");
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
+      
+      // Try as another defined type
+      std::string this_type;
+      auto const another_type = qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(this_type) = qi::_1];
+      attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> another_type, qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        std::string this_code = format_name(this_type) + " ";
+        if (types_code.count(this_type) == 0 && enumerations_code.count(this_type) == 0) this_code += "*";
+        this_code += format_attribute(*current_attribute_name) + ";";
+        this->entity_attributes[entity_name].push_back(this_code);
+        if (types_code.count(this_type) > 0) {
+          if (types_code[this_type].substr(8, 6) == "double") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_double(object_attributes[%d]);");
+          else if (types_code[this_type].substr(8, 4) == "bool") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_boolean(object_attributes[%d]);");
+          else if (types_code[this_type].substr(8, 3) == "int") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_integer(object_attributes[%d]);");
+          else if (types_code[this_type].substr(8, 11) == "std::string") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_string(object_attributes[%d]);");
+          else this->entity_parsing_attributes[entity_name].push_back("//TODO: parse non-pointer type: " + types_code[this_type]);
+        } else if (enumerations_code.count(this_type) > 0) {
+          this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_constant(object_attributes[%d]);");
+        } else { // Selects and entities
+          this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = (" + format_name(this_type) + " *)step_parser.parse_link(object_attributes[%d]);\nlinks_to_resolve.push_back((Ifc **)&o->" + format_attribute(*current_attribute_name) + ");");
+        }
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
+
+      // Try as a container of a pod type
+      auto const container_types = qi::string("ARRAY") | qi::string("LIST") | qi::string("SET") | qi::string("BAG");
+      auto const container_of_pod = container_types >> -(qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']'))  >> qi::lit("OF") >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1];
+      attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> container_of_pod, qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        this->entity_attributes[entity_name].push_back("std::vector<" + pod_types[this_pod] + "> " + format_attribute(*current_attribute_name) + ";");
+        if (this_pod == "REAL") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_doubles(object_attributes[%d]);");
+        else if (this_pod == "BOOLEAN") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_booleans(object_attributes[%d]);");
+        else if (this_pod == "INTEGER") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_integer(object_attributes[%d]);");
+        else if (this_pod == "STRING") this->entity_parsing_attributes[entity_name].push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_string(object_attributes[%d]);");
+        else if (this_pod == "LOGICAL") this->entity_parsing_attributes[entity_name].push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_logical(object_attributes[%d]);");
+        else if (this_pod == "NUMBER") this->entity_parsing_attributes[entity_name].push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_unsigned_integer(object_attributes[%d]);");
+        else this->entity_parsing_attributes[entity_name].push_back("//TODO: parse other container of pod");
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
+
+      // Try as a container of another type
+      auto const container_of_another_type = container_types >> -(qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']'))  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(this_type) = qi::_1];
+      attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> container_of_another_type, qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        std::string this_code = "\tstd::vector<" + format_name(this_type);
+        if (types_code.count(this_type) == 0 && enumerations_code.count(this_type) == 0) this_code += " *";
+        this_code += "> " + format_attribute(*current_attribute_name) + ";\n";
+        this->entity_attributes[entity_name].push_back(this_code);
+        this->entity_parsing_attributes[entity_name].push_back("for (auto i : step_parser.parse_list_of_links(object_attributes[%d])) o->" + format_attribute(*current_attribute_name) + ".push_back((" + format_name(this_type) + " *)i);\nlists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->" + format_attribute(*current_attribute_name) + ");");
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
+
+      // Try as a container of a container another type
+      auto const container_of_container_of_another_type = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(this_type) = qi::_1];
+      attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> container_of_container_of_another_type, qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        std::string this_code = "\tstd::vector<std::vector<" + format_name(this_type);
+        if (types_code.count(this_type) == 0 && enumerations_code.count(this_type) == 0) this_code += " *";
+        this_code += ">> " + format_attribute(*current_attribute_name) + ";\n";
+        this->entity_attributes[entity_name].push_back(this_code);
+        this->entity_parsing_attributes[entity_name].push_back("\t\t//TODO: parse container of container\n");
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
+      
+      // Couldn't be parsed
+      std::cout << "Entity: " << entity_name << std::endl;
+      std::cout << "Attribute: " << *current_attribute_definition << std::endl;
+      not_parsed = true;
+      ++current_attribute_name;
+      ++current_attribute_definition;
+      ++unparsed_entity_attributes;
+    }
+
+    // Constructor & <<operator
+    if (abstract) {
+      abstract_entities.insert(entity_name);
+    }
+
+    if (not_parsed) {
+//      std::cout << "Entity: " << entity_name << std::endl;
+//      std::cout << "\tSuperclasses: ";
+//      for (auto sc : entity_superclasses) std::cout << sc << " ";
+//      std::cout << std::endl;
+//      std::cout << "\tSubclasses: ";
+//      for (auto sc : entity_subclasses) std::cout << sc << " ";
+//      std::cout << std::endl;
+//      std::cout << "\tAttributes: " << entity_attributes << std::endl;
+//      std::cout << "\tDerives: " << entity_derives << std::endl;
+//      std::cout << "\tInverses: " << entity_inverses << std::endl;
+//      std::cout << "\tUniques: " << entity_uniques << std::endl;
+//      std::cout << "\tWheres: " << entity_wheres << std::endl;
+      ++unparsed_entities;
+    } else return;
+  }
 }
 
 void Express_parser::parse_schema(const std::string &contents) {
@@ -188,10 +387,10 @@ void Express_parser::parse_schema(const std::string &contents) {
   
   for (const auto &s : raw_statements) {
     if (s.substr(0, 4) == "TYPE") parse_type(s);
-//    else if (s.substr(0, 6) == "ENTITY") parse_entity(s);
+    else if (s.substr(0, 6) == "ENTITY") parse_entity(s);
   }
   
-  std::cout << "Parsed " << types_code.size() << "/" << types_code.size()+unparsed_types << " types, " << entities_code.size() << "/" << entities_code.size()+unparsed_entities << " entities." << std::endl;
+  std::cout << "Parsed " << types_code.size() << "/" << types_code.size()+unparsed_types << " types, " << entities_code.size() << "/" << entities_code.size()+unparsed_entities << " entities, " << parsed_entity_attributes << "/" << parsed_entity_attributes+unparsed_entity_attributes << " entity attributes" << "." << std::endl;
 }
 
 void Express_parser::parse_express(const std::string &contents) {

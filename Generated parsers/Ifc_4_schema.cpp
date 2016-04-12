@@ -1,6 +1,6 @@
-#include "Ifc_4_add_1_parser.hpp"
+#include "Ifc_4_schema.hpp"
 
-Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+Ifc *Ifc_4_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "IfcActionRequest")) {
 		Ifc_action_request *o = new Ifc_action_request();
@@ -103,7 +103,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->bounds);
 		o->face_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->face_surface);
-		o->same_sense = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -469,25 +469,24 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBSplineCurve")) {
 		Ifc_b_spline_curve *o = new Ifc_b_spline_curve();
-		o->degree = step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->control_points_list.push_back((Ifc_cartesian_point *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->control_points_list);
 		o->curve_form = step_parser.parse_constant(object_attributes[2]);
-		o->closed_curve = step_parser.parse_integer(object_attributes[3]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[4]);
+		//o->step_parser.parse_logical(object_attributes[3]);
+		//o->step_parser.parse_logical(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBSplineCurveWithKnots")) {
 		Ifc_b_spline_curve_with_knots *o = new Ifc_b_spline_curve_with_knots();
-		o->degree = step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->control_points_list.push_back((Ifc_cartesian_point *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->control_points_list);
 		o->curve_form = step_parser.parse_constant(object_attributes[2]);
-		o->closed_curve = step_parser.parse_integer(object_attributes[3]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[4]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->knot_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->knot_multiplicities);
+		//o->step_parser.parse_logical(object_attributes[3]);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		o->knot_multiplicities = step_parser.parse_integer(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->knots.push_back((Ifc_parameter_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->knots);
 		o->knot_spec = step_parser.parse_constant(object_attributes[7]);
@@ -496,29 +495,27 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBSplineSurface")) {
 		Ifc_b_spline_surface *o = new Ifc_b_spline_surface();
-		o->u_degree = step_parser.parse_integer(object_attributes[0]);
-		o->v_degree = step_parser.parse_integer(object_attributes[1]);
+		o->step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[1]);
 				//TODO: parse container of container
 		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		//o->step_parser.parse_logical(object_attributes[5]);
+		//o->step_parser.parse_logical(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBSplineSurfaceWithKnots")) {
 		Ifc_b_spline_surface_with_knots *o = new Ifc_b_spline_surface_with_knots();
-		o->u_degree = step_parser.parse_integer(object_attributes[0]);
-		o->v_degree = step_parser.parse_integer(object_attributes[1]);
+		o->step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[1]);
 				//TODO: parse container of container
 		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->u_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->u_multiplicities);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->v_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->v_multiplicities);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		//o->step_parser.parse_logical(object_attributes[5]);
+		//o->step_parser.parse_logical(object_attributes[6]);
+		o->u_multiplicities = step_parser.parse_integer(object_attributes[7]);
+		o->v_multiplicities = step_parser.parse_integer(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->u_knots.push_back((Ifc_parameter_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->u_knots);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->v_knots.push_back((Ifc_parameter_value *)i);
@@ -581,15 +578,16 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBlobTexture")) {
 		Ifc_blob_texture *o = new Ifc_blob_texture();
-		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
-		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[0]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->parameter.push_back((Ifc_identifier *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->parameter);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef char * Ifc_binary;
+		//TODO: parse other pod
+		
 		return o;
 	}
 
@@ -668,7 +666,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_boundary_curve *o = new Ifc_boundary_curve();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		o->self_intersect = step_parser.parse_integer(object_attributes[1]);
+		//o->step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
@@ -764,7 +762,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_boxed_half_space *o = new Ifc_boxed_half_space();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		o->enclosure = (Ifc_bounding_box *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->enclosure);
 		return o;
@@ -921,7 +919,6 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->description = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
 		return o;
 	}
 
@@ -1126,12 +1123,6 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		return o;
 	}
 
-	else if (boost::iequals(object_class, "IfcCartesianPointList2D")) {
-		Ifc_cartesian_point_list_2_d *o = new Ifc_cartesian_point_list_2_d();
-				//TODO: parse container of container
-		return o;
-	}
-
 	else if (boost::iequals(object_class, "IfcCartesianPointList3D")) {
 		Ifc_cartesian_point_list_3_d *o = new Ifc_cartesian_point_list_3_d();
 				//TODO: parse container of container
@@ -1146,7 +1137,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->scale = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		return o;
 	}
 
@@ -1158,7 +1149,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->scale = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		return o;
 	}
 
@@ -1170,8 +1161,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->scale = step_parser.parse_double(object_attributes[3]);
-		o->scale_2 = step_parser.parse_double(object_attributes[4]);
+		o->step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[4]);
 		return o;
 	}
 
@@ -1183,7 +1174,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->scale = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		o->axis_3 = (Ifc_direction *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->axis_3);
 		return o;
@@ -1197,11 +1188,11 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->scale = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		o->axis_3 = (Ifc_direction *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->axis_3);
-		o->scale_2 = step_parser.parse_double(object_attributes[5]);
-		o->scale_3 = step_parser.parse_double(object_attributes[6]);
+		o->step_parser.parse_double(object_attributes[5]);
+		o->step_parser.parse_double(object_attributes[6]);
 		return o;
 	}
 
@@ -1550,7 +1541,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_composite_curve *o = new Ifc_composite_curve();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		o->self_intersect = step_parser.parse_integer(object_attributes[1]);
+		//o->step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
@@ -1558,14 +1549,14 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_composite_curve_on_surface *o = new Ifc_composite_curve_on_surface();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		o->self_intersect = step_parser.parse_integer(object_attributes[1]);
+		//o->step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCompositeCurveSegment")) {
 		Ifc_composite_curve_segment *o = new Ifc_composite_curve_segment();
 		o->transition = step_parser.parse_constant(object_attributes[0]);
-		o->same_sense = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		o->parent_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_curve);
 		return o;
@@ -2290,7 +2281,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->basis_surface);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->boundaries.push_back((Ifc_boundary_curve *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->boundaries);
-		o->implicit_outer = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -2303,7 +2294,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->curve_width);
 		o->curve_colour = (Ifc_colour *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->curve_colour);
-		o->model_or_draughting = step_parser.parse_boolean(object_attributes[4]);
+		o->step_parser.parse_boolean(object_attributes[4]);
 		return o;
 	}
 
@@ -2417,8 +2408,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDirection")) {
 		Ifc_direction *o = new Ifc_direction();
-		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->direction_ratios.push_back((Ifc_real *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->direction_ratios);
+		o->direction_ratios = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -2779,8 +2769,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->operation_type = step_parser.parse_constant(object_attributes[8]);
 		o->construction_type = step_parser.parse_constant(object_attributes[9]);
-		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
-		o->sizeable = step_parser.parse_boolean(object_attributes[11]);
+		o->step_parser.parse_boolean(object_attributes[10]);
+		o->step_parser.parse_boolean(object_attributes[11]);
 		return o;
 	}
 
@@ -2800,7 +2790,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->operation_type = step_parser.parse_constant(object_attributes[10]);
-		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[11]);
+		o->step_parser.parse_boolean(object_attributes[11]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		return o;
 	}
@@ -2939,7 +2929,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->edge_end);
 		o->edge_geometry = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->edge_geometry);
-		o->same_sense = step_parser.parse_boolean(object_attributes[3]);
+		o->step_parser.parse_boolean(object_attributes[3]);
 		return o;
 	}
 
@@ -3623,7 +3613,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_face_bound *o = new Ifc_face_bound();
 		o->bound = (Ifc_loop *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->bound);
-		o->orientation = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -3631,7 +3621,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_face_outer_bound *o = new Ifc_face_outer_bound();
 		o->bound = (Ifc_loop *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->bound);
-		o->orientation = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -3641,7 +3631,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->bounds);
 		o->face_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->face_surface);
-		o->same_sense = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -3796,7 +3786,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->fill_styles.push_back((Ifc_fill_style_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->fill_styles);
-		o->modelor_draughting = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -4361,7 +4351,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->coordinate_space_dimension = step_parser.parse_integer(object_attributes[2]);
-		o->precision = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		o->world_coordinate_system = (Ifc_axis_2_placement *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->world_coordinate_system);
 		o->true_north = (Ifc_direction *)step_parser.parse_link(object_attributes[5]);
@@ -4379,7 +4369,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->coordinate_space_dimension = step_parser.parse_integer(object_attributes[2]);
-		o->precision = step_parser.parse_double(object_attributes[3]);
+		o->step_parser.parse_double(object_attributes[3]);
 		o->world_coordinate_system = (Ifc_axis_2_placement *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->world_coordinate_system);
 		o->true_north = (Ifc_direction *)step_parser.parse_link(object_attributes[5]);
@@ -4454,7 +4444,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_half_space_solid *o = new Ifc_half_space_solid();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -4546,8 +4536,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcImageTexture")) {
 		Ifc_image_texture *o = new Ifc_image_texture();
-		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
-		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[0]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
@@ -4561,21 +4551,11 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_indexed_colour_map *o = new Ifc_indexed_colour_map();
 		o->mapped_to = (Ifc_tessellated_face_set *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->mapped_to);
-		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
+		o->overrides = (Ifc_surface_style_shading *)step_parser.parse_link(object_attributes[1]);
+		links_to_resolve.push_back((Ifc **)&o->overrides);
 		o->colours = (Ifc_colour_rgb_list *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->colours);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->colour_index.push_back((Ifc_positive_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->colour_index);
-		return o;
-	}
-
-	else if (boost::iequals(object_class, "IfcIndexedPolyCurve")) {
-		Ifc_indexed_poly_curve *o = new Ifc_indexed_poly_curve();
-		o->points = (Ifc_cartesian_point_list *)step_parser.parse_link(object_attributes[0]);
-		links_to_resolve.push_back((Ifc **)&o->points);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->segments.push_back((Ifc_segment_index_select *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		o->self_intersect = step_parser.parse_boolean(object_attributes[2]);
+		o->colour_index = step_parser.parse_integer(object_attributes[3]);
 		return o;
 	}
 
@@ -5100,7 +5080,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->description = step_parser.parse_string(object_attributes[4]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
-		o->priority = step_parser.parse_integer(object_attributes[6]);
+		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		return o;
 	}
 
@@ -5133,7 +5113,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->description = step_parser.parse_string(object_attributes[4]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
-		o->priority = step_parser.parse_integer(object_attributes[6]);
+		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		o->offset_direction = step_parser.parse_constant(object_attributes[7]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->offset_values.push_back((Ifc_length_measure *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->offset_values);
@@ -5155,7 +5135,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->material);
 		o->profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->profile);
-		o->priority = step_parser.parse_integer(object_attributes[4]);
+		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		return o;
 	}
@@ -5200,7 +5180,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->material);
 		o->profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->profile);
-		o->priority = step_parser.parse_integer(object_attributes[4]);
+		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->offset_values.push_back((Ifc_length_measure *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->offset_values);
@@ -5513,7 +5493,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->basis_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->basis_curve);
 		o->distance = step_parser.parse_double(object_attributes[1]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[2]);
+		//o->step_parser.parse_logical(object_attributes[2]);
 		return o;
 	}
 
@@ -5522,7 +5502,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->basis_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->basis_curve);
 		o->distance = step_parser.parse_double(object_attributes[1]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[2]);
+		//o->step_parser.parse_logical(object_attributes[2]);
 		o->ref_direction = (Ifc_direction *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->ref_direction);
 		return o;
@@ -5600,7 +5580,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->edge_end);
 		o->edge_element = (Ifc_edge *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->edge_element);
-		o->orientation = step_parser.parse_boolean(object_attributes[3]);
+		o->step_parser.parse_boolean(object_attributes[3]);
 		return o;
 	}
 
@@ -5608,7 +5588,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_outer_boundary_curve *o = new Ifc_outer_boundary_curve();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		o->self_intersect = step_parser.parse_integer(object_attributes[1]);
+		//o->step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
@@ -5899,8 +5879,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPixelTexture")) {
 		Ifc_pixel_texture *o = new Ifc_pixel_texture();
-		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
-		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[0]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
@@ -5909,8 +5889,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->width = step_parser.parse_integer(object_attributes[5]);
 		o->height = step_parser.parse_integer(object_attributes[6]);
 		o->colour_components = step_parser.parse_integer(object_attributes[7]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->pixel.push_back((Ifc_binary *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->pixel);
+		//TODO: parse other container of pod
 		return o;
 	}
 
@@ -6029,7 +6008,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_polygonal_bounded_half_space *o = new Ifc_polygonal_bounded_half_space();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_3_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		o->polygonal_boundary = (Ifc_bounded_curve *)step_parser.parse_link(object_attributes[3]);
@@ -6136,9 +6115,9 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->assigned_items.push_back((Ifc_layered_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->assigned_items);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		o->layer_on = step_parser.parse_integer(object_attributes[4]);
-		o->layer_frozen = step_parser.parse_integer(object_attributes[5]);
-		o->layer_blocked = step_parser.parse_integer(object_attributes[6]);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		//o->step_parser.parse_logical(object_attributes[5]);
+		//o->step_parser.parse_logical(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->layer_styles.push_back((Ifc_presentation_style *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->layer_styles);
 		return o;
@@ -6811,35 +6790,31 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRationalBSplineCurveWithKnots")) {
 		Ifc_rational_b_spline_curve_with_knots *o = new Ifc_rational_b_spline_curve_with_knots();
-		o->degree = step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->control_points_list.push_back((Ifc_cartesian_point *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->control_points_list);
 		o->curve_form = step_parser.parse_constant(object_attributes[2]);
-		o->closed_curve = step_parser.parse_integer(object_attributes[3]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[4]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->knot_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->knot_multiplicities);
+		//o->step_parser.parse_logical(object_attributes[3]);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		o->knot_multiplicities = step_parser.parse_integer(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->knots.push_back((Ifc_parameter_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->knots);
 		o->knot_spec = step_parser.parse_constant(object_attributes[7]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->weights_data.push_back((Ifc_real *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->weights_data);
+		o->weights_data = step_parser.parse_list_of_doubles(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRationalBSplineSurfaceWithKnots")) {
 		Ifc_rational_b_spline_surface_with_knots *o = new Ifc_rational_b_spline_surface_with_knots();
-		o->u_degree = step_parser.parse_integer(object_attributes[0]);
-		o->v_degree = step_parser.parse_integer(object_attributes[1]);
+		o->step_parser.parse_integer(object_attributes[0]);
+		o->step_parser.parse_integer(object_attributes[1]);
 				//TODO: parse container of container
 		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->u_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->u_multiplicities);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->v_multiplicities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->v_multiplicities);
+		//o->step_parser.parse_logical(object_attributes[4]);
+		//o->step_parser.parse_logical(object_attributes[5]);
+		//o->step_parser.parse_logical(object_attributes[6]);
+		o->u_multiplicities = step_parser.parse_integer(object_attributes[7]);
+		o->v_multiplicities = step_parser.parse_integer(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->u_knots.push_back((Ifc_parameter_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->u_knots);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->v_knots.push_back((Ifc_parameter_value *)i);
@@ -6892,8 +6867,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->v_1 = step_parser.parse_double(object_attributes[2]);
 		o->u_2 = step_parser.parse_double(object_attributes[3]);
 		o->v_2 = step_parser.parse_double(object_attributes[4]);
-		o->usense = step_parser.parse_boolean(object_attributes[5]);
-		o->vsense = step_parser.parse_boolean(object_attributes[6]);
+		o->step_parser.parse_boolean(object_attributes[5]);
+		o->step_parser.parse_boolean(object_attributes[6]);
 		return o;
 	}
 
@@ -6919,8 +6894,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
-		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->list_positions.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->list_positions);
+		o->list_positions = step_parser.parse_integer(object_attributes[3]);
 		o->inner_reference = (Ifc_reference *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->inner_reference);
 		return o;
@@ -7376,10 +7350,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->relating_element);
 		o->related_element = (Ifc_element *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->related_element);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->relating_priorities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->relating_priorities);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->related_priorities.push_back((Ifc_integer *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_priorities);
+		//o->relating_priorities = step_parser.parse_unsigned_integer(object_attributes[7]);
+		//o->related_priorities = step_parser.parse_unsigned_integer(object_attributes[8]);
 		o->related_connection_type = step_parser.parse_constant(object_attributes[9]);
 		o->relating_connection_type = step_parser.parse_constant(object_attributes[10]);
 		return o;
@@ -7831,7 +7803,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcReparametrisedCompositeCurveSegment")) {
 		Ifc_reparametrised_composite_curve_segment *o = new Ifc_reparametrised_composite_curve_segment();
 		o->transition = step_parser.parse_constant(object_attributes[0]);
-		o->same_sense = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		o->parent_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_curve);
 		o->param_length = step_parser.parse_double(object_attributes[3]);
@@ -7923,7 +7895,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->schedule_finish = step_parser.parse_string(object_attributes[6]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->leveling_delay = step_parser.parse_string(object_attributes[8]);
-		o->is_over_allocated = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		o->status_time = step_parser.parse_string(object_attributes[10]);
 		o->actual_work = step_parser.parse_string(object_attributes[11]);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
@@ -8199,7 +8171,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->shape_representations);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->description = step_parser.parse_string(object_attributes[2]);
-		o->product_definitional = step_parser.parse_integer(object_attributes[3]);
+		//o->step_parser.parse_logical(object_attributes[3]);
 		o->part_of_product_definition_shape = (Ifc_product_representation_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->part_of_product_definition_shape);
 		return o;
@@ -8652,8 +8624,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		o->number_of_risers = step_parser.parse_integer(object_attributes[8]);
-		o->number_of_treads = step_parser.parse_integer(object_attributes[9]);
+		o->step_parser.parse_integer(object_attributes[8]);
+		o->step_parser.parse_integer(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[12]);
@@ -8711,7 +8683,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		return o;
 	}
 
@@ -8791,7 +8763,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		o->projected_or_true = step_parser.parse_constant(object_attributes[10]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[11]);
 		return o;
@@ -8901,7 +8873,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		o->projected_or_true = step_parser.parse_constant(object_attributes[10]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[11]);
 		return o;
@@ -9078,7 +9050,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		o->projected_or_true = step_parser.parse_constant(object_attributes[10]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[11]);
 		return o;
@@ -9099,7 +9071,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		return o;
 	}
 
@@ -9169,7 +9141,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->theory_type = step_parser.parse_constant(object_attributes[5]);
 		o->result_for_load_group = (Ifc_structural_load_group *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->result_for_load_group);
-		o->is_linear = step_parser.parse_boolean(object_attributes[7]);
+		o->step_parser.parse_boolean(object_attributes[7]);
 		return o;
 	}
 
@@ -9188,7 +9160,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->applied_load = (Ifc_structural_load *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->applied_load);
 		o->global_or_local = step_parser.parse_constant(object_attributes[8]);
-		o->destabilizing_load = step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_boolean(object_attributes[9]);
 		o->projected_or_true = step_parser.parse_constant(object_attributes[10]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[11]);
 		return o;
@@ -9473,7 +9445,6 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_surface_style_shading *o = new Ifc_surface_style_shading();
 		o->surface_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->surface_colour);
-		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		return o;
 	}
 
@@ -9486,8 +9457,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSurfaceTexture")) {
 		Ifc_surface_texture *o = new Ifc_surface_texture();
-		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
-		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[0]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		//TODO: parse non-pointer type: typedef  Ifc_identifier;
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
@@ -9662,7 +9633,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_table_row *o = new Ifc_table_row();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->row_cells.push_back((Ifc_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->row_cells);
-		o->is_heading = step_parser.parse_boolean(object_attributes[1]);
+		o->step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -9713,8 +9684,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		//TODO: parse non-pointer type: typedef  Ifc_label;
-		o->is_milestone = step_parser.parse_boolean(object_attributes[9]);
-		o->priority = step_parser.parse_integer(object_attributes[10]);
+		o->step_parser.parse_boolean(object_attributes[9]);
+		o->step_parser.parse_integer(object_attributes[10]);
 		o->task_time = (Ifc_task_time *)step_parser.parse_link(object_attributes[11]);
 		links_to_resolve.push_back((Ifc **)&o->task_time);
 		o->predefined_type = step_parser.parse_constant(object_attributes[12]);
@@ -9736,7 +9707,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->late_finish = step_parser.parse_string(object_attributes[10]);
 		o->free_float = step_parser.parse_string(object_attributes[11]);
 		o->total_float = step_parser.parse_string(object_attributes[12]);
-		o->is_critical = step_parser.parse_boolean(object_attributes[13]);
+		o->step_parser.parse_boolean(object_attributes[13]);
 		o->status_time = step_parser.parse_string(object_attributes[14]);
 		o->actual_duration = step_parser.parse_string(object_attributes[15]);
 		o->actual_start = step_parser.parse_string(object_attributes[16]);
@@ -9761,15 +9732,15 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->late_finish = step_parser.parse_string(object_attributes[10]);
 		o->free_float = step_parser.parse_string(object_attributes[11]);
 		o->total_float = step_parser.parse_string(object_attributes[12]);
-		o->is_critical = step_parser.parse_boolean(object_attributes[13]);
+		o->step_parser.parse_boolean(object_attributes[13]);
 		o->status_time = step_parser.parse_string(object_attributes[14]);
 		o->actual_duration = step_parser.parse_string(object_attributes[15]);
 		o->actual_start = step_parser.parse_string(object_attributes[16]);
 		o->actual_finish = step_parser.parse_string(object_attributes[17]);
 		o->remaining_time = step_parser.parse_string(object_attributes[18]);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
-		o->recurrence = (Ifc_recurrence_pattern *)step_parser.parse_link(object_attributes[20]);
-		links_to_resolve.push_back((Ifc **)&o->recurrence);
+		o->recurrance = (Ifc_recurrence_pattern *)step_parser.parse_link(object_attributes[20]);
+		links_to_resolve.push_back((Ifc **)&o->recurrance);
 		return o;
 	}
 
@@ -9896,7 +9867,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->coordinates = (Ifc_cartesian_point_list_3_d *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->coordinates);
 				//TODO: parse container of container
-		o->closed = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -9935,7 +9906,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->text_style);
 		o->text_font_style = (Ifc_text_font_select *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->text_font_style);
-		o->model_or_draughting = step_parser.parse_boolean(object_attributes[4]);
+		o->step_parser.parse_boolean(object_attributes[4]);
 		return o;
 	}
 
@@ -10150,7 +10121,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		o->coordinates = (Ifc_cartesian_point_list_3_d *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->coordinates);
 				//TODO: parse container of container
-		o->closed = step_parser.parse_boolean(object_attributes[2]);
+		o->step_parser.parse_boolean(object_attributes[2]);
 				//TODO: parse container of container
 				//TODO: parse container of container
 		return o;
@@ -10164,7 +10135,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->trim_1);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->trim_2.push_back((Ifc_trimming_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->trim_2);
-		o->sense_agreement = step_parser.parse_boolean(object_attributes[3]);
+		o->step_parser.parse_boolean(object_attributes[3]);
 		o->master_representation = step_parser.parse_constant(object_attributes[4]);
 		return o;
 	}
@@ -10697,8 +10668,8 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->construction_type = step_parser.parse_constant(object_attributes[8]);
 		o->operation_type = step_parser.parse_constant(object_attributes[9]);
-		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
-		o->sizeable = step_parser.parse_boolean(object_attributes[11]);
+		o->step_parser.parse_boolean(object_attributes[10]);
+		o->step_parser.parse_boolean(object_attributes[11]);
 		return o;
 	}
 
@@ -10718,7 +10689,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->partitioning_type = step_parser.parse_constant(object_attributes[10]);
-		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[11]);
+		o->step_parser.parse_boolean(object_attributes[11]);
 		//TODO: parse non-pointer type: typedef  Ifc_label;
 		return o;
 	}
@@ -10843,7 +10814,7 @@ Ifc *Ifc_4_add_1_parser::parse_ifc_object_definition(std::string &object_class, 
 
 }
 
-void Ifc_4_add_1_parser::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
+void Ifc_4_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
 		Ifc_action_request *o = reinterpret_cast<Ifc_action_request *>(object);
 		std::cout << *o;
 	}
@@ -11153,10 +11124,6 @@ void Ifc_4_add_1_parser::print_object_info(Ifc *object) {	if (object->entity == 
 	}
  	else if (object->entity == "Ifc_cartesian_point_list") {
 		Ifc_cartesian_point_list *o = reinterpret_cast<Ifc_cartesian_point_list *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_cartesian_point_list_2_d") {
-		Ifc_cartesian_point_list_2_d *o = reinterpret_cast<Ifc_cartesian_point_list_2_d *>(object);
 		std::cout << *o;
 	}
  	else if (object->entity == "Ifc_cartesian_point_list_3_d") {
@@ -12113,10 +12080,6 @@ void Ifc_4_add_1_parser::print_object_info(Ifc *object) {	if (object->entity == 
 	}
  	else if (object->entity == "Ifc_indexed_colour_map") {
 		Ifc_indexed_colour_map *o = reinterpret_cast<Ifc_indexed_colour_map *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_indexed_poly_curve") {
-		Ifc_indexed_poly_curve *o = reinterpret_cast<Ifc_indexed_poly_curve *>(object);
 		std::cout << *o;
 	}
  	else if (object->entity == "Ifc_indexed_texture_map") {

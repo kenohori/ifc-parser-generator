@@ -32,6 +32,7 @@ class Express_parser {
   
   std::string format_attribute(const std::string &ifc_name);
   std::string format_name(const std::string &ifc_name);
+  std::string unformat_name(const std::string &ifc_name);
   
   void parse_type(const std::string &contents);
   void parse_entity(const std::string &contents);

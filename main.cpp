@@ -8,27 +8,27 @@
 #include "Express_parser.hpp"
 
 int main(int argc, const char * argv[]) {
-  Express_parser parser_2x, parser_2x2, parser_2x3, parser_4, parser_4_add1;
+  Express_parser schema_2x, schema_2x2, schema_2x3, schema_4, schema_4_add1;
   
-  parser_2x.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/Ifc2x_all_lf.exp");
-  parser_2x.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x_parser.hpp");
-  parser_2x.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x_parser.cpp");
+  schema_2x.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/Ifc2x_all_lf.exp");
+  schema_2x.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x_schema.hpp");
+  schema_2x.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x_schema.cpp");
   
-  parser_2x2.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC2X2_FINAL.exp");
-  parser_2x2.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x2_parser.hpp");
-  parser_2x2.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x2_parser.cpp");
+  schema_2x2.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC2X2_FINAL.exp");
+  schema_2x2.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x2_schema.hpp");
+  schema_2x2.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x2_schema.cpp");
   
-  parser_2x3.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC2X3_TC1.exp");
-  parser_2x3.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x3_parser.hpp");
-  parser_2x3.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x3_parser.cpp");
+  schema_2x3.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC2X3_TC1.exp");
+  schema_2x3.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x3_schema.hpp");
+  schema_2x3.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_2x3_schema.cpp");
   
-  parser_4.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC4.exp");
-  parser_4.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_parser.hpp");
-  parser_4.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_parser.cpp");
+  schema_4.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC4.exp");
+  schema_4.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_schema.hpp");
+  schema_4.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_schema.cpp");
   
-  parser_4_add1.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC4_ADD1.exp");
-  parser_4_add1.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_parser.hpp");
-  parser_4_add1.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_parser.cpp");
+  schema_4_add1.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC4_ADD1.exp");
+  schema_4_add1.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_schema.hpp");
+  schema_4_add1.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_schema.cpp");
   
   return 0;
 }

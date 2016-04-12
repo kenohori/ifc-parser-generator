@@ -61,6 +61,21 @@ std::string Express_parser::format_name(const std::string &ifc_name) {
   return cpp_name;
 }
 
+std::string Express_parser::unformat_name(const std::string &ifc_name) {
+  std::string step_name = "";
+  bool make_uppercase = true;
+  for (auto const i : ifc_name) {
+    if (make_uppercase && i != '_') {
+      step_name += toupper(i);
+      make_uppercase = false;
+    } else if (i == '_') {
+      make_uppercase = true;
+    } else {
+      step_name += i;
+    }
+  } return step_name;
+}
+
 void Express_parser::parse_type(const std::string &contents) {
   
   std::string type_name = "";
@@ -533,7 +548,7 @@ void Express_parser::generate_hpp(const char *path) {
         out_stream << "Ifc";
       } else {
         for (auto const &current_sc : dependencies[entities_to_do.front()]) {
-          out_stream << current_sc;
+          out_stream << format_name(current_sc);
           if (current_sc != dependencies[entities_to_do.front()].back()) out_stream << ", ";
         }
       } out_stream << " {\n";
@@ -562,7 +577,7 @@ void Express_parser::generate_hpp(const char *path) {
         out_stream << "\t\treturn os << \"" + format_name(entities_to_do.front()) + "(\" << ";
         
         // Get inherited attributes
-        std::list<std::string> superclasses_to_check, all_attributes;
+        std::list<std::string> superclasses_to_check, all_attribute_names, all_attribute_definitions;
         superclasses_to_check.push_front(entities_to_do.front());
         while (!superclasses_to_check.empty()) {
           std::string current_entity = superclasses_to_check.front();
@@ -571,17 +586,26 @@ void Express_parser::generate_hpp(const char *path) {
             if (entity_attributes.count(current_sc)) {
               superclasses_to_check.push_front(current_sc);
             }
-          } for (std::list<std::string>::const_reverse_iterator current_inherited_attribute_name = std::get<0>(entity_attributes[current_entity]).rbegin();
-                 current_inherited_attribute_name != std::get<0>(entity_attributes[current_entity]).rend();
-                 ++current_inherited_attribute_name) {
-            all_attributes.push_front(*current_inherited_attribute_name);
+          } std::list<std::string>::const_reverse_iterator current_inherited_attribute_name = std::get<0>(entity_attributes[current_entity]).rbegin(),
+          current_inherited_attribute_definition = std::get<1>(entity_attributes[current_entity]).rbegin();
+          while (current_inherited_attribute_name != std::get<0>(entity_attributes[current_entity]).rend()) {
+            all_attribute_names.push_front(*current_inherited_attribute_name);
+            all_attribute_definitions.push_front(*current_inherited_attribute_definition);
+            ++current_inherited_attribute_name;
+            ++current_inherited_attribute_definition;
           }
         }
         
         // Put all attributes in <<operator
-        for (auto const &attribute : all_attributes) {
-          out_stream << "o." << attribute << " << ";
-          if (attribute != all_attributes.back()) out_stream << "\", \" << ";
+        std::list<std::string>::const_iterator attribute_name = all_attribute_names.begin(),
+        attribute_definition = all_attribute_definitions.begin();
+        while (attribute_name != all_attribute_names.end()) {
+          if (attribute_definition->substr(0, 11) == "std::vector") out_stream << "\"vector(\" << o." << *attribute_name << ".size() << \")\" << ";
+          else if (types_code.count(unformat_name(*attribute_definition)) && types_code[unformat_name(*attribute_definition)].substr(0, 11) == "std::vector") out_stream << "\"vector(\" << o." << *attribute_name << ".size() << \")\" << ";
+          else out_stream << "o." << *attribute_name << " << ";
+          if (*attribute_name != all_attribute_names.back()) out_stream << "\", \" << ";
+          ++attribute_name;
+          ++attribute_definition;
         }
         
         out_stream << "\")\";\n";
@@ -593,7 +617,7 @@ void Express_parser::generate_hpp(const char *path) {
         out_stream << "\tvirtual ~" + format_name(entities_to_do.front()) + "() {}\n";
       }
       
-      out_stream << "}\n\n";
+      out_stream << "};\n\n";
       in_output.insert(entities_to_do.front());
     } else {
       entities_to_do.push_back(entities_to_do.front());

@@ -1,5 +1,5 @@
-#ifndef Ifc_2x_parser_hpp
-#define Ifc_2x_parser_hpp
+#ifndef Ifc_2x_schema_hpp
+#define Ifc_2x_schema_hpp
 
 #include <boost/algorithm/string.hpp>
 
@@ -628,7 +628,7 @@ struct Ifc_action_time_control : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_action_time_control &o) {
 		return os << "Ifc_action_time_control(" << o.constraint_type << ", " << o.contraint_time << ")";
 	}
-}
+};
 
 struct Ifc_actor_role : Ifc {
 	Ifc_role_enum role;
@@ -641,7 +641,7 @@ struct Ifc_actor_role : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_actor_role &o) {
 		return os << "Ifc_actor_role(" << o.role << ", " << o.user_defined_role << ", " << o.description << ")";
 	}
-}
+};
 
 struct Ifc_address : Ifc {
 	Ifc_address_type_enum purpose;
@@ -649,7 +649,7 @@ struct Ifc_address : Ifc {
 	Ifc_label *user_defined_purpose;
 
 	virtual ~Ifc_address() {}
-}
+};
 
 struct Ifc_application : Ifc {
 	Ifc_organization *application_developer;
@@ -663,7 +663,7 @@ struct Ifc_application : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_application &o) {
 		return os << "Ifc_application(" << o.application_developer << ", " << o.version << ", " << o.application_full_name << ", " << o.application_identifier << ")";
 	}
-}
+};
 
 struct Ifc_approval : Ifc {
 	Ifc_text description;
@@ -682,7 +682,7 @@ struct Ifc_approval : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_approval &o) {
 		return os << "Ifc_approval(" << o.description << ", " << o.authorizing_agent << ", " << o.request_from << ", " << o.request_to << ", " << o.requesting_date << ", " << o.requested_date << ", " << o.approval_date << ", " << o.approval_status << ", " << o.approval_constraint << ")";
 	}
-}
+};
 
 struct Ifc_calendar_date : Ifc {
 	Ifc_day_in_month_number day_component;
@@ -695,7 +695,7 @@ struct Ifc_calendar_date : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_calendar_date &o) {
 		return os << "Ifc_calendar_date(" << o.day_component << ", " << o.month_component << ", " << o.year_component << ")";
 	}
-}
+};
 
 struct Ifc_classification : Ifc {
 	Ifc_label *source;
@@ -709,7 +709,7 @@ struct Ifc_classification : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification &o) {
 		return os << "Ifc_classification(" << o.source << ", " << o.edition << ", " << o.edition_date << ", " << o.name << ")";
 	}
-}
+};
 
 struct Ifc_classification_item : Ifc {
 	Ifc_classification_notation_facet *notation;
@@ -722,7 +722,7 @@ struct Ifc_classification_item : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification_item &o) {
 		return os << "Ifc_classification_item(" << o.notation << ", " << o.item_of << ", " << o.title << ")";
 	}
-}
+};
 
 struct Ifc_classification_item_relationship : Ifc {
 	Ifc_classification_item *relating_item;
@@ -732,9 +732,9 @@ struct Ifc_classification_item_relationship : Ifc {
 		entity = "Ifc_classification_item_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification_item_relationship &o) {
-		return os << "Ifc_classification_item_relationship(" << o.relating_item << ", " << o.related_items << ")";
+		return os << "Ifc_classification_item_relationship(" << o.relating_item << ", " << "vector(" << o.related_items.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_classification_notation : Ifc {
 	std::vector<Ifc_classification_notation_facet *> notation_facets;
@@ -743,9 +743,9 @@ struct Ifc_classification_notation : Ifc {
 		entity = "Ifc_classification_notation";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification_notation &o) {
-		return os << "Ifc_classification_notation(" << o.notation_facets << ")";
+		return os << "Ifc_classification_notation(" << "vector(" << o.notation_facets.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_classification_notation_facet : Ifc {
 	Ifc_label *notation_value;
@@ -756,7 +756,7 @@ struct Ifc_classification_notation_facet : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification_notation_facet &o) {
 		return os << "Ifc_classification_notation_facet(" << o.notation_value << ")";
 	}
-}
+};
 
 struct Ifc_connection_constraint : Ifc {
 	int waterproofing_required;
@@ -772,13 +772,13 @@ struct Ifc_connection_constraint : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connection_constraint &o) {
 		return os << "Ifc_connection_constraint(" << o.waterproofing_required << ", " << o.ventilation_required << ", " << o.join_type << ", " << o.range_of_movement << ", " << o.fire_rating << ", " << o.constraint_of << ")";
 	}
-}
+};
 
 struct Ifc_connection_geometry : Ifc {
 	virtual ~Ifc_connection_geometry() {}
-}
+};
 
-struct Ifc_connection_point_geometry : IfcConnectionGeometry {
+struct Ifc_connection_point_geometry : Ifc_connection_geometry {
 	Ifc_point *point_on_relating_element;
 	Ifc_point *point_on_related_element;
 
@@ -788,9 +788,9 @@ struct Ifc_connection_point_geometry : IfcConnectionGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connection_point_geometry &o) {
 		return os << "Ifc_connection_point_geometry(" << o.point_on_relating_element << ", " << o.point_on_related_element << ")";
 	}
-}
+};
 
-struct Ifc_connection_port_geometry : IfcConnectionGeometry {
+struct Ifc_connection_port_geometry : Ifc_connection_geometry {
 	Ifc_axis_2_placement *location_at_relating_element;
 	Ifc_axis_2_placement *location_at_related_element;
 	Ifc_profile_def *profile_of_port;
@@ -801,9 +801,9 @@ struct Ifc_connection_port_geometry : IfcConnectionGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connection_port_geometry &o) {
 		return os << "Ifc_connection_port_geometry(" << o.location_at_relating_element << ", " << o.location_at_related_element << ", " << o.profile_of_port << ")";
 	}
-}
+};
 
-struct Ifc_connection_surface_geometry : IfcConnectionGeometry {
+struct Ifc_connection_surface_geometry : Ifc_connection_geometry {
 	Ifc_surface *surface_on_relating_element;
 	Ifc_surface *surface_on_related_element;
 
@@ -813,7 +813,7 @@ struct Ifc_connection_surface_geometry : IfcConnectionGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connection_surface_geometry &o) {
 		return os << "Ifc_connection_surface_geometry(" << o.surface_on_relating_element << ", " << o.surface_on_related_element << ")";
 	}
-}
+};
 
 struct Ifc_constraint : Ifc {
 	Ifc_constraint_enum constraint_grade;
@@ -829,7 +829,7 @@ struct Ifc_constraint : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_constraint &o) {
 		return os << "Ifc_constraint(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ")";
 	}
-}
+};
 
 struct Ifc_constraint_aggregation_relationship : Ifc {
 	Ifc_aggregator_enum logical_aggregator;
@@ -840,9 +840,9 @@ struct Ifc_constraint_aggregation_relationship : Ifc {
 		entity = "Ifc_constraint_aggregation_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_constraint_aggregation_relationship &o) {
-		return os << "Ifc_constraint_aggregation_relationship(" << o.logical_aggregator << ", " << o.relating_constraint << ", " << o.related_constraints << ")";
+		return os << "Ifc_constraint_aggregation_relationship(" << o.logical_aggregator << ", " << o.relating_constraint << ", " << "vector(" << o.related_constraints.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_coordinated_universal_time_offset : Ifc {
 	Ifc_hour_in_day hour_offset;
@@ -855,7 +855,7 @@ struct Ifc_coordinated_universal_time_offset : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_coordinated_universal_time_offset &o) {
 		return os << "Ifc_coordinated_universal_time_offset(" << o.hour_offset << ", " << o.minute_offset << ", " << o.sense << ")";
 	}
-}
+};
 
 struct Ifc_cost_modifier : Ifc {
 	Ifc_text purpose;
@@ -870,7 +870,7 @@ struct Ifc_cost_modifier : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_modifier &o) {
 		return os << "Ifc_cost_modifier(" << o.purpose << ", " << o.modifier_value << ", " << o.modifier_date << ", " << o.cost_operator << ", " << o.modifier_basis << ")";
 	}
-}
+};
 
 struct Ifc_cost_modifier_value : Ifc {
 	Ifc_monetary_measure modifier_amount;
@@ -882,7 +882,7 @@ struct Ifc_cost_modifier_value : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_modifier_value &o) {
 		return os << "Ifc_cost_modifier_value(" << o.modifier_amount << ", " << o.currency << ")";
 	}
-}
+};
 
 struct Ifc_cost_quantity : Ifc {
 	Ifc_measure_with_unit *base_quantity;
@@ -897,7 +897,7 @@ struct Ifc_cost_quantity : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_quantity &o) {
 		return os << "Ifc_cost_quantity(" << o.base_quantity << ", " << o.final_quantity << ", " << o.waste_factor << ", " << o.round_off_increment << ", " << o.round_off_basis << ")";
 	}
-}
+};
 
 struct Ifc_cost_value : Ifc {
 	Ifc_monetary_measure base_cost_value;
@@ -912,9 +912,9 @@ struct Ifc_cost_value : Ifc {
 		entity = "Ifc_cost_value";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_value &o) {
-		return os << "Ifc_cost_value(" << o.base_cost_value << ", " << o.final_cost_value << ", " << o.currency << ", " << o.unit_cost_basis << ", " << o.cost_type << ", " << o.cost_date << ", " << o.cost_modifiers << ")";
+		return os << "Ifc_cost_value(" << o.base_cost_value << ", " << o.final_cost_value << ", " << o.currency << ", " << o.unit_cost_basis << ", " << o.cost_type << ", " << o.cost_date << ", " << "vector(" << o.cost_modifiers.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_cost_value_relationship : Ifc {
 	Ifc_cost_value *component_of;
@@ -925,9 +925,9 @@ struct Ifc_cost_value_relationship : Ifc {
 		entity = "Ifc_cost_value_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_value_relationship &o) {
-		return os << "Ifc_cost_value_relationship(" << o.component_of << ", " << o.cost_components << ", " << o.description << ")";
+		return os << "Ifc_cost_value_relationship(" << o.component_of << ", " << "vector(" << o.cost_components.size() << ")" << ", " << o.description << ")";
 	}
-}
+};
 
 struct Ifc_date_and_time : Ifc {
 	Ifc_calendar_date *date_component;
@@ -939,7 +939,7 @@ struct Ifc_date_and_time : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_date_and_time &o) {
 		return os << "Ifc_date_and_time(" << o.date_component << ", " << o.time_component << ")";
 	}
-}
+};
 
 struct Ifc_derived_unit : Ifc {
 	std::vector<Ifc_derived_unit_element *> elements;
@@ -950,9 +950,9 @@ struct Ifc_derived_unit : Ifc {
 		entity = "Ifc_derived_unit";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_derived_unit &o) {
-		return os << "Ifc_derived_unit(" << o.elements << ", " << o.unit_type << ", " << o.user_defined_type << ")";
+		return os << "Ifc_derived_unit(" << "vector(" << o.elements.size() << ")" << ", " << o.unit_type << ", " << o.user_defined_type << ")";
 	}
-}
+};
 
 struct Ifc_derived_unit_element : Ifc {
 	Ifc_named_unit *unit;
@@ -964,7 +964,7 @@ struct Ifc_derived_unit_element : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_derived_unit_element &o) {
 		return os << "Ifc_derived_unit_element(" << o.unit << ", " << o.exponent << ")";
 	}
-}
+};
 
 struct Ifc_dimensional_exponents : Ifc {
 	int length_exponent;
@@ -981,7 +981,7 @@ struct Ifc_dimensional_exponents : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_dimensional_exponents &o) {
 		return os << "Ifc_dimensional_exponents(" << o.length_exponent << ", " << o.mass_exponent << ", " << o.time_exponent << ", " << o.electric_current_exponent << ", " << o.thermodynamic_temperature_exponent << ", " << o.amount_of_substance_exponent << ", " << o.luminous_intensity_exponent << ")";
 	}
-}
+};
 
 struct Ifc_document_electronic_format : Ifc {
 	Ifc_label *file_extension;
@@ -994,7 +994,7 @@ struct Ifc_document_electronic_format : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_document_electronic_format &o) {
 		return os << "Ifc_document_electronic_format(" << o.file_extension << ", " << o.mime_content_type << ", " << o.mime_subtype << ")";
 	}
-}
+};
 
 struct Ifc_document_information : Ifc {
 	Ifc_identifier *document_id;
@@ -1019,9 +1019,9 @@ struct Ifc_document_information : Ifc {
 		entity = "Ifc_document_information";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_document_information &o) {
-		return os << "Ifc_document_information(" << o.document_id << ", " << o.name << ", " << o.description << ", " << o.document_references << ", " << o.purpose << ", " << o.intended_use << ", " << o.scope << ", " << o.revision << ", " << o.document_owner << ", " << o.editors << ", " << o.creation_time << ", " << o.last_revision_time << ", " << o.electronic_format << ", " << o.valid_from << ", " << o.valid_until << ", " << o.confidentiality << ", " << o.status << ")";
+		return os << "Ifc_document_information(" << o.document_id << ", " << o.name << ", " << o.description << ", " << "vector(" << o.document_references.size() << ")" << ", " << o.purpose << ", " << o.intended_use << ", " << o.scope << ", " << o.revision << ", " << o.document_owner << ", " << "vector(" << o.editors.size() << ")" << ", " << o.creation_time << ", " << o.last_revision_time << ", " << o.electronic_format << ", " << o.valid_from << ", " << o.valid_until << ", " << o.confidentiality << ", " << o.status << ")";
 	}
-}
+};
 
 struct Ifc_document_information_relationship : Ifc {
 	Ifc_document_information *relating_document;
@@ -1032,9 +1032,9 @@ struct Ifc_document_information_relationship : Ifc {
 		entity = "Ifc_document_information_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_document_information_relationship &o) {
-		return os << "Ifc_document_information_relationship(" << o.relating_document << ", " << o.related_documents << ", " << o.relationship_type << ")";
+		return os << "Ifc_document_information_relationship(" << o.relating_document << ", " << "vector(" << o.related_documents.size() << ")" << ", " << o.relationship_type << ")";
 	}
-}
+};
 
 struct Ifc_external_reference : Ifc {
 	Ifc_label *location;
@@ -1042,7 +1042,7 @@ struct Ifc_external_reference : Ifc {
 	Ifc_label *name;
 
 	virtual ~Ifc_external_reference() {}
-}
+};
 
 struct Ifc_grid_axis : Ifc {
 	Ifc_label *axis_tag;
@@ -1055,7 +1055,7 @@ struct Ifc_grid_axis : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_grid_axis &o) {
 		return os << "Ifc_grid_axis(" << o.axis_tag << ", " << o.axis_curve << ", " << o.same_sense << ")";
 	}
-}
+};
 
 struct Ifc_library_information : Ifc {
 	Ifc_label *name;
@@ -1068,18 +1068,18 @@ struct Ifc_library_information : Ifc {
 		entity = "Ifc_library_information";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_library_information &o) {
-		return os << "Ifc_library_information(" << o.name << ", " << o.version << ", " << o.publisher << ", " << o.version_date << ", " << o.library_reference << ")";
+		return os << "Ifc_library_information(" << o.name << ", " << o.version << ", " << o.publisher << ", " << o.version_date << ", " << "vector(" << o.library_reference.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_library_reference : IfcExternalReference {
+struct Ifc_library_reference : Ifc_external_reference {
 	Ifc_library_reference() {
 		entity = "Ifc_library_reference";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_library_reference &o) {
 		return os << "Ifc_library_reference(" << o.location << ", " << o.item_reference << ", " << o.name << ")";
 	}
-}
+};
 
 struct Ifc_local_time : Ifc {
 	Ifc_hour_in_day hour_component;
@@ -1094,7 +1094,7 @@ struct Ifc_local_time : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_local_time &o) {
 		return os << "Ifc_local_time(" << o.hour_component << ", " << o.minute_component << ", " << o.second_component << ", " << o.zone << ", " << o.daylight_saving_offset << ")";
 	}
-}
+};
 
 struct Ifc_material : Ifc {
 	Ifc_label *name;
@@ -1105,7 +1105,7 @@ struct Ifc_material : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material &o) {
 		return os << "Ifc_material(" << o.name << ")";
 	}
-}
+};
 
 struct Ifc_material_classification_relationship : Ifc {
 	std::vector<Ifc_classification_notation_select *> material_classifications;
@@ -1115,9 +1115,9 @@ struct Ifc_material_classification_relationship : Ifc {
 		entity = "Ifc_material_classification_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material_classification_relationship &o) {
-		return os << "Ifc_material_classification_relationship(" << o.material_classifications << ", " << o.classified_material << ")";
+		return os << "Ifc_material_classification_relationship(" << "vector(" << o.material_classifications.size() << ")" << ", " << o.classified_material << ")";
 	}
-}
+};
 
 struct Ifc_material_layer : Ifc {
 	Ifc_material *material;
@@ -1130,7 +1130,7 @@ struct Ifc_material_layer : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material_layer &o) {
 		return os << "Ifc_material_layer(" << o.material << ", " << o.layer_thickness << ", " << o.is_ventilated << ")";
 	}
-}
+};
 
 struct Ifc_material_layer_set : Ifc {
 	std::vector<Ifc_material_layer *> material_layers;
@@ -1140,9 +1140,9 @@ struct Ifc_material_layer_set : Ifc {
 		entity = "Ifc_material_layer_set";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material_layer_set &o) {
-		return os << "Ifc_material_layer_set(" << o.material_layers << ", " << o.layer_set_name << ")";
+		return os << "Ifc_material_layer_set(" << "vector(" << o.material_layers.size() << ")" << ", " << o.layer_set_name << ")";
 	}
-}
+};
 
 struct Ifc_material_layer_set_usage : Ifc {
 	Ifc_material_layer_set *for_layer_set;
@@ -1156,7 +1156,7 @@ struct Ifc_material_layer_set_usage : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material_layer_set_usage &o) {
 		return os << "Ifc_material_layer_set_usage(" << o.for_layer_set << ", " << o.layer_set_direction << ", " << o.direction_sense << ", " << o.offset_from_reference_line << ")";
 	}
-}
+};
 
 struct Ifc_material_list : Ifc {
 	std::vector<Ifc_material *> materials;
@@ -1165,15 +1165,15 @@ struct Ifc_material_list : Ifc {
 		entity = "Ifc_material_list";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_material_list &o) {
-		return os << "Ifc_material_list(" << o.materials << ")";
+		return os << "Ifc_material_list(" << "vector(" << o.materials.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_material_properties : Ifc {
 	Ifc_material *material;
 
 	virtual ~Ifc_material_properties() {}
-}
+};
 
 struct Ifc_measure_with_unit : Ifc {
 	Ifc_value *value_component;
@@ -1185,9 +1185,9 @@ struct Ifc_measure_with_unit : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_measure_with_unit &o) {
 		return os << "Ifc_measure_with_unit(" << o.value_component << ", " << o.unit_component << ")";
 	}
-}
+};
 
-struct Ifc_mechanical_material_properties : IfcMaterialProperties {
+struct Ifc_mechanical_material_properties : Ifc_material_properties {
 	Ifc_dynamic_viscosity_measure dynamic_viscosity;
 
 	Ifc_mechanical_material_properties() {
@@ -1196,29 +1196,29 @@ struct Ifc_mechanical_material_properties : IfcMaterialProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_mechanical_material_properties &o) {
 		return os << "Ifc_mechanical_material_properties(" << o.material << ", " << o.dynamic_viscosity << ")";
 	}
-}
+};
 
-struct Ifc_metric : IfcConstraint {
+struct Ifc_metric : Ifc_constraint {
 	std::vector<Ifc_metric_value *> values;
 
 	Ifc_metric() {
 		entity = "Ifc_metric";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_metric &o) {
-		return os << "Ifc_metric(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << o.values << ")";
+		return os << "Ifc_metric(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << "vector(" << o.values.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_metric_benchmark : IfcMetric {
+struct Ifc_metric_benchmark : Ifc_metric {
 	Ifc_benchmark_enum benchmark;
 
 	Ifc_metric_benchmark() {
 		entity = "Ifc_metric_benchmark";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_metric_benchmark &o) {
-		return os << "Ifc_metric_benchmark(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << o.values << ", " << o.benchmark << ")";
+		return os << "Ifc_metric_benchmark(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << "vector(" << o.values.size() << ")" << ", " << o.benchmark << ")";
 	}
-}
+};
 
 struct Ifc_metric_value : Ifc {
 	Ifc_metric_data_enum data_type;
@@ -1231,7 +1231,7 @@ struct Ifc_metric_value : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_metric_value &o) {
 		return os << "Ifc_metric_value(" << o.data_type << ", " << o.data_value << ", " << o.value_source << ")";
 	}
-}
+};
 
 struct Ifc_monetary_unit : Ifc {
 	Ifc_currency_enum currency;
@@ -1242,20 +1242,20 @@ struct Ifc_monetary_unit : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_monetary_unit &o) {
 		return os << "Ifc_monetary_unit(" << o.currency << ")";
 	}
-}
+};
 
 struct Ifc_named_unit : Ifc {
 	Ifc_dimensional_exponents *dimensions;
 	Ifc_unit_enum unit_type;
 
 	virtual ~Ifc_named_unit() {}
-}
+};
 
 struct Ifc_object_placement : Ifc {
 	virtual ~Ifc_object_placement() {}
-}
+};
 
-struct Ifc_objective : IfcConstraint {
+struct Ifc_objective : Ifc_constraint {
 	Ifc_objective_enum objective_qualifier;
 	std::vector<Ifc_metric *> benchmark_values;
 	std::vector<Ifc_metric *> result_values;
@@ -1264,11 +1264,11 @@ struct Ifc_objective : IfcConstraint {
 		entity = "Ifc_objective";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_objective &o) {
-		return os << "Ifc_objective(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << o.objective_qualifier << ", " << o.benchmark_values << ", " << o.result_values << ")";
+		return os << "Ifc_objective(" << o.constraint_grade << ", " << o.description << ", " << o.constraint_source << ", " << o.name << ", " << o.creating_actor << ", " << o.creation_time << ", " << o.objective_qualifier << ", " << "vector(" << o.benchmark_values.size() << ")" << ", " << "vector(" << o.result_values.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_optical_material_properties : IfcMaterialProperties {
+struct Ifc_optical_material_properties : Ifc_material_properties {
 	Ifc_positive_ratio_measure visible_transmittance;
 	Ifc_positive_ratio_measure solar_transmittance;
 	Ifc_positive_ratio_measure thermal_ir_transmittance;
@@ -1285,7 +1285,7 @@ struct Ifc_optical_material_properties : IfcMaterialProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_optical_material_properties &o) {
 		return os << "Ifc_optical_material_properties(" << o.material << ", " << o.visible_transmittance << ", " << o.solar_transmittance << ", " << o.thermal_ir_transmittance << ", " << o.thermal_ir_emissivity_back << ", " << o.thermal_ir_emissivity_front << ", " << o.visible_reflectance_back << ", " << o.visible_reflectance_front << ", " << o.solar_reflectance_front << ", " << o.solar_reflectance_back << ")";
 	}
-}
+};
 
 struct Ifc_organization : Ifc {
 	Ifc_identifier *_id;
@@ -1298,9 +1298,9 @@ struct Ifc_organization : Ifc {
 		entity = "Ifc_organization";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_organization &o) {
-		return os << "Ifc_organization(" << o._id << ", " << o.name << ", " << o.description << ", " << o.roles << ", " << o.addresses << ")";
+		return os << "Ifc_organization(" << o._id << ", " << o.name << ", " << o.description << ", " << "vector(" << o.roles.size() << ")" << ", " << "vector(" << o.addresses.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_organization_relationship : Ifc {
 	Ifc_label *name;
@@ -1312,9 +1312,9 @@ struct Ifc_organization_relationship : Ifc {
 		entity = "Ifc_organization_relationship";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_organization_relationship &o) {
-		return os << "Ifc_organization_relationship(" << o.name << ", " << o.description << ", " << o.relating_organization << ", " << o.related_organizations << ")";
+		return os << "Ifc_organization_relationship(" << o.name << ", " << o.description << ", " << o.relating_organization << ", " << "vector(" << o.related_organizations.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_owner_history : Ifc {
 	Ifc_person_and_organization *owning_user;
@@ -1332,7 +1332,7 @@ struct Ifc_owner_history : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_owner_history &o) {
 		return os << "Ifc_owner_history(" << o.owning_user << ", " << o.owning_application << ", " << o.state << ", " << o.change_action << ", " << o.last_modified_date << ", " << o.last_modifying_user << ", " << o.last_modifying_application << ", " << o.creation_date << ")";
 	}
-}
+};
 
 struct Ifc_person : Ifc {
 	Ifc_identifier *_id;
@@ -1348,9 +1348,9 @@ struct Ifc_person : Ifc {
 		entity = "Ifc_person";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_person &o) {
-		return os << "Ifc_person(" << o._id << ", " << o.family_name << ", " << o.given_name << ", " << o.middle_names << ", " << o.prefix_titles << ", " << o.suffix_titles << ", " << o.roles << ", " << o.addresses << ")";
+		return os << "Ifc_person(" << o._id << ", " << o.family_name << ", " << o.given_name << ", " << "vector(" << o.middle_names.size() << ")" << ", " << "vector(" << o.prefix_titles.size() << ")" << ", " << "vector(" << o.suffix_titles.size() << ")" << ", " << "vector(" << o.roles.size() << ")" << ", " << "vector(" << o.addresses.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_person_and_organization : Ifc {
 	Ifc_person *the_person;
@@ -1361,9 +1361,9 @@ struct Ifc_person_and_organization : Ifc {
 		entity = "Ifc_person_and_organization";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_person_and_organization &o) {
-		return os << "Ifc_person_and_organization(" << o.the_person << ", " << o.the_organization << ", " << o.roles << ")";
+		return os << "Ifc_person_and_organization(" << o.the_person << ", " << o.the_organization << ", " << "vector(" << o.roles.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_physical_quantity : Ifc {
 	Ifc_label name;
@@ -1371,9 +1371,9 @@ struct Ifc_physical_quantity : Ifc {
 	Ifc_named_unit *unit;
 
 	virtual ~Ifc_physical_quantity() {}
-}
+};
 
-struct Ifc_postal_address : IfcAddress {
+struct Ifc_postal_address : Ifc_address {
 	Ifc_label *internal_location;
 	std::vector<Ifc_label *> address_lines;
 	Ifc_label *postal_box;
@@ -1386,9 +1386,9 @@ struct Ifc_postal_address : IfcAddress {
 		entity = "Ifc_postal_address";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_postal_address &o) {
-		return os << "Ifc_postal_address(" << o.purpose << ", " << o.description << ", " << o.user_defined_purpose << ", " << o.internal_location << ", " << o.address_lines << ", " << o.postal_box << ", " << o.town << ", " << o.region << ", " << o.postal_code << ", " << o.country << ")";
+		return os << "Ifc_postal_address(" << o.purpose << ", " << o.description << ", " << o.user_defined_purpose << ", " << o.internal_location << ", " << "vector(" << o.address_lines.size() << ")" << ", " << o.postal_box << ", " << o.town << ", " << o.region << ", " << o.postal_code << ", " << o.country << ")";
 	}
-}
+};
 
 struct Ifc_presentation_light_source : Ifc {
 	Ifc_color_r_g_b color;
@@ -1404,7 +1404,7 @@ struct Ifc_presentation_light_source : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_presentation_light_source &o) {
 		return os << "Ifc_presentation_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ")";
 	}
-}
+};
 
 struct Ifc_product_representation : Ifc {
 	Ifc_label name;
@@ -1415,23 +1415,23 @@ struct Ifc_product_representation : Ifc {
 		entity = "Ifc_product_representation";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_product_representation &o) {
-		return os << "Ifc_product_representation(" << o.name << ", " << o.description << ", " << o.representations << ")";
+		return os << "Ifc_product_representation(" << o.name << ", " << o.description << ", " << "vector(" << o.representations.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_profile_def : Ifc {
 	Ifc_profile_type_enum profile_type;
 	Ifc_label profile_name;
 
 	virtual ~Ifc_profile_def() {}
-}
+};
 
 struct Ifc_property : Ifc {
 	Ifc_identifier name;
 	Ifc_text description;
 
 	virtual ~Ifc_property() {}
-}
+};
 
 struct Ifc_property_enumeration : Ifc {
 	Ifc_label name;
@@ -1442,11 +1442,11 @@ struct Ifc_property_enumeration : Ifc {
 		entity = "Ifc_property_enumeration";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_enumeration &o) {
-		return os << "Ifc_property_enumeration(" << o.name << ", " << o.enumeration_values << ", " << o.unit << ")";
+		return os << "Ifc_property_enumeration(" << o.name << ", " << "vector(" << o.enumeration_values.size() << ")" << ", " << o.unit << ")";
 	}
-}
+};
 
-struct Ifc_quantity_area : IfcPhysicalQuantity {
+struct Ifc_quantity_area : Ifc_physical_quantity {
 	Ifc_area_measure area_value;
 
 	Ifc_quantity_area() {
@@ -1455,9 +1455,9 @@ struct Ifc_quantity_area : IfcPhysicalQuantity {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_quantity_area &o) {
 		return os << "Ifc_quantity_area(" << o.name << ", " << o.description << ", " << o.unit << ", " << o.area_value << ")";
 	}
-}
+};
 
-struct Ifc_quantity_count : IfcPhysicalQuantity {
+struct Ifc_quantity_count : Ifc_physical_quantity {
 	Ifc_count_measure count_value;
 
 	Ifc_quantity_count() {
@@ -1466,9 +1466,9 @@ struct Ifc_quantity_count : IfcPhysicalQuantity {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_quantity_count &o) {
 		return os << "Ifc_quantity_count(" << o.name << ", " << o.description << ", " << o.unit << ", " << o.count_value << ")";
 	}
-}
+};
 
-struct Ifc_quantity_length : IfcPhysicalQuantity {
+struct Ifc_quantity_length : Ifc_physical_quantity {
 	Ifc_length_measure length_value;
 
 	Ifc_quantity_length() {
@@ -1477,9 +1477,9 @@ struct Ifc_quantity_length : IfcPhysicalQuantity {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_quantity_length &o) {
 		return os << "Ifc_quantity_length(" << o.name << ", " << o.description << ", " << o.unit << ", " << o.length_value << ")";
 	}
-}
+};
 
-struct Ifc_quantity_volume : IfcPhysicalQuantity {
+struct Ifc_quantity_volume : Ifc_physical_quantity {
 	Ifc_volume_measure volume_value;
 
 	Ifc_quantity_volume() {
@@ -1488,9 +1488,9 @@ struct Ifc_quantity_volume : IfcPhysicalQuantity {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_quantity_volume &o) {
 		return os << "Ifc_quantity_volume(" << o.name << ", " << o.description << ", " << o.unit << ", " << o.volume_value << ")";
 	}
-}
+};
 
-struct Ifc_quantity_weight : IfcPhysicalQuantity {
+struct Ifc_quantity_weight : Ifc_physical_quantity {
 	Ifc_mass_measure weight_value;
 
 	Ifc_quantity_weight() {
@@ -1499,9 +1499,9 @@ struct Ifc_quantity_weight : IfcPhysicalQuantity {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_quantity_weight &o) {
 		return os << "Ifc_quantity_weight(" << o.name << ", " << o.description << ", " << o.unit << ", " << o.weight_value << ")";
 	}
-}
+};
 
-struct Ifc_rectangle_profile_def : IfcProfileDef {
+struct Ifc_rectangle_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure x_dim;
 	Ifc_positive_length_measure y_dim;
@@ -1512,15 +1512,15 @@ struct Ifc_rectangle_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rectangle_profile_def &o) {
 		return os << "Ifc_rectangle_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.x_dim << ", " << o.y_dim << ")";
 	}
-}
+};
 
 struct Ifc_reference_geometry : Ifc {
 	Ifc_axis_2_placement *placement;
 
 	virtual ~Ifc_reference_geometry() {}
-}
+};
 
-struct Ifc_reference_vertex : IfcReferenceGeometry {
+struct Ifc_reference_vertex : Ifc_reference_geometry {
 	Ifc_vertex *vertex;
 
 	Ifc_reference_vertex() {
@@ -1529,7 +1529,7 @@ struct Ifc_reference_vertex : IfcReferenceGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_reference_vertex &o) {
 		return os << "Ifc_reference_vertex(" << o.placement << ", " << o.vertex << ")";
 	}
-}
+};
 
 struct Ifc_references_cost_document : Ifc {
 	Ifc_document_select *referenced_document;
@@ -1540,9 +1540,9 @@ struct Ifc_references_cost_document : Ifc {
 		entity = "Ifc_references_cost_document";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_references_cost_document &o) {
-		return os << "Ifc_references_cost_document(" << o.referenced_document << ", " << o.referencing_costs << ", " << o.referencing_modifiers << ")";
+		return os << "Ifc_references_cost_document(" << o.referenced_document << ", " << "vector(" << o.referencing_costs.size() << ")" << ", " << "vector(" << o.referencing_modifiers.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_representation : Ifc {
 	Ifc_representation_context *context_of_items;
@@ -1554,9 +1554,9 @@ struct Ifc_representation : Ifc {
 		entity = "Ifc_representation";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_representation &o) {
-		return os << "Ifc_representation(" << o.context_of_items << ", " << o.representation_identifier << ", " << o.representation_type << ", " << o.items << ")";
+		return os << "Ifc_representation(" << o.context_of_items << ", " << o.representation_identifier << ", " << o.representation_type << ", " << "vector(" << o.items.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_representation_context : Ifc {
 	Ifc_label context_identifier;
@@ -1568,11 +1568,11 @@ struct Ifc_representation_context : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_representation_context &o) {
 		return os << "Ifc_representation_context(" << o.context_identifier << ", " << o.context_type << ")";
 	}
-}
+};
 
 struct Ifc_representation_item : Ifc {
 	virtual ~Ifc_representation_item() {}
-}
+};
 
 struct Ifc_representation_map : Ifc {
 	Ifc_axis_2_placement *mapping_origin;
@@ -1584,7 +1584,7 @@ struct Ifc_representation_map : Ifc {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_representation_map &o) {
 		return os << "Ifc_representation_map(" << o.mapping_origin << ", " << o.mapped_representation << ")";
 	}
-}
+};
 
 struct Ifc_root : Ifc {
 	Ifc_globally_unique_id global_id;
@@ -1593,9 +1593,9 @@ struct Ifc_root : Ifc {
 	Ifc_text description;
 
 	virtual ~Ifc_root() {}
-}
+};
 
-struct Ifc_rounded_rectangle_profile_def : IfcProfileDef {
+struct Ifc_rounded_rectangle_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure x_dim;
 	Ifc_positive_length_measure y_dim;
@@ -1607,9 +1607,9 @@ struct Ifc_rounded_rectangle_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rounded_rectangle_profile_def &o) {
 		return os << "Ifc_rounded_rectangle_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.x_dim << ", " << o.y_dim << ", " << o.rounding_radius << ")";
 	}
-}
+};
 
-struct Ifc_s_i_unit : IfcNamedUnit {
+struct Ifc_s_i_unit : Ifc_named_unit {
 	Ifc_s_i_prefix prefix;
 	Ifc_s_i_unit_name name;
 
@@ -1619,7 +1619,7 @@ struct Ifc_s_i_unit : IfcNamedUnit {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_s_i_unit &o) {
 		return os << "Ifc_s_i_unit(" << o.dimensions << ", " << o.unit_type << ", " << o.prefix << ", " << o.name << ")";
 	}
-}
+};
 
 struct Ifc_shape_aspect : Ifc {
 	std::vector<Ifc_shape_representation *> shape_representations;
@@ -1632,22 +1632,22 @@ struct Ifc_shape_aspect : Ifc {
 		entity = "Ifc_shape_aspect";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_shape_aspect &o) {
-		return os << "Ifc_shape_aspect(" << o.shape_representations << ", " << o.name << ", " << o.description << ", " << o.product_definitional << ", " << o.part_of_product_definition_shape << ")";
+		return os << "Ifc_shape_aspect(" << "vector(" << o.shape_representations.size() << ")" << ", " << o.name << ", " << o.description << ", " << o.product_definitional << ", " << o.part_of_product_definition_shape << ")";
 	}
-}
+};
 
-struct Ifc_shape_representation : IfcRepresentation {
+struct Ifc_shape_representation : Ifc_representation {
 	Ifc_shape_representation() {
 		entity = "Ifc_shape_representation";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_shape_representation &o) {
-		return os << "Ifc_shape_representation(" << o.context_of_items << ", " << o.representation_identifier << ", " << o.representation_type << ", " << o.items << ")";
+		return os << "Ifc_shape_representation(" << o.context_of_items << ", " << o.representation_identifier << ", " << o.representation_type << ", " << "vector(" << o.items.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_simple_property : IfcProperty {
+struct Ifc_simple_property : Ifc_property {
 	virtual ~Ifc_simple_property() {}
-}
+};
 
 struct Ifc_surface_style : Ifc {
 	Ifc_label name;
@@ -1657,15 +1657,15 @@ struct Ifc_surface_style : Ifc {
 		entity = "Ifc_surface_style";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_style &o) {
-		return os << "Ifc_surface_style(" << o.name << ", " << o.properties << ")";
+		return os << "Ifc_surface_style(" << o.name << ", " << "vector(" << o.properties.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_surface_style_properties : Ifc {
 	Ifc_label usage_identifier;
 
 	virtual ~Ifc_surface_style_properties() {}
-}
+};
 
 struct Ifc_surface_style_usage : Ifc {
 	std::vector<Ifc_styled_item_select *> applied_to;
@@ -1676,9 +1676,9 @@ struct Ifc_surface_style_usage : Ifc {
 		entity = "Ifc_surface_style_usage";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_style_usage &o) {
-		return os << "Ifc_surface_style_usage(" << o.applied_to << ", " << o.style << ", " << o.side << ")";
+		return os << "Ifc_surface_style_usage(" << "vector(" << o.applied_to.size() << ")" << ", " << o.style << ", " << o.side << ")";
 	}
-}
+};
 
 struct Ifc_table : Ifc {
 	std::string name;
@@ -1688,9 +1688,9 @@ struct Ifc_table : Ifc {
 		entity = "Ifc_table";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_table &o) {
-		return os << "Ifc_table(" << o.name << ", " << o.rows << ")";
+		return os << "Ifc_table(" << o.name << ", " << "vector(" << o.rows.size() << ")" << ")";
 	}
-}
+};
 
 struct Ifc_table_row : Ifc {
 	std::vector<Ifc_measure_value *> row_cells;
@@ -1700,11 +1700,11 @@ struct Ifc_table_row : Ifc {
 		entity = "Ifc_table_row";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_table_row &o) {
-		return os << "Ifc_table_row(" << o.row_cells << ", " << o.is_heading << ")";
+		return os << "Ifc_table_row(" << "vector(" << o.row_cells.size() << ")" << ", " << o.is_heading << ")";
 	}
-}
+};
 
-struct Ifc_telecom_address : IfcAddress {
+struct Ifc_telecom_address : Ifc_address {
 	std::vector<Ifc_label *> telephone_numbers;
 	std::vector<Ifc_label *> facsimile_numbers;
 	Ifc_label *pager_number;
@@ -1715,11 +1715,11 @@ struct Ifc_telecom_address : IfcAddress {
 		entity = "Ifc_telecom_address";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_telecom_address &o) {
-		return os << "Ifc_telecom_address(" << o.purpose << ", " << o.description << ", " << o.user_defined_purpose << ", " << o.telephone_numbers << ", " << o.facsimile_numbers << ", " << o.pager_number << ", " << o.electronic_mail_addresses << ", " << o.w_w_w_home_page_u_r_l << ")";
+		return os << "Ifc_telecom_address(" << o.purpose << ", " << o.description << ", " << o.user_defined_purpose << ", " << "vector(" << o.telephone_numbers.size() << ")" << ", " << "vector(" << o.facsimile_numbers.size() << ")" << ", " << o.pager_number << ", " << "vector(" << o.electronic_mail_addresses.size() << ")" << ", " << o.w_w_w_home_page_u_r_l << ")";
 	}
-}
+};
 
-struct Ifc_thermal_material_properties : IfcMaterialProperties {
+struct Ifc_thermal_material_properties : Ifc_material_properties {
 	Ifc_specific_heat_capacity_measure specific_heat_capacity;
 	Ifc_thermodynamic_temperature_measure boiling_point;
 	Ifc_thermodynamic_temperature_measure freezing_point;
@@ -1731,13 +1731,13 @@ struct Ifc_thermal_material_properties : IfcMaterialProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_thermal_material_properties &o) {
 		return os << "Ifc_thermal_material_properties(" << o.material << ", " << o.specific_heat_capacity << ", " << o.boiling_point << ", " << o.freezing_point << ", " << o.thermal_conductivity << ")";
 	}
-}
+};
 
-struct Ifc_topological_representation_item : IfcRepresentationItem {
+struct Ifc_topological_representation_item : Ifc_representation_item {
 	virtual ~Ifc_topological_representation_item() {}
-}
+};
 
-struct Ifc_trapezium_profile_def : IfcProfileDef {
+struct Ifc_trapezium_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure bottom_x_dim;
 	Ifc_positive_length_measure top_x_dim;
@@ -1750,7 +1750,7 @@ struct Ifc_trapezium_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_trapezium_profile_def &o) {
 		return os << "Ifc_trapezium_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.bottom_x_dim << ", " << o.top_x_dim << ", " << o.y_dim << ", " << o.top_x_offset << ")";
 	}
-}
+};
 
 struct Ifc_unit_assignment : Ifc {
 	std::vector<Ifc_unit *> units;
@@ -1759,20 +1759,20 @@ struct Ifc_unit_assignment : Ifc {
 		entity = "Ifc_unit_assignment";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_unit_assignment &o) {
-		return os << "Ifc_unit_assignment(" << o.units << ")";
+		return os << "Ifc_unit_assignment(" << "vector(" << o.units.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_vertex : IfcTopologicalRepresentationItem {
+struct Ifc_vertex : Ifc_topological_representation_item {
 	Ifc_vertex() {
 		entity = "Ifc_vertex";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_vertex &o) {
 		return os << "Ifc_vertex(" << ")";
 	}
-}
+};
 
-struct Ifc_vertex_point : IfcVertex {
+struct Ifc_vertex_point : Ifc_vertex {
 	Ifc_point *vertex_geometry;
 
 	Ifc_vertex_point() {
@@ -1781,7 +1781,7 @@ struct Ifc_vertex_point : IfcVertex {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_vertex_point &o) {
 		return os << "Ifc_vertex_point(" << o.vertex_geometry << ")";
 	}
-}
+};
 
 struct Ifc_virtual_grid_intersection : Ifc {
 	std::vector<Ifc_grid_axis *> intersecting_axes;
@@ -1791,11 +1791,11 @@ struct Ifc_virtual_grid_intersection : Ifc {
 		entity = "Ifc_virtual_grid_intersection";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_virtual_grid_intersection &o) {
-		return os << "Ifc_virtual_grid_intersection(" << o.intersecting_axes << ", " << o.offset_distances << ")";
+		return os << "Ifc_virtual_grid_intersection(" << "vector(" << o.intersecting_axes.size() << ")" << ", " << "vector(" << o.offset_distances.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_arbitrary_closed_profile_def : IfcProfileDef {
+struct Ifc_arbitrary_closed_profile_def : Ifc_profile_def {
 	Ifc_curve *outer_curve;
 
 	Ifc_arbitrary_closed_profile_def() {
@@ -1804,9 +1804,9 @@ struct Ifc_arbitrary_closed_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_arbitrary_closed_profile_def &o) {
 		return os << "Ifc_arbitrary_closed_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.outer_curve << ")";
 	}
-}
+};
 
-struct Ifc_arbitrary_open_profile_def : IfcProfileDef {
+struct Ifc_arbitrary_open_profile_def : Ifc_profile_def {
 	Ifc_bounded_curve *curve;
 
 	Ifc_arbitrary_open_profile_def() {
@@ -1815,20 +1815,20 @@ struct Ifc_arbitrary_open_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_arbitrary_open_profile_def &o) {
 		return os << "Ifc_arbitrary_open_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.curve << ")";
 	}
-}
+};
 
-struct Ifc_arbitrary_profile_def_with_voids : IfcArbitraryClosedProfileDef {
+struct Ifc_arbitrary_profile_def_with_voids : Ifc_arbitrary_closed_profile_def {
 	std::vector<Ifc_curve *> inner_curves;
 
 	Ifc_arbitrary_profile_def_with_voids() {
 		entity = "Ifc_arbitrary_profile_def_with_voids";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_arbitrary_profile_def_with_voids &o) {
-		return os << "Ifc_arbitrary_profile_def_with_voids(" << o.profile_type << ", " << o.profile_name << ", " << o.outer_curve << ", " << o.inner_curves << ")";
+		return os << "Ifc_arbitrary_profile_def_with_voids(" << o.profile_type << ", " << o.profile_name << ", " << o.outer_curve << ", " << "vector(" << o.inner_curves.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_circle_profile_def : IfcProfileDef {
+struct Ifc_circle_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure radius;
 
@@ -1838,9 +1838,9 @@ struct Ifc_circle_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_circle_profile_def &o) {
 		return os << "Ifc_circle_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.radius << ")";
 	}
-}
+};
 
-struct Ifc_classification_reference : IfcExternalReference {
+struct Ifc_classification_reference : Ifc_external_reference {
 	Ifc_classification *referenced_source;
 
 	Ifc_classification_reference() {
@@ -1849,9 +1849,9 @@ struct Ifc_classification_reference : IfcExternalReference {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_classification_reference &o) {
 		return os << "Ifc_classification_reference(" << o.location << ", " << o.item_reference << ", " << o.name << ", " << o.referenced_source << ")";
 	}
-}
+};
 
-struct Ifc_complex_property : IfcProperty {
+struct Ifc_complex_property : Ifc_property {
 	Ifc_identifier usage_name;
 	std::vector<Ifc_property *> has_properties;
 
@@ -1859,11 +1859,11 @@ struct Ifc_complex_property : IfcProperty {
 		entity = "Ifc_complex_property";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_complex_property &o) {
-		return os << "Ifc_complex_property(" << o.name << ", " << o.description << ", " << o.usage_name << ", " << o.has_properties << ")";
+		return os << "Ifc_complex_property(" << o.name << ", " << o.description << ", " << o.usage_name << ", " << "vector(" << o.has_properties.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_composite_profile_def : IfcProfileDef {
+struct Ifc_composite_profile_def : Ifc_profile_def {
 	std::vector<Ifc_profile_def *> profiles;
 	Ifc_label label;
 
@@ -1871,22 +1871,22 @@ struct Ifc_composite_profile_def : IfcProfileDef {
 		entity = "Ifc_composite_profile_def";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_composite_profile_def &o) {
-		return os << "Ifc_composite_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.profiles << ", " << o.label << ")";
+		return os << "Ifc_composite_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << "vector(" << o.profiles.size() << ")" << ", " << o.label << ")";
 	}
-}
+};
 
-struct Ifc_connected_face_set : IfcTopologicalRepresentationItem {
+struct Ifc_connected_face_set : Ifc_topological_representation_item {
 	std::vector<Ifc_face *> cfs_faces;
 
 	Ifc_connected_face_set() {
 		entity = "Ifc_connected_face_set";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connected_face_set &o) {
-		return os << "Ifc_connected_face_set(" << o.cfs_faces << ")";
+		return os << "Ifc_connected_face_set(" << "vector(" << o.cfs_faces.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_connection_curve_geometry : IfcConnectionGeometry {
+struct Ifc_connection_curve_geometry : Ifc_connection_geometry {
 	Ifc_bounded_curve *curve_on_relating_element;
 	Ifc_bounded_curve *curve_on_related_element;
 
@@ -1896,9 +1896,9 @@ struct Ifc_connection_curve_geometry : IfcConnectionGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_connection_curve_geometry &o) {
 		return os << "Ifc_connection_curve_geometry(" << o.curve_on_relating_element << ", " << o.curve_on_related_element << ")";
 	}
-}
+};
 
-struct Ifc_context_dependent_unit : IfcNamedUnit {
+struct Ifc_context_dependent_unit : Ifc_named_unit {
 	Ifc_label name;
 
 	Ifc_context_dependent_unit() {
@@ -1907,9 +1907,9 @@ struct Ifc_context_dependent_unit : IfcNamedUnit {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_context_dependent_unit &o) {
 		return os << "Ifc_context_dependent_unit(" << o.dimensions << ", " << o.unit_type << ", " << o.name << ")";
 	}
-}
+};
 
-struct Ifc_conversion_based_unit : IfcNamedUnit {
+struct Ifc_conversion_based_unit : Ifc_named_unit {
 	Ifc_label name;
 	Ifc_measure_with_unit *conversion_factor;
 
@@ -1919,9 +1919,9 @@ struct Ifc_conversion_based_unit : IfcNamedUnit {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_conversion_based_unit &o) {
 		return os << "Ifc_conversion_based_unit(" << o.dimensions << ", " << o.unit_type << ", " << o.name << ", " << o.conversion_factor << ")";
 	}
-}
+};
 
-struct Ifc_derived_profile_def : IfcProfileDef {
+struct Ifc_derived_profile_def : Ifc_profile_def {
 	Ifc_profile_def *parent_profile;
 	Ifc_cartesian_transformation_operator_2_d *operator;
 	Ifc_label label;
@@ -1932,9 +1932,9 @@ struct Ifc_derived_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_derived_profile_def &o) {
 		return os << "Ifc_derived_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.parent_profile << ", " << o.operator << ", " << o.label << ")";
 	}
-}
+};
 
-struct Ifc_directional_light_source : IfcPresentationLightSource {
+struct Ifc_directional_light_source : Ifc_presentation_light_source {
 	Ifc_direction *direction;
 
 	Ifc_directional_light_source() {
@@ -1943,18 +1943,18 @@ struct Ifc_directional_light_source : IfcPresentationLightSource {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_directional_light_source &o) {
 		return os << "Ifc_directional_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.direction << ")";
 	}
-}
+};
 
-struct Ifc_document_reference : IfcExternalReference {
+struct Ifc_document_reference : Ifc_external_reference {
 	Ifc_document_reference() {
 		entity = "Ifc_document_reference";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_document_reference &o) {
 		return os << "Ifc_document_reference(" << o.location << ", " << o.item_reference << ", " << o.name << ")";
 	}
-}
+};
 
-struct Ifc_edge : IfcTopologicalRepresentationItem {
+struct Ifc_edge : Ifc_topological_representation_item {
 	Ifc_vertex *edge_start;
 	Ifc_vertex *edge_end;
 
@@ -1964,9 +1964,9 @@ struct Ifc_edge : IfcTopologicalRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_edge &o) {
 		return os << "Ifc_edge(" << o.edge_start << ", " << o.edge_end << ")";
 	}
-}
+};
 
-struct Ifc_edge_curve : IfcEdge {
+struct Ifc_edge_curve : Ifc_edge {
 	Ifc_curve *edge_geometry;
 	bool same_sense;
 
@@ -1976,9 +1976,9 @@ struct Ifc_edge_curve : IfcEdge {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_edge_curve &o) {
 		return os << "Ifc_edge_curve(" << o.edge_start << ", " << o.edge_end << ", " << o.edge_geometry << ", " << o.same_sense << ")";
 	}
-}
+};
 
-struct Ifc_ellipse_profile_def : IfcProfileDef {
+struct Ifc_ellipse_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure semi_axis_1;
 	Ifc_positive_length_measure semi_axis_2;
@@ -1989,9 +1989,9 @@ struct Ifc_ellipse_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_ellipse_profile_def &o) {
 		return os << "Ifc_ellipse_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.semi_axis_1 << ", " << o.semi_axis_2 << ")";
 	}
-}
+};
 
-struct Ifc_extended_material_properties : IfcMaterialProperties {
+struct Ifc_extended_material_properties : Ifc_material_properties {
 	std::vector<Ifc_property *> extended_properties;
 	Ifc_text description;
 	Ifc_label name;
@@ -2000,22 +2000,22 @@ struct Ifc_extended_material_properties : IfcMaterialProperties {
 		entity = "Ifc_extended_material_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_extended_material_properties &o) {
-		return os << "Ifc_extended_material_properties(" << o.material << ", " << o.extended_properties << ", " << o.description << ", " << o.name << ")";
+		return os << "Ifc_extended_material_properties(" << o.material << ", " << "vector(" << o.extended_properties.size() << ")" << ", " << o.description << ", " << o.name << ")";
 	}
-}
+};
 
-struct Ifc_face : IfcTopologicalRepresentationItem {
+struct Ifc_face : Ifc_topological_representation_item {
 	std::vector<Ifc_face_bound *> bounds;
 
 	Ifc_face() {
 		entity = "Ifc_face";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_face &o) {
-		return os << "Ifc_face(" << o.bounds << ")";
+		return os << "Ifc_face(" << "vector(" << o.bounds.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_face_bound : IfcTopologicalRepresentationItem {
+struct Ifc_face_bound : Ifc_topological_representation_item {
 	Ifc_loop *bound;
 	bool orientation;
 
@@ -2025,18 +2025,18 @@ struct Ifc_face_bound : IfcTopologicalRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_face_bound &o) {
 		return os << "Ifc_face_bound(" << o.bound << ", " << o.orientation << ")";
 	}
-}
+};
 
-struct Ifc_face_outer_bound : IfcFaceBound {
+struct Ifc_face_outer_bound : Ifc_face_bound {
 	Ifc_face_outer_bound() {
 		entity = "Ifc_face_outer_bound";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_face_outer_bound &o) {
 		return os << "Ifc_face_outer_bound(" << o.bound << ", " << o.orientation << ")";
 	}
-}
+};
 
-struct Ifc_face_surface : IfcFace {
+struct Ifc_face_surface : Ifc_face {
 	Ifc_surface *face_surface;
 	bool same_sense;
 
@@ -2044,11 +2044,11 @@ struct Ifc_face_surface : IfcFace {
 		entity = "Ifc_face_surface";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_face_surface &o) {
-		return os << "Ifc_face_surface(" << o.bounds << ", " << o.face_surface << ", " << o.same_sense << ")";
+		return os << "Ifc_face_surface(" << "vector(" << o.bounds.size() << ")" << ", " << o.face_surface << ", " << o.same_sense << ")";
 	}
-}
+};
 
-struct Ifc_general_material_properties : IfcMaterialProperties {
+struct Ifc_general_material_properties : Ifc_material_properties {
 	Ifc_molecular_weight_measure molecular_weight;
 	Ifc_normalised_ratio_measure porosity;
 	Ifc_mass_density_measure mass_density;
@@ -2059,9 +2059,9 @@ struct Ifc_general_material_properties : IfcMaterialProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_general_material_properties &o) {
 		return os << "Ifc_general_material_properties(" << o.material << ", " << o.molecular_weight << ", " << o.porosity << ", " << o.mass_density << ")";
 	}
-}
+};
 
-struct Ifc_geometric_representation_context : IfcRepresentationContext {
+struct Ifc_geometric_representation_context : Ifc_representation_context {
 	Ifc_dimension_count coordinate_space_dimension;
 	double precision;
 	Ifc_axis_2_placement *world_coordinate_system;
@@ -2073,24 +2073,24 @@ struct Ifc_geometric_representation_context : IfcRepresentationContext {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_geometric_representation_context &o) {
 		return os << "Ifc_geometric_representation_context(" << o.context_identifier << ", " << o.context_type << ", " << o.coordinate_space_dimension << ", " << o.precision << ", " << o.world_coordinate_system << ", " << o.true_north << ")";
 	}
-}
+};
 
-struct Ifc_geometric_representation_item : IfcRepresentationItem {
+struct Ifc_geometric_representation_item : Ifc_representation_item {
 	virtual ~Ifc_geometric_representation_item() {}
-}
+};
 
-struct Ifc_geometric_set : IfcGeometricRepresentationItem {
+struct Ifc_geometric_set : Ifc_geometric_representation_item {
 	std::vector<Ifc_geometric_set_select *> elements;
 
 	Ifc_geometric_set() {
 		entity = "Ifc_geometric_set";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_geometric_set &o) {
-		return os << "Ifc_geometric_set(" << o.elements << ")";
+		return os << "Ifc_geometric_set(" << "vector(" << o.elements.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_grid_placement : IfcObjectPlacement {
+struct Ifc_grid_placement : Ifc_object_placement {
 	Ifc_virtual_grid_intersection *placement_location;
 	Ifc_virtual_grid_intersection *placement_ref_direction;
 
@@ -2100,9 +2100,9 @@ struct Ifc_grid_placement : IfcObjectPlacement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_grid_placement &o) {
 		return os << "Ifc_grid_placement(" << o.placement_location << ", " << o.placement_ref_direction << ")";
 	}
-}
+};
 
-struct Ifc_half_space_solid : IfcGeometricRepresentationItem {
+struct Ifc_half_space_solid : Ifc_geometric_representation_item {
 	Ifc_surface *base_surface;
 	bool agreement_flag;
 
@@ -2112,9 +2112,9 @@ struct Ifc_half_space_solid : IfcGeometricRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_half_space_solid &o) {
 		return os << "Ifc_half_space_solid(" << o.base_surface << ", " << o.agreement_flag << ")";
 	}
-}
+};
 
-struct Ifc_hygroscopic_material_properties : IfcMaterialProperties {
+struct Ifc_hygroscopic_material_properties : Ifc_material_properties {
 	Ifc_positive_ratio_measure upper_vapor_resistance_factor;
 	Ifc_positive_ratio_measure lower_vapor_resistance_factor;
 	Ifc_isothermal_moisture_capacity_measure isothermal_moisture_capacity;
@@ -2127,9 +2127,9 @@ struct Ifc_hygroscopic_material_properties : IfcMaterialProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_hygroscopic_material_properties &o) {
 		return os << "Ifc_hygroscopic_material_properties(" << o.material << ", " << o.upper_vapor_resistance_factor << ", " << o.lower_vapor_resistance_factor << ", " << o.isothermal_moisture_capacity << ", " << o.vapor_permeability << ", " << o.moisture_diffusivity << ")";
 	}
-}
+};
 
-struct Ifc_ishape_profile_def : IfcProfileDef {
+struct Ifc_ishape_profile_def : Ifc_profile_def {
 	Ifc_axis_2_placement_2_d *position;
 	Ifc_positive_length_measure overall_width;
 	Ifc_positive_length_measure overall_depth;
@@ -2143,9 +2143,9 @@ struct Ifc_ishape_profile_def : IfcProfileDef {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_ishape_profile_def &o) {
 		return os << "Ifc_ishape_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.position << ", " << o.overall_width << ", " << o.overall_depth << ", " << o.web_thickness << ", " << o.flange_thickness << ", " << o.fillet_radius << ")";
 	}
-}
+};
 
-struct Ifc_local_placement : IfcObjectPlacement {
+struct Ifc_local_placement : Ifc_object_placement {
 	Ifc_object_placement *placement_rel_to;
 	Ifc_axis_2_placement *relative_placement;
 
@@ -2155,18 +2155,18 @@ struct Ifc_local_placement : IfcObjectPlacement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_local_placement &o) {
 		return os << "Ifc_local_placement(" << o.placement_rel_to << ", " << o.relative_placement << ")";
 	}
-}
+};
 
-struct Ifc_loop : IfcTopologicalRepresentationItem {
+struct Ifc_loop : Ifc_topological_representation_item {
 	Ifc_loop() {
 		entity = "Ifc_loop";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_loop &o) {
 		return os << "Ifc_loop(" << ")";
 	}
-}
+};
 
-struct Ifc_mapped_item : IfcRepresentationItem {
+struct Ifc_mapped_item : Ifc_representation_item {
 	Ifc_representation_map *mapping_source;
 	Ifc_cartesian_transformation_operator *mapping_target;
 
@@ -2176,24 +2176,24 @@ struct Ifc_mapped_item : IfcRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_mapped_item &o) {
 		return os << "Ifc_mapped_item(" << o.mapping_source << ", " << o.mapping_target << ")";
 	}
-}
+};
 
-struct Ifc_object : IfcRoot {
+struct Ifc_object : Ifc_root {
 	Ifc_label object_type;
 
 	virtual ~Ifc_object() {}
-}
+};
 
-struct Ifc_open_shell : IfcConnectedFaceSet {
+struct Ifc_open_shell : Ifc_connected_face_set {
 	Ifc_open_shell() {
 		entity = "Ifc_open_shell";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_open_shell &o) {
-		return os << "Ifc_open_shell(" << o.cfs_faces << ")";
+		return os << "Ifc_open_shell(" << "vector(" << o.cfs_faces.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_oriented_edge : IfcEdge {
+struct Ifc_oriented_edge : Ifc_edge {
 	Ifc_edge *edge_element;
 	bool orientation;
 
@@ -2203,30 +2203,30 @@ struct Ifc_oriented_edge : IfcEdge {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_oriented_edge &o) {
 		return os << "Ifc_oriented_edge(" << o.edge_start << ", " << o.edge_end << ", " << o.edge_element << ", " << o.orientation << ")";
 	}
-}
+};
 
-struct Ifc_path : IfcTopologicalRepresentationItem {
+struct Ifc_path : Ifc_topological_representation_item {
 	std::vector<Ifc_oriented_edge *> edge_list;
 
 	Ifc_path() {
 		entity = "Ifc_path";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_path &o) {
-		return os << "Ifc_path(" << o.edge_list << ")";
+		return os << "Ifc_path(" << "vector(" << o.edge_list.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_placement : IfcGeometricRepresentationItem {
+struct Ifc_placement : Ifc_geometric_representation_item {
 	Ifc_cartesian_point *location;
 
 	virtual ~Ifc_placement() {}
-}
+};
 
-struct Ifc_point : IfcGeometricRepresentationItem {
+struct Ifc_point : Ifc_geometric_representation_item {
 	virtual ~Ifc_point() {}
-}
+};
 
-struct Ifc_point_light_source : IfcPresentationLightSource {
+struct Ifc_point_light_source : Ifc_presentation_light_source {
 	Ifc_cartesian_point *location;
 	std::vector<double> attenuation;
 
@@ -2234,22 +2234,22 @@ struct Ifc_point_light_source : IfcPresentationLightSource {
 		entity = "Ifc_point_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_point_light_source &o) {
-		return os << "Ifc_point_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << o.attenuation << ")";
+		return os << "Ifc_point_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_poly_loop : IfcLoop {
+struct Ifc_poly_loop : Ifc_loop {
 	std::vector<Ifc_cartesian_point *> polygon;
 
 	Ifc_poly_loop() {
 		entity = "Ifc_poly_loop";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_poly_loop &o) {
-		return os << "Ifc_poly_loop(" << o.polygon << ")";
+		return os << "Ifc_poly_loop(" << "vector(" << o.polygon.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_polygonal_bounded_half_space : IfcHalfSpaceSolid {
+struct Ifc_polygonal_bounded_half_space : Ifc_half_space_solid {
 	Ifc_axis_2_placement_3_d *position;
 	Ifc_polyline *polygonal_boundary;
 
@@ -2259,31 +2259,31 @@ struct Ifc_polygonal_bounded_half_space : IfcHalfSpaceSolid {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_polygonal_bounded_half_space &o) {
 		return os << "Ifc_polygonal_bounded_half_space(" << o.base_surface << ", " << o.agreement_flag << ", " << o.position << ", " << o.polygonal_boundary << ")";
 	}
-}
+};
 
-struct Ifc_process : IfcObject {
+struct Ifc_process : Ifc_object {
 	Ifc_measure_with_unit *productivity;
 
 	virtual ~Ifc_process() {}
-}
+};
 
-struct Ifc_product : IfcObject {
+struct Ifc_product : Ifc_object {
 	Ifc_object_placement *object_placement;
 	Ifc_product_representation *representation;
 
 	virtual ~Ifc_product() {}
-}
+};
 
-struct Ifc_product_definition_shape : IfcProductRepresentation {
+struct Ifc_product_definition_shape : Ifc_product_representation {
 	Ifc_product_definition_shape() {
 		entity = "Ifc_product_definition_shape";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_product_definition_shape &o) {
-		return os << "Ifc_product_definition_shape(" << o.name << ", " << o.description << ", " << o.representations << ")";
+		return os << "Ifc_product_definition_shape(" << o.name << ", " << o.description << ", " << "vector(" << o.representations.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_project : IfcObject {
+struct Ifc_project : Ifc_object {
 	Ifc_identifier long_name;
 	Ifc_label phase;
 	std::vector<Ifc_representation_context *> representation_contexts;
@@ -2293,11 +2293,11 @@ struct Ifc_project : IfcObject {
 		entity = "Ifc_project";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_project &o) {
-		return os << "Ifc_project(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.long_name << ", " << o.phase << ", " << o.representation_contexts << ", " << o.units_in_context << ")";
+		return os << "Ifc_project(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.long_name << ", " << o.phase << ", " << "vector(" << o.representation_contexts.size() << ")" << ", " << o.units_in_context << ")";
 	}
-}
+};
 
-struct Ifc_property_bounded_value : IfcSimpleProperty {
+struct Ifc_property_bounded_value : Ifc_simple_property {
 	Ifc_value *upper_bound_value;
 	Ifc_value *lower_bound_value;
 	Ifc_unit *unit;
@@ -2308,13 +2308,13 @@ struct Ifc_property_bounded_value : IfcSimpleProperty {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_bounded_value &o) {
 		return os << "Ifc_property_bounded_value(" << o.name << ", " << o.description << ", " << o.upper_bound_value << ", " << o.lower_bound_value << ", " << o.unit << ")";
 	}
-}
+};
 
-struct Ifc_property_definition : IfcRoot {
+struct Ifc_property_definition : Ifc_root {
 	virtual ~Ifc_property_definition() {}
-}
+};
 
-struct Ifc_property_enumerated_value : IfcSimpleProperty {
+struct Ifc_property_enumerated_value : Ifc_simple_property {
 	std::vector<Ifc_value *> enumeration_values;
 	Ifc_property_enumeration *enumeration_reference;
 
@@ -2322,11 +2322,11 @@ struct Ifc_property_enumerated_value : IfcSimpleProperty {
 		entity = "Ifc_property_enumerated_value";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_enumerated_value &o) {
-		return os << "Ifc_property_enumerated_value(" << o.name << ", " << o.description << ", " << o.enumeration_values << ", " << o.enumeration_reference << ")";
+		return os << "Ifc_property_enumerated_value(" << o.name << ", " << o.description << ", " << "vector(" << o.enumeration_values.size() << ")" << ", " << o.enumeration_reference << ")";
 	}
-}
+};
 
-struct Ifc_property_reference_value : IfcSimpleProperty {
+struct Ifc_property_reference_value : Ifc_simple_property {
 	Ifc_label usage_name;
 	Ifc_object_reference_select *property_reference;
 
@@ -2336,13 +2336,13 @@ struct Ifc_property_reference_value : IfcSimpleProperty {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_reference_value &o) {
 		return os << "Ifc_property_reference_value(" << o.name << ", " << o.description << ", " << o.usage_name << ", " << o.property_reference << ")";
 	}
-}
+};
 
-struct Ifc_property_set_definition : IfcPropertyDefinition {
+struct Ifc_property_set_definition : Ifc_property_definition {
 	virtual ~Ifc_property_set_definition() {}
-}
+};
 
-struct Ifc_property_single_value : IfcSimpleProperty {
+struct Ifc_property_single_value : Ifc_simple_property {
 	Ifc_value *nominal_value;
 	Ifc_unit *unit;
 
@@ -2352,9 +2352,9 @@ struct Ifc_property_single_value : IfcSimpleProperty {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_single_value &o) {
 		return os << "Ifc_property_single_value(" << o.name << ", " << o.description << ", " << o.nominal_value << ", " << o.unit << ")";
 	}
-}
+};
 
-struct Ifc_property_table_value : IfcSimpleProperty {
+struct Ifc_property_table_value : Ifc_simple_property {
 	std::vector<Ifc_value *> defining_values;
 	std::vector<Ifc_value *> defined_values;
 	Ifc_text expression;
@@ -2365,11 +2365,11 @@ struct Ifc_property_table_value : IfcSimpleProperty {
 		entity = "Ifc_property_table_value";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_table_value &o) {
-		return os << "Ifc_property_table_value(" << o.name << ", " << o.description << ", " << o.defining_values << ", " << o.defined_values << ", " << o.expression << ", " << o.defining_unit << ", " << o.defined_unit << ")";
+		return os << "Ifc_property_table_value(" << o.name << ", " << o.description << ", " << "vector(" << o.defining_values.size() << ")" << ", " << "vector(" << o.defined_values.size() << ")" << ", " << o.expression << ", " << o.defining_unit << ", " << o.defined_unit << ")";
 	}
-}
+};
 
-struct Ifc_proxy : IfcProduct {
+struct Ifc_proxy : Ifc_product {
 	Ifc_object_type_enum proxy_type;
 	Ifc_label tag;
 
@@ -2379,9 +2379,9 @@ struct Ifc_proxy : IfcProduct {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_proxy &o) {
 		return os << "Ifc_proxy(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.proxy_type << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_reference_edge : IfcReferenceGeometry {
+struct Ifc_reference_edge : Ifc_reference_geometry {
 	Ifc_edge *edge;
 
 	Ifc_reference_edge() {
@@ -2390,9 +2390,9 @@ struct Ifc_reference_edge : IfcReferenceGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_reference_edge &o) {
 		return os << "Ifc_reference_edge(" << o.placement << ", " << o.edge << ")";
 	}
-}
+};
 
-struct Ifc_reference_face : IfcReferenceGeometry {
+struct Ifc_reference_face : Ifc_reference_geometry {
 	Ifc_face *face;
 
 	Ifc_reference_face() {
@@ -2401,20 +2401,20 @@ struct Ifc_reference_face : IfcReferenceGeometry {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_reference_face &o) {
 		return os << "Ifc_reference_face(" << o.placement << ", " << o.face << ")";
 	}
-}
+};
 
-struct Ifc_relationship : IfcRoot {
+struct Ifc_relationship : Ifc_root {
 	virtual ~Ifc_relationship() {}
-}
+};
 
-struct Ifc_resource : IfcObject {
+struct Ifc_resource : Ifc_object {
 	Ifc_resource_consumption_enum resource_consumption;
 	Ifc_measure_with_unit *base_unit;
 
 	virtual ~Ifc_resource() {}
-}
+};
 
-struct Ifc_sectioned_spine : IfcGeometricRepresentationItem {
+struct Ifc_sectioned_spine : Ifc_geometric_representation_item {
 	Ifc_composite_curve *spine_curve;
 	std::vector<Ifc_profile_def *> cross_sections;
 	std::vector<Ifc_axis_2_placement_3_d *> cross_section_positions;
@@ -2423,26 +2423,26 @@ struct Ifc_sectioned_spine : IfcGeometricRepresentationItem {
 		entity = "Ifc_sectioned_spine";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_sectioned_spine &o) {
-		return os << "Ifc_sectioned_spine(" << o.spine_curve << ", " << o.cross_sections << ", " << o.cross_section_positions << ")";
+		return os << "Ifc_sectioned_spine(" << o.spine_curve << ", " << "vector(" << o.cross_sections.size() << ")" << ", " << "vector(" << o.cross_section_positions.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_shell_based_surface_model : IfcGeometricRepresentationItem {
+struct Ifc_shell_based_surface_model : Ifc_geometric_representation_item {
 	std::vector<Ifc_shell *> sbsm_boundary;
 
 	Ifc_shell_based_surface_model() {
 		entity = "Ifc_shell_based_surface_model";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_shell_based_surface_model &o) {
-		return os << "Ifc_shell_based_surface_model(" << o.sbsm_boundary << ")";
+		return os << "Ifc_shell_based_surface_model(" << "vector(" << o.sbsm_boundary.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_solid_model : IfcGeometricRepresentationItem {
+struct Ifc_solid_model : Ifc_geometric_representation_item {
 	virtual ~Ifc_solid_model() {}
-}
+};
 
-struct Ifc_space_thermal_load : IfcPropertySetDefinition {
+struct Ifc_space_thermal_load : Ifc_property_set_definition {
 	Ifc_positive_ratio_measure applicable_value_ratio;
 	Ifc_thermal_load_type_enum thermal_load_source;
 	Ifc_requirement_or_criteria_enum requirement_or_criteria;
@@ -2458,16 +2458,16 @@ struct Ifc_space_thermal_load : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_space_thermal_load &o) {
 		return os << "Ifc_space_thermal_load(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_value_ratio << ", " << o.thermal_load_source << ", " << o.requirement_or_criteria << ", " << o.constant_load << ", " << o.loss_or_gain << ", " << o.source_description << ", " << o.maximum_value << ", " << o.minimum_value << ")";
 	}
-}
+};
 
-struct Ifc_spatial_structure_element : IfcProduct {
+struct Ifc_spatial_structure_element : Ifc_product {
 	Ifc_identifier long_name;
 	Ifc_element_composition_enum composition_type;
 
 	virtual ~Ifc_spatial_structure_element() {}
-}
+};
 
-struct Ifc_spot_light_source : IfcPointLightSource {
+struct Ifc_spot_light_source : Ifc_point_light_source {
 	Ifc_positive_plane_angle_measure spread_angle;
 	Ifc_positive_plane_angle_measure cut_off_angle;
 	Ifc_positive_length_measure radius;
@@ -2477,11 +2477,11 @@ struct Ifc_spot_light_source : IfcPointLightSource {
 		entity = "Ifc_spot_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_spot_light_source &o) {
-		return os << "Ifc_spot_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << o.attenuation << ", " << o.spread_angle << ", " << o.cut_off_angle << ", " << o.radius << ", " << o.direction << ")";
+		return os << "Ifc_spot_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ", " << o.spread_angle << ", " << o.cut_off_angle << ", " << o.radius << ", " << o.direction << ")";
 	}
-}
+};
 
-struct Ifc_sub_contract_resource : IfcResource {
+struct Ifc_sub_contract_resource : Ifc_resource {
 	Ifc_identifier sub_contract_resource_i_d;
 	Ifc_actor_select *sub_contractor;
 	Ifc_text job_description;
@@ -2492,13 +2492,13 @@ struct Ifc_sub_contract_resource : IfcResource {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_sub_contract_resource &o) {
 		return os << "Ifc_sub_contract_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ", " << o.sub_contract_resource_i_d << ", " << o.sub_contractor << ", " << o.job_description << ")";
 	}
-}
+};
 
-struct Ifc_surface : IfcGeometricRepresentationItem {
+struct Ifc_surface : Ifc_geometric_representation_item {
 	virtual ~Ifc_surface() {}
-}
+};
 
-struct Ifc_surface_extended_properties : IfcSurfaceStyleProperties {
+struct Ifc_surface_extended_properties : Ifc_surface_style_properties {
 	std::vector<Ifc_property *> extended_properties;
 	Ifc_text description;
 	Ifc_label name;
@@ -2507,11 +2507,11 @@ struct Ifc_surface_extended_properties : IfcSurfaceStyleProperties {
 		entity = "Ifc_surface_extended_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_extended_properties &o) {
-		return os << "Ifc_surface_extended_properties(" << o.usage_identifier << ", " << o.extended_properties << ", " << o.description << ", " << o.name << ")";
+		return os << "Ifc_surface_extended_properties(" << o.usage_identifier << ", " << "vector(" << o.extended_properties.size() << ")" << ", " << o.description << ", " << o.name << ")";
 	}
-}
+};
 
-struct Ifc_surface_shading_properties : IfcSurfaceStyleProperties {
+struct Ifc_surface_shading_properties : Ifc_surface_style_properties {
 	Ifc_color_r_g_b ambient_color;
 
 	Ifc_surface_shading_properties() {
@@ -2520,23 +2520,23 @@ struct Ifc_surface_shading_properties : IfcSurfaceStyleProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_shading_properties &o) {
 		return os << "Ifc_surface_shading_properties(" << o.usage_identifier << ", " << o.ambient_color << ")";
 	}
-}
+};
 
-struct Ifc_swept_area_solid : IfcSolidModel {
+struct Ifc_swept_area_solid : Ifc_solid_model {
 	Ifc_profile_def *swept_area;
 	Ifc_axis_2_placement_3_d *position;
 
 	virtual ~Ifc_swept_area_solid() {}
-}
+};
 
-struct Ifc_swept_surface : IfcSurface {
+struct Ifc_swept_surface : Ifc_surface {
 	Ifc_profile_def *swept_curve;
 	Ifc_axis_2_placement_3_d *position;
 
 	virtual ~Ifc_swept_surface() {}
-}
+};
 
-struct Ifc_task : IfcProcess {
+struct Ifc_task : Ifc_process {
 	Ifc_identifier task_id;
 	std::vector<Ifc_label> w_b_s_code;
 	std::vector<Ifc_label> w_b_s_source;
@@ -2552,11 +2552,11 @@ struct Ifc_task : IfcProcess {
 		entity = "Ifc_task";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_task &o) {
-		return os << "Ifc_task(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.productivity << ", " << o.task_id << ", " << o.w_b_s_code << ", " << o.w_b_s_source << ", " << o.status << ", " << o.milestones << ", " << o.work_method << ", " << o.in_place_quantity << ", " << o.estimated_quantity << ", " << o.budget_quantity << ", " << o.is_root_task << ")";
+		return os << "Ifc_task(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.productivity << ", " << o.task_id << ", " << "vector(" << o.w_b_s_code.size() << ")" << ", " << "vector(" << o.w_b_s_source.size() << ")" << ", " << o.status << ", " << "vector(" << o.milestones.size() << ")" << ", " << o.work_method << ", " << o.in_place_quantity << ", " << o.estimated_quantity << ", " << o.budget_quantity << ", " << o.is_root_task << ")";
 	}
-}
+};
 
-struct Ifc_type_object : IfcPropertyDefinition {
+struct Ifc_type_object : Ifc_property_definition {
 	Ifc_label applicable_occurrence;
 	std::vector<Ifc_property_set_definition *> has_property_sets;
 
@@ -2564,11 +2564,11 @@ struct Ifc_type_object : IfcPropertyDefinition {
 		entity = "Ifc_type_object";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_type_object &o) {
-		return os << "Ifc_type_object(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << o.has_property_sets << ")";
+		return os << "Ifc_type_object(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << "vector(" << o.has_property_sets.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_type_product : IfcTypeObject {
+struct Ifc_type_product : Ifc_type_object {
 	std::vector<Ifc_representation_map *> representation_maps;
 	Ifc_label tag;
 
@@ -2576,11 +2576,11 @@ struct Ifc_type_product : IfcTypeObject {
 		entity = "Ifc_type_product";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_type_product &o) {
-		return os << "Ifc_type_product(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << o.has_property_sets << ", " << o.representation_maps << ", " << o.tag << ")";
+		return os << "Ifc_type_product(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << "vector(" << o.has_property_sets.size() << ")" << ", " << "vector(" << o.representation_maps.size() << ")" << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_vector : IfcGeometricRepresentationItem {
+struct Ifc_vector : Ifc_geometric_representation_item {
 	Ifc_direction *orientation;
 	Ifc_length_measure *magnitude;
 
@@ -2590,9 +2590,9 @@ struct Ifc_vector : IfcGeometricRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_vector &o) {
 		return os << "Ifc_vector(" << o.orientation << ", " << o.magnitude << ")";
 	}
-}
+};
 
-struct Ifc_window_lining_properties : IfcPropertySetDefinition {
+struct Ifc_window_lining_properties : Ifc_property_set_definition {
 	Ifc_positive_length_measure lining_depth;
 	Ifc_positive_length_measure lining_thickness;
 	Ifc_positive_length_measure transom_thickness;
@@ -2609,9 +2609,9 @@ struct Ifc_window_lining_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_window_lining_properties &o) {
 		return os << "Ifc_window_lining_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.lining_depth << ", " << o.lining_thickness << ", " << o.transom_thickness << ", " << o.mullion_thickness << ", " << o.first_transom_offset << ", " << o.second_transom_offset << ", " << o.first_mullion_offset << ", " << o.second_mullion_offset << ", " << o.shape_aspect_style << ")";
 	}
-}
+};
 
-struct Ifc_window_panel_properties : IfcPropertySetDefinition {
+struct Ifc_window_panel_properties : Ifc_property_set_definition {
 	Ifc_window_panel_operation_enum operation_type;
 	Ifc_window_panel_position_enum panel_position;
 	Ifc_positive_length_measure frame_depth;
@@ -2624,9 +2624,9 @@ struct Ifc_window_panel_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_window_panel_properties &o) {
 		return os << "Ifc_window_panel_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.operation_type << ", " << o.panel_position << ", " << o.frame_depth << ", " << o.frame_thickness << ", " << o.shape_aspect_style << ")";
 	}
-}
+};
 
-struct Ifc_window_style : IfcTypeProduct {
+struct Ifc_window_style : Ifc_type_product {
 	Ifc_window_style_construction_enum construction_type;
 	Ifc_window_style_operation_enum operation_type;
 	bool parameter_takes_precedence;
@@ -2636,11 +2636,11 @@ struct Ifc_window_style : IfcTypeProduct {
 		entity = "Ifc_window_style";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_window_style &o) {
-		return os << "Ifc_window_style(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << o.has_property_sets << ", " << o.representation_maps << ", " << o.tag << ", " << o.construction_type << ", " << o.operation_type << ", " << o.parameter_takes_precedence << ", " << o.sizeable << ")";
+		return os << "Ifc_window_style(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << "vector(" << o.has_property_sets.size() << ")" << ", " << "vector(" << o.representation_maps.size() << ")" << ", " << o.tag << ", " << o.construction_type << ", " << o.operation_type << ", " << o.parameter_takes_precedence << ", " << o.sizeable << ")";
 	}
-}
+};
 
-struct Ifc_actor : IfcObject {
+struct Ifc_actor : Ifc_object {
 	Ifc_actor_select *the_actor;
 
 	Ifc_actor() {
@@ -2649,9 +2649,9 @@ struct Ifc_actor : IfcObject {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_actor &o) {
 		return os << "Ifc_actor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.the_actor << ")";
 	}
-}
+};
 
-struct Ifc_axis_1_placement : IfcPlacement {
+struct Ifc_axis_1_placement : Ifc_placement {
 	Ifc_direction *axis;
 
 	Ifc_axis_1_placement() {
@@ -2660,9 +2660,9 @@ struct Ifc_axis_1_placement : IfcPlacement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_axis_1_placement &o) {
 		return os << "Ifc_axis_1_placement(" << o.location << ", " << o.axis << ")";
 	}
-}
+};
 
-struct Ifc_axis_2_placement_2_d : IfcPlacement {
+struct Ifc_axis_2_placement_2_d : Ifc_placement {
 	Ifc_direction *ref_direction;
 
 	Ifc_axis_2_placement_2_d() {
@@ -2671,9 +2671,9 @@ struct Ifc_axis_2_placement_2_d : IfcPlacement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_axis_2_placement_2_d &o) {
 		return os << "Ifc_axis_2_placement_2_d(" << o.location << ", " << o.ref_direction << ")";
 	}
-}
+};
 
-struct Ifc_axis_2_placement_3_d : IfcPlacement {
+struct Ifc_axis_2_placement_3_d : Ifc_placement {
 	Ifc_direction *axis;
 	Ifc_direction *ref_direction;
 
@@ -2683,9 +2683,9 @@ struct Ifc_axis_2_placement_3_d : IfcPlacement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_axis_2_placement_3_d &o) {
 		return os << "Ifc_axis_2_placement_3_d(" << o.location << ", " << o.axis << ", " << o.ref_direction << ")";
 	}
-}
+};
 
-struct Ifc_boolean_result : IfcGeometricRepresentationItem {
+struct Ifc_boolean_result : Ifc_geometric_representation_item {
 	Ifc_boolean_operator operator;
 	Ifc_boolean_operand *first_operand;
 	Ifc_boolean_operand *second_operand;
@@ -2696,18 +2696,18 @@ struct Ifc_boolean_result : IfcGeometricRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_result &o) {
 		return os << "Ifc_boolean_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
-}
+};
 
-struct Ifc_bounded_surface : IfcSurface {
+struct Ifc_bounded_surface : Ifc_surface {
 	Ifc_bounded_surface() {
 		entity = "Ifc_bounded_surface";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_bounded_surface &o) {
 		return os << "Ifc_bounded_surface(" << ")";
 	}
-}
+};
 
-struct Ifc_bounding_box : IfcGeometricRepresentationItem {
+struct Ifc_bounding_box : Ifc_geometric_representation_item {
 	Ifc_cartesian_point *corner;
 	Ifc_positive_length_measure *x_dim;
 	Ifc_positive_length_measure *y_dim;
@@ -2719,9 +2719,9 @@ struct Ifc_bounding_box : IfcGeometricRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_bounding_box &o) {
 		return os << "Ifc_bounding_box(" << o.corner << ", " << o.x_dim << ", " << o.y_dim << ", " << o.z_dim << ")";
 	}
-}
+};
 
-struct Ifc_boxed_half_space : IfcHalfSpaceSolid {
+struct Ifc_boxed_half_space : Ifc_half_space_solid {
 	Ifc_bounding_box *enclosure;
 
 	Ifc_boxed_half_space() {
@@ -2730,9 +2730,9 @@ struct Ifc_boxed_half_space : IfcHalfSpaceSolid {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boxed_half_space &o) {
 		return os << "Ifc_boxed_half_space(" << o.base_surface << ", " << o.agreement_flag << ", " << o.enclosure << ")";
 	}
-}
+};
 
-struct Ifc_building : IfcSpatialStructureElement {
+struct Ifc_building : Ifc_spatial_structure_element {
 	Ifc_length_measure elevation_of_ref_height;
 	Ifc_length_measure elevation_of_terrain;
 	Ifc_postal_address *building_address;
@@ -2743,9 +2743,9 @@ struct Ifc_building : IfcSpatialStructureElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_building &o) {
 		return os << "Ifc_building(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.elevation_of_ref_height << ", " << o.elevation_of_terrain << ", " << o.building_address << ")";
 	}
-}
+};
 
-struct Ifc_building_storey : IfcSpatialStructureElement {
+struct Ifc_building_storey : Ifc_spatial_structure_element {
 	Ifc_length_measure elevation;
 
 	Ifc_building_storey() {
@@ -2754,38 +2754,38 @@ struct Ifc_building_storey : IfcSpatialStructureElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_building_storey &o) {
 		return os << "Ifc_building_storey(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.elevation << ")";
 	}
-}
+};
 
-struct Ifc_cartesian_point : IfcPoint {
+struct Ifc_cartesian_point : Ifc_point {
 	std::vector<Ifc_length_measure *> coordinates;
 
 	Ifc_cartesian_point() {
 		entity = "Ifc_cartesian_point";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_point &o) {
-		return os << "Ifc_cartesian_point(" << o.coordinates << ")";
+		return os << "Ifc_cartesian_point(" << "vector(" << o.coordinates.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_cartesian_transformation_operator : IfcGeometricRepresentationItem {
+struct Ifc_cartesian_transformation_operator : Ifc_geometric_representation_item {
 	Ifc_direction *axis_1;
 	Ifc_direction *axis_2;
 	Ifc_cartesian_point *local_origin;
 	double scale;
 
 	virtual ~Ifc_cartesian_transformation_operator() {}
-}
+};
 
-struct Ifc_cartesian_transformation_operator_2_d : IfcCartesianTransformationOperator {
+struct Ifc_cartesian_transformation_operator_2_d : Ifc_cartesian_transformation_operator {
 	Ifc_cartesian_transformation_operator_2_d() {
 		entity = "Ifc_cartesian_transformation_operator_2_d";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_transformation_operator_2_d &o) {
 		return os << "Ifc_cartesian_transformation_operator_2_d(" << o.axis_1 << ", " << o.axis_2 << ", " << o.local_origin << ", " << o.scale << ")";
 	}
-}
+};
 
-struct Ifc_cartesian_transformation_operator_2_dnon_uniform : IfcCartesianTransformationOperator2D {
+struct Ifc_cartesian_transformation_operator_2_dnon_uniform : Ifc_cartesian_transformation_operator_2_d {
 	double scale_2;
 
 	Ifc_cartesian_transformation_operator_2_dnon_uniform() {
@@ -2794,9 +2794,9 @@ struct Ifc_cartesian_transformation_operator_2_dnon_uniform : IfcCartesianTransf
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_transformation_operator_2_dnon_uniform &o) {
 		return os << "Ifc_cartesian_transformation_operator_2_dnon_uniform(" << o.axis_1 << ", " << o.axis_2 << ", " << o.local_origin << ", " << o.scale << ", " << o.scale_2 << ")";
 	}
-}
+};
 
-struct Ifc_cartesian_transformation_operator_3_d : IfcCartesianTransformationOperator {
+struct Ifc_cartesian_transformation_operator_3_d : Ifc_cartesian_transformation_operator {
 	Ifc_direction *axis_3;
 
 	Ifc_cartesian_transformation_operator_3_d() {
@@ -2805,9 +2805,9 @@ struct Ifc_cartesian_transformation_operator_3_d : IfcCartesianTransformationOpe
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_transformation_operator_3_d &o) {
 		return os << "Ifc_cartesian_transformation_operator_3_d(" << o.axis_1 << ", " << o.axis_2 << ", " << o.local_origin << ", " << o.scale << ", " << o.axis_3 << ")";
 	}
-}
+};
 
-struct Ifc_cartesian_transformation_operator_3_dnon_uniform : IfcCartesianTransformationOperator3D {
+struct Ifc_cartesian_transformation_operator_3_dnon_uniform : Ifc_cartesian_transformation_operator_3_d {
 	double scale_2;
 	double scale_3;
 
@@ -2817,18 +2817,18 @@ struct Ifc_cartesian_transformation_operator_3_dnon_uniform : IfcCartesianTransf
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_transformation_operator_3_dnon_uniform &o) {
 		return os << "Ifc_cartesian_transformation_operator_3_dnon_uniform(" << o.axis_1 << ", " << o.axis_2 << ", " << o.local_origin << ", " << o.scale << ", " << o.axis_3 << ", " << o.scale_2 << ", " << o.scale_3 << ")";
 	}
-}
+};
 
-struct Ifc_closed_shell : IfcConnectedFaceSet {
+struct Ifc_closed_shell : Ifc_connected_face_set {
 	Ifc_closed_shell() {
 		entity = "Ifc_closed_shell";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_closed_shell &o) {
-		return os << "Ifc_closed_shell(" << o.cfs_faces << ")";
+		return os << "Ifc_closed_shell(" << "vector(" << o.cfs_faces.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_composite_curve_segment : IfcGeometricRepresentationItem {
+struct Ifc_composite_curve_segment : Ifc_geometric_representation_item {
 	Ifc_transition_code transition;
 	bool same_sense;
 	Ifc_curve *parent_curve;
@@ -2839,18 +2839,18 @@ struct Ifc_composite_curve_segment : IfcGeometricRepresentationItem {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_composite_curve_segment &o) {
 		return os << "Ifc_composite_curve_segment(" << o.transition << ", " << o.same_sense << ", " << o.parent_curve << ")";
 	}
-}
+};
 
-struct Ifc_construction_equipment_resource : IfcResource {
+struct Ifc_construction_equipment_resource : Ifc_resource {
 	Ifc_construction_equipment_resource() {
 		entity = "Ifc_construction_equipment_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_construction_equipment_resource &o) {
 		return os << "Ifc_construction_equipment_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ")";
 	}
-}
+};
 
-struct Ifc_construction_material_resource : IfcResource {
+struct Ifc_construction_material_resource : Ifc_resource {
 	std::vector<Ifc_actor_select *> suppliers;
 	Ifc_measure_with_unit *order_quantity;
 	std::vector<Ifc_material *> design_material;
@@ -2859,24 +2859,24 @@ struct Ifc_construction_material_resource : IfcResource {
 		entity = "Ifc_construction_material_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_construction_material_resource &o) {
-		return os << "Ifc_construction_material_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ", " << o.suppliers << ", " << o.order_quantity << ", " << o.design_material << ")";
+		return os << "Ifc_construction_material_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ", " << "vector(" << o.suppliers.size() << ")" << ", " << o.order_quantity << ", " << "vector(" << o.design_material.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_construction_product_resource : IfcResource {
+struct Ifc_construction_product_resource : Ifc_resource {
 	Ifc_construction_product_resource() {
 		entity = "Ifc_construction_product_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_construction_product_resource &o) {
 		return os << "Ifc_construction_product_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ")";
 	}
-}
+};
 
-struct Ifc_control : IfcObject {
+struct Ifc_control : Ifc_object {
 	virtual ~Ifc_control() {}
-}
+};
 
-struct Ifc_cost : IfcControl {
+struct Ifc_cost : Ifc_control {
 	Ifc_label context_description;
 	Ifc_cost_value *element_cost;
 	Ifc_cost_value *extension_cost;
@@ -2889,11 +2889,11 @@ struct Ifc_cost : IfcControl {
 		entity = "Ifc_cost";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost &o) {
-		return os << "Ifc_cost(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.context_description << ", " << o.element_cost << ", " << o.extension_cost << ", " << o.cost_use << ", " << o.prepared_on << ", " << o.quantities << ", " << o.cost_type << ")";
+		return os << "Ifc_cost(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.context_description << ", " << o.element_cost << ", " << o.extension_cost << ", " << o.cost_use << ", " << o.prepared_on << ", " << "vector(" << o.quantities.size() << ")" << ", " << o.cost_type << ")";
 	}
-}
+};
 
-struct Ifc_cost_schedule : IfcControl {
+struct Ifc_cost_schedule : Ifc_control {
 	Ifc_label title;
 	Ifc_actor_select *submitted_by;
 	std::vector<Ifc_actor_select *> approved_by;
@@ -2914,20 +2914,20 @@ struct Ifc_cost_schedule : IfcControl {
 		entity = "Ifc_cost_schedule";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cost_schedule &o) {
-		return os << "Ifc_cost_schedule(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.title << ", " << o.submitted_by << ", " << o.approved_by << ", " << o.prepared_by << ", " << o.submitted_on << ", " << o.total_cost << ", " << o.cost_elements << ", " << o.status << ", " << o.intended_use << ", " << o.comments << ", " << o.target_users << ", " << o.valid_from_date << ", " << o.valid_to_date << ", " << o.update_date << ", " << o.schedule_number << ")";
+		return os << "Ifc_cost_schedule(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.title << ", " << o.submitted_by << ", " << "vector(" << o.approved_by.size() << ")" << ", " << o.prepared_by << ", " << o.submitted_on << ", " << o.total_cost << ", " << "vector(" << o.cost_elements.size() << ")" << ", " << o.status << ", " << o.intended_use << ", " << "vector(" << o.comments.size() << ")" << ", " << "vector(" << o.target_users.size() << ")" << ", " << o.valid_from_date << ", " << o.valid_to_date << ", " << o.update_date << ", " << o.schedule_number << ")";
 	}
-}
+};
 
-struct Ifc_crew_resource : IfcResource {
+struct Ifc_crew_resource : Ifc_resource {
 	Ifc_crew_resource() {
 		entity = "Ifc_crew_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_crew_resource &o) {
 		return os << "Ifc_crew_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ")";
 	}
-}
+};
 
-struct Ifc_csg_solid : IfcSolidModel {
+struct Ifc_csg_solid : Ifc_solid_model {
 	Ifc_csg_select *tree_root_expression;
 
 	Ifc_csg_solid() {
@@ -2936,13 +2936,13 @@ struct Ifc_csg_solid : IfcSolidModel {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_csg_solid &o) {
 		return os << "Ifc_csg_solid(" << o.tree_root_expression << ")";
 	}
-}
+};
 
-struct Ifc_curve : IfcGeometricRepresentationItem {
+struct Ifc_curve : Ifc_geometric_representation_item {
 	virtual ~Ifc_curve() {}
-}
+};
 
-struct Ifc_curve_bounded_plane : IfcBoundedSurface {
+struct Ifc_curve_bounded_plane : Ifc_bounded_surface {
 	Ifc_plane *basis_surface;
 	Ifc_2_d_composite_curve *outer_boundary;
 	std::vector<Ifc_2_d_composite_curve *> inner_boundaries;
@@ -2951,22 +2951,22 @@ struct Ifc_curve_bounded_plane : IfcBoundedSurface {
 		entity = "Ifc_curve_bounded_plane";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_curve_bounded_plane &o) {
-		return os << "Ifc_curve_bounded_plane(" << o.basis_surface << ", " << o.outer_boundary << ", " << o.inner_boundaries << ")";
+		return os << "Ifc_curve_bounded_plane(" << o.basis_surface << ", " << o.outer_boundary << ", " << "vector(" << o.inner_boundaries.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_direction : IfcGeometricRepresentationItem {
+struct Ifc_direction : Ifc_geometric_representation_item {
 	std::vector<double> direction_ratios;
 
 	Ifc_direction() {
 		entity = "Ifc_direction";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_direction &o) {
-		return os << "Ifc_direction(" << o.direction_ratios << ")";
+		return os << "Ifc_direction(" << "vector(" << o.direction_ratios.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_door_lining_properties : IfcPropertySetDefinition {
+struct Ifc_door_lining_properties : Ifc_property_set_definition {
 	Ifc_positive_length_measure lining_depth;
 	Ifc_positive_length_measure lining_thickness;
 	Ifc_positive_length_measure threshold_depth;
@@ -2985,9 +2985,9 @@ struct Ifc_door_lining_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_door_lining_properties &o) {
 		return os << "Ifc_door_lining_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.lining_depth << ", " << o.lining_thickness << ", " << o.threshold_depth << ", " << o.threshold_thickness << ", " << o.transom_thickness << ", " << o.transom_offset << ", " << o.lining_offset << ", " << o.threshold_offset << ", " << o.casing_thickness << ", " << o.casing_depth << ", " << o.shape_aspect_style << ")";
 	}
-}
+};
 
-struct Ifc_door_panel_properties : IfcPropertySetDefinition {
+struct Ifc_door_panel_properties : Ifc_property_set_definition {
 	Ifc_positive_length_measure panel_depth;
 	Ifc_door_panel_operation_enum panel_operation;
 	Ifc_normalised_ratio_measure panel_width;
@@ -3000,9 +3000,9 @@ struct Ifc_door_panel_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_door_panel_properties &o) {
 		return os << "Ifc_door_panel_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.panel_depth << ", " << o.panel_operation << ", " << o.panel_width << ", " << o.panel_position << ", " << o.shape_aspect_style << ")";
 	}
-}
+};
 
-struct Ifc_door_style : IfcTypeProduct {
+struct Ifc_door_style : Ifc_type_product {
 	Ifc_door_style_operation_enum operation_type;
 	Ifc_door_style_construction_enum construction_type;
 	bool parameter_takes_precedence;
@@ -3012,11 +3012,11 @@ struct Ifc_door_style : IfcTypeProduct {
 		entity = "Ifc_door_style";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_door_style &o) {
-		return os << "Ifc_door_style(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << o.has_property_sets << ", " << o.representation_maps << ", " << o.tag << ", " << o.operation_type << ", " << o.construction_type << ", " << o.parameter_takes_precedence << ", " << o.sizeable << ")";
+		return os << "Ifc_door_style(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.applicable_occurrence << ", " << "vector(" << o.has_property_sets.size() << ")" << ", " << "vector(" << o.representation_maps.size() << ")" << ", " << o.tag << ", " << o.operation_type << ", " << o.construction_type << ", " << o.parameter_takes_precedence << ", " << o.sizeable << ")";
 	}
-}
+};
 
-struct Ifc_electrical_base_properties : IfcPropertySetDefinition {
+struct Ifc_electrical_base_properties : Ifc_property_set_definition {
 	Ifc_electric_current_enum electric_current_type;
 	Ifc_electric_voltage_measure input_voltage;
 	Ifc_frequency_measure input_frequency;
@@ -3031,9 +3031,9 @@ struct Ifc_electrical_base_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_electrical_base_properties &o) {
 		return os << "Ifc_electrical_base_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.electric_current_type << ", " << o.input_voltage << ", " << o.input_frequency << ", " << o.full_load_current << ", " << o.minimum_circuit_current << ", " << o.maximum_power_input << ", " << o.rated_power_input << ")";
 	}
-}
+};
 
-struct Ifc_electrical_extended_properties : IfcElectricalBaseProperties {
+struct Ifc_electrical_extended_properties : Ifc_electrical_base_properties {
 	int input_phase;
 	Ifc_electric_current_measure inrush_current;
 	Ifc_electric_current_measure locked_rotor_current;
@@ -3047,15 +3047,15 @@ struct Ifc_electrical_extended_properties : IfcElectricalBaseProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_electrical_extended_properties &o) {
 		return os << "Ifc_electrical_extended_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.electric_current_type << ", " << o.input_voltage << ", " << o.input_frequency << ", " << o.full_load_current << ", " << o.minimum_circuit_current << ", " << o.maximum_power_input << ", " << o.rated_power_input << ", " << o.input_phase << ", " << o.inrush_current << ", " << o.locked_rotor_current << ", " << o.circuit_size_power_input << ", " << o.fuse_size << ", " << o.grounded << ")";
 	}
-}
+};
 
-struct Ifc_element : IfcProduct {
+struct Ifc_element : Ifc_product {
 	Ifc_identifier tag;
 
 	virtual ~Ifc_element() {}
-}
+};
 
-struct Ifc_element_quantity : IfcPropertySetDefinition {
+struct Ifc_element_quantity : Ifc_property_set_definition {
 	Ifc_label method_of_measurement;
 	std::vector<Ifc_physical_quantity *> quantities;
 
@@ -3063,35 +3063,35 @@ struct Ifc_element_quantity : IfcPropertySetDefinition {
 		entity = "Ifc_element_quantity";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_element_quantity &o) {
-		return os << "Ifc_element_quantity(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.method_of_measurement << ", " << o.quantities << ")";
+		return os << "Ifc_element_quantity(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.method_of_measurement << ", " << "vector(" << o.quantities.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_elementary_surface : IfcSurface {
+struct Ifc_elementary_surface : Ifc_surface {
 	Ifc_axis_2_placement_3_d *position;
 
 	virtual ~Ifc_elementary_surface() {}
-}
+};
 
-struct Ifc_equipment_element : IfcElement {
+struct Ifc_equipment_element : Ifc_element {
 	Ifc_equipment_element() {
 		entity = "Ifc_equipment_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_equipment_element &o) {
 		return os << "Ifc_equipment_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_equipment_standard : IfcControl {
+struct Ifc_equipment_standard : Ifc_control {
 	Ifc_equipment_standard() {
 		entity = "Ifc_equipment_standard";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_equipment_standard &o) {
 		return os << "Ifc_equipment_standard(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ")";
 	}
-}
+};
 
-struct Ifc_extruded_area_solid : IfcSweptAreaSolid {
+struct Ifc_extruded_area_solid : Ifc_swept_area_solid {
 	Ifc_direction *extruded_direction;
 	Ifc_positive_length_measure *depth;
 
@@ -3101,20 +3101,20 @@ struct Ifc_extruded_area_solid : IfcSweptAreaSolid {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_extruded_area_solid &o) {
 		return os << "Ifc_extruded_area_solid(" << o.swept_area << ", " << o.position << ", " << o.extruded_direction << ", " << o.depth << ")";
 	}
-}
+};
 
-struct Ifc_face_based_surface_model : IfcGeometricRepresentationItem {
+struct Ifc_face_based_surface_model : Ifc_geometric_representation_item {
 	std::vector<Ifc_connected_face_set *> fbsm_faces;
 
 	Ifc_face_based_surface_model() {
 		entity = "Ifc_face_based_surface_model";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_face_based_surface_model &o) {
-		return os << "Ifc_face_based_surface_model(" << o.fbsm_faces << ")";
+		return os << "Ifc_face_based_surface_model(" << "vector(" << o.fbsm_faces.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_fluid_flow_properties : IfcPropertySetDefinition {
+struct Ifc_fluid_flow_properties : Ifc_property_set_definition {
 	Ifc_volumetric_flow_rate_measure maximum_flow_rate;
 	Ifc_volumetric_flow_rate_measure design_flowrate;
 	Ifc_volumetric_flow_rate_measure minimum_flowrate;
@@ -3133,38 +3133,38 @@ struct Ifc_fluid_flow_properties : IfcPropertySetDefinition {
 		entity = "Ifc_fluid_flow_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_fluid_flow_properties &o) {
-		return os << "Ifc_fluid_flow_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.maximum_flow_rate << ", " << o.design_flowrate << ", " << o.minimum_flowrate << ", " << o.pressure_loss << ", " << o.working_pressure << ", " << o.pressure_rating << ", " << o.fluid << ", " << o.design_velocity << ", " << o.design_temperature << ", " << o.maximum_temperature << ", " << o.minimum_temperature << ", " << o.working_temperature << ", " << o.working_quality << ")";
+		return os << "Ifc_fluid_flow_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.maximum_flow_rate << ", " << o.design_flowrate << ", " << o.minimum_flowrate << ", " << o.pressure_loss << ", " << o.working_pressure << ", " << o.pressure_rating << ", " << o.fluid << ", " << o.design_velocity << ", " << "vector(" << o.design_temperature.size() << ")" << ", " << "vector(" << o.maximum_temperature.size() << ")" << ", " << "vector(" << o.minimum_temperature.size() << ")" << ", " << "vector(" << o.working_temperature.size() << ")" << ", " << o.working_quality << ")";
 	}
-}
+};
 
-struct Ifc_furnishing_element : IfcElement {
+struct Ifc_furnishing_element : Ifc_element {
 	Ifc_furnishing_element() {
 		entity = "Ifc_furnishing_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_furnishing_element &o) {
 		return os << "Ifc_furnishing_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_furniture : IfcFurnishingElement {
+struct Ifc_furniture : Ifc_furnishing_element {
 	Ifc_furniture() {
 		entity = "Ifc_furniture";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_furniture &o) {
 		return os << "Ifc_furniture(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_furniture_standard : IfcControl {
+struct Ifc_furniture_standard : Ifc_control {
 	Ifc_furniture_standard() {
 		entity = "Ifc_furniture_standard";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_furniture_standard &o) {
 		return os << "Ifc_furniture_standard(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ")";
 	}
-}
+};
 
-struct Ifc_grid : IfcProduct {
+struct Ifc_grid : Ifc_product {
 	std::vector<Ifc_grid_axis *> u_axes;
 	std::vector<Ifc_grid_axis *> v_axes;
 	std::vector<Ifc_grid_axis *> w_axes;
@@ -3173,20 +3173,20 @@ struct Ifc_grid : IfcProduct {
 		entity = "Ifc_grid";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_grid &o) {
-		return os << "Ifc_grid(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.u_axes << ", " << o.v_axes << ", " << o.w_axes << ")";
+		return os << "Ifc_grid(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << "vector(" << o.u_axes.size() << ")" << ", " << "vector(" << o.v_axes.size() << ")" << ", " << "vector(" << o.w_axes.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_group : IfcObject {
+struct Ifc_group : Ifc_object {
 	Ifc_group() {
 		entity = "Ifc_group";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_group &o) {
 		return os << "Ifc_group(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ")";
 	}
-}
+};
 
-struct Ifc_inventory : IfcGroup {
+struct Ifc_inventory : Ifc_group {
 	Ifc_inventory_type_enum defined_type;
 	Ifc_actor_select *jurisdiction;
 	std::vector<Ifc_person *> responsible_persons;
@@ -3198,11 +3198,11 @@ struct Ifc_inventory : IfcGroup {
 		entity = "Ifc_inventory";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_inventory &o) {
-		return os << "Ifc_inventory(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.defined_type << ", " << o.jurisdiction << ", " << o.responsible_persons << ", " << o.last_update_date << ", " << o.current_value << ", " << o.original_value << ")";
+		return os << "Ifc_inventory(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.defined_type << ", " << o.jurisdiction << ", " << "vector(" << o.responsible_persons.size() << ")" << ", " << o.last_update_date << ", " << o.current_value << ", " << o.original_value << ")";
 	}
-}
+};
 
-struct Ifc_labor_resource : IfcResource {
+struct Ifc_labor_resource : Ifc_resource {
 	Ifc_label title;
 	std::vector<Ifc_label> skill_set;
 
@@ -3210,11 +3210,11 @@ struct Ifc_labor_resource : IfcResource {
 		entity = "Ifc_labor_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_labor_resource &o) {
-		return os << "Ifc_labor_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ", " << o.title << ", " << o.skill_set << ")";
+		return os << "Ifc_labor_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.resource_consumption << ", " << o.base_unit << ", " << o.title << ", " << "vector(" << o.skill_set.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_line : IfcCurve {
+struct Ifc_line : Ifc_curve {
 	Ifc_cartesian_point *pnt;
 	Ifc_vector *dir;
 
@@ -3224,26 +3224,26 @@ struct Ifc_line : IfcCurve {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_line &o) {
 		return os << "Ifc_line(" << o.pnt << ", " << o.dir << ")";
 	}
-}
+};
 
-struct Ifc_maintenance_record : IfcControl {
+struct Ifc_maintenance_record : Ifc_control {
 	std::vector<Ifc_rel_maintenance_event *> records;
 
 	Ifc_maintenance_record() {
 		entity = "Ifc_maintenance_record";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_maintenance_record &o) {
-		return os << "Ifc_maintenance_record(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.records << ")";
+		return os << "Ifc_maintenance_record(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << "vector(" << o.records.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_manifold_solid_brep : IfcSolidModel {
+struct Ifc_manifold_solid_brep : Ifc_solid_model {
 	Ifc_closed_shell *outer;
 
 	virtual ~Ifc_manifold_solid_brep() {}
-}
+};
 
-struct Ifc_manufacturer_information : IfcPropertySetDefinition {
+struct Ifc_manufacturer_information : Ifc_property_set_definition {
 	Ifc_label model_label;
 	Ifc_label model_reference;
 	Ifc_organization *manufacturer;
@@ -3253,11 +3253,11 @@ struct Ifc_manufacturer_information : IfcPropertySetDefinition {
 		entity = "Ifc_manufacturer_information";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_manufacturer_information &o) {
-		return os << "Ifc_manufacturer_information(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.model_label << ", " << o.model_reference << ", " << o.manufacturer << ", " << o.quantity_information << ")";
+		return os << "Ifc_manufacturer_information(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.model_label << ", " << o.model_reference << ", " << o.manufacturer << ", " << "vector(" << o.quantity_information.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_move : IfcTask {
+struct Ifc_move : Ifc_task {
 	Ifc_spatial_structure_element *move_from;
 	Ifc_spatial_structure_element *move_to;
 	std::vector<Ifc_action_time_control *> move_constraints;
@@ -3267,11 +3267,11 @@ struct Ifc_move : IfcTask {
 		entity = "Ifc_move";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_move &o) {
-		return os << "Ifc_move(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.productivity << ", " << o.task_id << ", " << o.w_b_s_code << ", " << o.w_b_s_source << ", " << o.status << ", " << o.milestones << ", " << o.work_method << ", " << o.in_place_quantity << ", " << o.estimated_quantity << ", " << o.budget_quantity << ", " << o.is_root_task << ", " << o.move_from << ", " << o.move_to << ", " << o.move_constraints << ", " << o.punch_list << ")";
+		return os << "Ifc_move(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.productivity << ", " << o.task_id << ", " << "vector(" << o.w_b_s_code.size() << ")" << ", " << "vector(" << o.w_b_s_source.size() << ")" << ", " << o.status << ", " << "vector(" << o.milestones.size() << ")" << ", " << o.work_method << ", " << o.in_place_quantity << ", " << o.estimated_quantity << ", " << o.budget_quantity << ", " << o.is_root_task << ", " << o.move_from << ", " << o.move_to << ", " << "vector(" << o.move_constraints.size() << ")" << ", " << "vector(" << o.punch_list.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_occupant : IfcActor {
+struct Ifc_occupant : Ifc_actor {
 	Ifc_calendar_date *leese_or_rental_date;
 	Ifc_time_measure leese_or_rental_period;
 	Ifc_occupant_type_enum occupation_type;
@@ -3283,9 +3283,9 @@ struct Ifc_occupant : IfcActor {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_occupant &o) {
 		return os << "Ifc_occupant(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.the_actor << ", " << o.leese_or_rental_date << ", " << o.leese_or_rental_period << ", " << o.occupation_type << ", " << o.unlimited_period << ")";
 	}
-}
+};
 
-struct Ifc_offset_curve_2_d : IfcCurve {
+struct Ifc_offset_curve_2_d : Ifc_curve {
 	Ifc_curve *basis_curve;
 	Ifc_length_measure *distance;
 	int self_intersect;
@@ -3296,9 +3296,9 @@ struct Ifc_offset_curve_2_d : IfcCurve {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_offset_curve_2_d &o) {
 		return os << "Ifc_offset_curve_2_d(" << o.basis_curve << ", " << o.distance << ", " << o.self_intersect << ")";
 	}
-}
+};
 
-struct Ifc_offset_curve_3_d : IfcCurve {
+struct Ifc_offset_curve_3_d : Ifc_curve {
 	Ifc_curve *basis_curve;
 	Ifc_length_measure *distance;
 	int self_intersect;
@@ -3310,18 +3310,18 @@ struct Ifc_offset_curve_3_d : IfcCurve {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_offset_curve_3_d &o) {
 		return os << "Ifc_offset_curve_3_d(" << o.basis_curve << ", " << o.distance << ", " << o.self_intersect << ", " << o.ref_direction << ")";
 	}
-}
+};
 
-struct Ifc_opening_element : IfcElement {
+struct Ifc_opening_element : Ifc_element {
 	Ifc_opening_element() {
 		entity = "Ifc_opening_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_opening_element &o) {
 		return os << "Ifc_opening_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_permeable_covering_properties : IfcPropertySetDefinition {
+struct Ifc_permeable_covering_properties : Ifc_property_set_definition {
 	Ifc_permeable_covering_operation_enum operation_type;
 	Ifc_window_panel_position_enum panel_position;
 	Ifc_positive_length_measure frame_depth;
@@ -3334,18 +3334,18 @@ struct Ifc_permeable_covering_properties : IfcPropertySetDefinition {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_permeable_covering_properties &o) {
 		return os << "Ifc_permeable_covering_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.operation_type << ", " << o.panel_position << ", " << o.frame_depth << ", " << o.frame_thickness << ", " << o.shape_aspect_style << ")";
 	}
-}
+};
 
-struct Ifc_plane : IfcElementarySurface {
+struct Ifc_plane : Ifc_elementary_surface {
 	Ifc_plane() {
 		entity = "Ifc_plane";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_plane &o) {
 		return os << "Ifc_plane(" << o.position << ")";
 	}
-}
+};
 
-struct Ifc_project_order : IfcControl {
+struct Ifc_project_order : Ifc_control {
 	Ifc_identifier order_number;
 	Ifc_label transaction_code;
 	Ifc_calendar_date *issuing_date;
@@ -3357,20 +3357,20 @@ struct Ifc_project_order : IfcControl {
 	Ifc_budget *budget_source;
 
 	virtual ~Ifc_project_order() {}
-}
+};
 
-struct Ifc_property_set : IfcPropertySetDefinition {
+struct Ifc_property_set : Ifc_property_set_definition {
 	std::vector<Ifc_property *> has_properties;
 
 	Ifc_property_set() {
 		entity = "Ifc_property_set";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_property_set &o) {
-		return os << "Ifc_property_set(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.has_properties << ")";
+		return os << "Ifc_property_set(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.has_properties.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_purchase_order : IfcProjectOrder {
+struct Ifc_purchase_order : Ifc_project_order {
 	Ifc_calendar_date *required_date;
 	Ifc_calendar_date *scheduled_date;
 	Ifc_calendar_date *actual_date;
@@ -3384,11 +3384,11 @@ struct Ifc_purchase_order : IfcProjectOrder {
 		entity = "Ifc_purchase_order";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_purchase_order &o) {
-		return os << "Ifc_purchase_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << o.issued_to << ", " << o.additional_contacts << ", " << o.remarks << ", " << o.signoff << ", " << o.budget_source << ", " << o.required_date << ", " << o.scheduled_date << ", " << o.actual_date << ", " << o.is_f_o_b << ", " << o.ship_method << ", " << o.purchase_items << ", " << o.total_cost << ", " << o.status << ")";
+		return os << "Ifc_purchase_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << "vector(" << o.issued_to.size() << ")" << ", " << "vector(" << o.additional_contacts.size() << ")" << ", " << "vector(" << o.remarks.size() << ")" << ", " << o.signoff << ", " << o.budget_source << ", " << o.required_date << ", " << o.scheduled_date << ", " << o.actual_date << ", " << o.is_f_o_b << ", " << o.ship_method << ", " << o.purchase_items << ", " << o.total_cost << ", " << o.status << ")";
 	}
-}
+};
 
-struct Ifc_rectangular_trimmed_surface : IfcBoundedSurface {
+struct Ifc_rectangular_trimmed_surface : Ifc_bounded_surface {
 	Ifc_surface *basis_surface;
 	Ifc_parameter_value *u_1;
 	Ifc_parameter_value *v_1;
@@ -3403,16 +3403,16 @@ struct Ifc_rectangular_trimmed_surface : IfcBoundedSurface {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rectangular_trimmed_surface &o) {
 		return os << "Ifc_rectangular_trimmed_surface(" << o.basis_surface << ", " << o.u_1 << ", " << o.v_1 << ", " << o.u_2 << ", " << o.v_2 << ", " << o.usense << ", " << o.vsense << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns : IfcRelationship {
+struct Ifc_rel_assigns : Ifc_relationship {
 	std::vector<Ifc_object *> related_objects;
 	Ifc_object_type_enum related_objects_type;
 
 	virtual ~Ifc_rel_assigns() {}
-}
+};
 
-struct Ifc_rel_assigns_to_actor : IfcRelAssigns {
+struct Ifc_rel_assigns_to_actor : Ifc_rel_assigns {
 	Ifc_actor *relating_actor;
 	Ifc_actor_role *acting_role;
 
@@ -3420,33 +3420,33 @@ struct Ifc_rel_assigns_to_actor : IfcRelAssigns {
 		entity = "Ifc_rel_assigns_to_actor";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_actor &o) {
-		return os << "Ifc_rel_assigns_to_actor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_actor << ", " << o.acting_role << ")";
+		return os << "Ifc_rel_assigns_to_actor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_actor << ", " << o.acting_role << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_to_control : IfcRelAssigns {
+struct Ifc_rel_assigns_to_control : Ifc_rel_assigns {
 	Ifc_control *relating_control;
 
 	Ifc_rel_assigns_to_control() {
 		entity = "Ifc_rel_assigns_to_control";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_control &o) {
-		return os << "Ifc_rel_assigns_to_control(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_control << ")";
+		return os << "Ifc_rel_assigns_to_control(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_control << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_to_group : IfcRelAssigns {
+struct Ifc_rel_assigns_to_group : Ifc_rel_assigns {
 	Ifc_group *relating_group;
 
 	Ifc_rel_assigns_to_group() {
 		entity = "Ifc_rel_assigns_to_group";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_group &o) {
-		return os << "Ifc_rel_assigns_to_group(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_group << ")";
+		return os << "Ifc_rel_assigns_to_group(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_group << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_to_process : IfcRelAssigns {
+struct Ifc_rel_assigns_to_process : Ifc_rel_assigns {
 	Ifc_process *relating_process;
 	Ifc_measure_with_unit *quantity_in_process;
 
@@ -3454,92 +3454,92 @@ struct Ifc_rel_assigns_to_process : IfcRelAssigns {
 		entity = "Ifc_rel_assigns_to_process";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_process &o) {
-		return os << "Ifc_rel_assigns_to_process(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_process << ", " << o.quantity_in_process << ")";
+		return os << "Ifc_rel_assigns_to_process(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_process << ", " << o.quantity_in_process << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_to_product : IfcRelAssigns {
+struct Ifc_rel_assigns_to_product : Ifc_rel_assigns {
 	Ifc_product *relating_product;
 
 	Ifc_rel_assigns_to_product() {
 		entity = "Ifc_rel_assigns_to_product";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_product &o) {
-		return os << "Ifc_rel_assigns_to_product(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_product << ")";
+		return os << "Ifc_rel_assigns_to_product(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_product << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_to_resource : IfcRelAssigns {
+struct Ifc_rel_assigns_to_resource : Ifc_rel_assigns {
 	Ifc_resource *relating_resource;
 
 	Ifc_rel_assigns_to_resource() {
 		entity = "Ifc_rel_assigns_to_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_to_resource &o) {
-		return os << "Ifc_rel_assigns_to_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_resource << ")";
+		return os << "Ifc_rel_assigns_to_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_resource << ")";
 	}
-}
+};
 
-struct Ifc_rel_associates : IfcRelationship {
+struct Ifc_rel_associates : Ifc_relationship {
 	std::vector<Ifc_root *> related_objects;
 
 	Ifc_rel_associates() {
 		entity = "Ifc_rel_associates";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_associates &o) {
-		return os << "Ifc_rel_associates(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ")";
+		return os << "Ifc_rel_associates(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_associates_classification : IfcRelAssociates {
+struct Ifc_rel_associates_classification : Ifc_rel_associates {
 	Ifc_classification_notation_select *relating_classification;
 
 	Ifc_rel_associates_classification() {
 		entity = "Ifc_rel_associates_classification";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_associates_classification &o) {
-		return os << "Ifc_rel_associates_classification(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_classification << ")";
+		return os << "Ifc_rel_associates_classification(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_classification << ")";
 	}
-}
+};
 
-struct Ifc_rel_associates_document : IfcRelAssociates {
+struct Ifc_rel_associates_document : Ifc_rel_associates {
 	Ifc_document_select *relating_document;
 
 	Ifc_rel_associates_document() {
 		entity = "Ifc_rel_associates_document";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_associates_document &o) {
-		return os << "Ifc_rel_associates_document(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_document << ")";
+		return os << "Ifc_rel_associates_document(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_document << ")";
 	}
-}
+};
 
-struct Ifc_rel_associates_library : IfcRelAssociates {
+struct Ifc_rel_associates_library : Ifc_rel_associates {
 	Ifc_library_select *relating_library;
 
 	Ifc_rel_associates_library() {
 		entity = "Ifc_rel_associates_library";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_associates_library &o) {
-		return os << "Ifc_rel_associates_library(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_library << ")";
+		return os << "Ifc_rel_associates_library(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_library << ")";
 	}
-}
+};
 
-struct Ifc_rel_associates_material : IfcRelAssociates {
+struct Ifc_rel_associates_material : Ifc_rel_associates {
 	Ifc_material_select *relating_material;
 
 	Ifc_rel_associates_material() {
 		entity = "Ifc_rel_associates_material";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_associates_material &o) {
-		return os << "Ifc_rel_associates_material(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_material << ")";
+		return os << "Ifc_rel_associates_material(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_material << ")";
 	}
-}
+};
 
-struct Ifc_rel_connects : IfcRelationship {
+struct Ifc_rel_connects : Ifc_relationship {
 	virtual ~Ifc_rel_connects() {}
-}
+};
 
-struct Ifc_rel_connects_elements : IfcRelConnects {
+struct Ifc_rel_connects_elements : Ifc_rel_connects {
 	Ifc_connection_geometry *connection_geometry;
 	Ifc_element *relating_element;
 	Ifc_element *related_element;
@@ -3550,9 +3550,9 @@ struct Ifc_rel_connects_elements : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_connects_elements &o) {
 		return os << "Ifc_rel_connects_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.connection_geometry << ", " << o.relating_element << ", " << o.related_element << ")";
 	}
-}
+};
 
-struct Ifc_rel_connects_path_elements : IfcRelConnectsElements {
+struct Ifc_rel_connects_path_elements : Ifc_rel_connects_elements {
 	std::vector<int> relating_priorities;
 	std::vector<int> related_priorities;
 	Ifc_connection_type_enum related_connection_type;
@@ -3562,11 +3562,11 @@ struct Ifc_rel_connects_path_elements : IfcRelConnectsElements {
 		entity = "Ifc_rel_connects_path_elements";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_connects_path_elements &o) {
-		return os << "Ifc_rel_connects_path_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.connection_geometry << ", " << o.relating_element << ", " << o.related_element << ", " << o.relating_priorities << ", " << o.related_priorities << ", " << o.related_connection_type << ", " << o.relating_connection_type << ")";
+		return os << "Ifc_rel_connects_path_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.connection_geometry << ", " << o.relating_element << ", " << o.related_element << ", " << "vector(" << o.relating_priorities.size() << ")" << ", " << "vector(" << o.related_priorities.size() << ")" << ", " << o.related_connection_type << ", " << o.relating_connection_type << ")";
 	}
-}
+};
 
-struct Ifc_rel_connects_ports : IfcRelConnectsElements {
+struct Ifc_rel_connects_ports : Ifc_rel_connects_elements {
 	Ifc_flow_direction_enum flow_direction;
 	Ifc_port_connection_type_enum port_connection_type;
 
@@ -3576,9 +3576,9 @@ struct Ifc_rel_connects_ports : IfcRelConnectsElements {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_connects_ports &o) {
 		return os << "Ifc_rel_connects_ports(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.connection_geometry << ", " << o.relating_element << ", " << o.related_element << ", " << o.flow_direction << ", " << o.port_connection_type << ")";
 	}
-}
+};
 
-struct Ifc_rel_contained_in_spatial_structure : IfcRelConnects {
+struct Ifc_rel_contained_in_spatial_structure : Ifc_rel_connects {
 	std::vector<Ifc_element *> related_elements;
 	Ifc_spatial_structure_element *relating_structure;
 
@@ -3586,20 +3586,20 @@ struct Ifc_rel_contained_in_spatial_structure : IfcRelConnects {
 		entity = "Ifc_rel_contained_in_spatial_structure";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_contained_in_spatial_structure &o) {
-		return os << "Ifc_rel_contained_in_spatial_structure(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_elements << ", " << o.relating_structure << ")";
+		return os << "Ifc_rel_contained_in_spatial_structure(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_elements.size() << ")" << ", " << o.relating_structure << ")";
 	}
-}
+};
 
-struct Ifc_rel_costs_objects : IfcRelAssignsToControl {
+struct Ifc_rel_costs_objects : Ifc_rel_assigns_to_control {
 	Ifc_rel_costs_objects() {
 		entity = "Ifc_rel_costs_objects";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_costs_objects &o) {
-		return os << "Ifc_rel_costs_objects(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_control << ")";
+		return os << "Ifc_rel_costs_objects(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_control << ")";
 	}
-}
+};
 
-struct Ifc_rel_covers_bldg_elements : IfcRelConnects {
+struct Ifc_rel_covers_bldg_elements : Ifc_rel_connects {
 	Ifc_building_element *relating_building_element;
 	std::vector<Ifc_covering *> related_coverings;
 
@@ -3607,46 +3607,46 @@ struct Ifc_rel_covers_bldg_elements : IfcRelConnects {
 		entity = "Ifc_rel_covers_bldg_elements";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_covers_bldg_elements &o) {
-		return os << "Ifc_rel_covers_bldg_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_building_element << ", " << o.related_coverings << ")";
+		return os << "Ifc_rel_covers_bldg_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_building_element << ", " << "vector(" << o.related_coverings.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_decomposes : IfcRelationship {
+struct Ifc_rel_decomposes : Ifc_relationship {
 	Ifc_object *relating_object;
 	std::vector<Ifc_object *> related_objects;
 
 	virtual ~Ifc_rel_decomposes() {}
-}
+};
 
-struct Ifc_rel_defines : IfcRelationship {
+struct Ifc_rel_defines : Ifc_relationship {
 	std::vector<Ifc_object *> related_objects;
 
 	virtual ~Ifc_rel_defines() {}
-}
+};
 
-struct Ifc_rel_defines_by_properties : IfcRelDefines {
+struct Ifc_rel_defines_by_properties : Ifc_rel_defines {
 	Ifc_property_set_definition *relating_property_definition;
 
 	Ifc_rel_defines_by_properties() {
 		entity = "Ifc_rel_defines_by_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_defines_by_properties &o) {
-		return os << "Ifc_rel_defines_by_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_property_definition << ")";
+		return os << "Ifc_rel_defines_by_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_property_definition << ")";
 	}
-}
+};
 
-struct Ifc_rel_defines_by_type : IfcRelDefines {
+struct Ifc_rel_defines_by_type : Ifc_rel_defines {
 	Ifc_type_object *relating_type;
 
 	Ifc_rel_defines_by_type() {
 		entity = "Ifc_rel_defines_by_type";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_defines_by_type &o) {
-		return os << "Ifc_rel_defines_by_type(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_type << ")";
+		return os << "Ifc_rel_defines_by_type(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_type << ")";
 	}
-}
+};
 
-struct Ifc_rel_fills_element : IfcRelConnects {
+struct Ifc_rel_fills_element : Ifc_rel_connects {
 	Ifc_opening_element *relating_opening_element;
 	Ifc_building_element *related_building_element;
 
@@ -3656,9 +3656,9 @@ struct Ifc_rel_fills_element : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_fills_element &o) {
 		return os << "Ifc_rel_fills_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_opening_element << ", " << o.related_building_element << ")";
 	}
-}
+};
 
-struct Ifc_rel_flow_control_elements : IfcRelConnects {
+struct Ifc_rel_flow_control_elements : Ifc_rel_connects {
 	std::vector<Ifc_control_element *> related_control_elements;
 	Ifc_distribution_flow_element *relating_flow_element;
 
@@ -3666,11 +3666,11 @@ struct Ifc_rel_flow_control_elements : IfcRelConnects {
 		entity = "Ifc_rel_flow_control_elements";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_flow_control_elements &o) {
-		return os << "Ifc_rel_flow_control_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_control_elements << ", " << o.relating_flow_element << ")";
+		return os << "Ifc_rel_flow_control_elements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_control_elements.size() << ")" << ", " << o.relating_flow_element << ")";
 	}
-}
+};
 
-struct Ifc_rel_interaction_requirements : IfcRelConnects {
+struct Ifc_rel_interaction_requirements : Ifc_rel_connects {
 	Ifc_count_measure daily_interaction;
 	Ifc_normalised_ratio_measure importance_rating;
 	Ifc_spatial_structure_element *location_of_interaction;
@@ -3685,9 +3685,9 @@ struct Ifc_rel_interaction_requirements : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_interaction_requirements &o) {
 		return os << "Ifc_rel_interaction_requirements(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.daily_interaction << ", " << o.importance_rating << ", " << o.location_of_interaction << ", " << o.relating_actor << ", " << o.related_actor << ", " << o.related_space_program << ", " << o.relating_space_program << ")";
 	}
-}
+};
 
-struct Ifc_rel_maintenance_event : IfcRelConnects {
+struct Ifc_rel_maintenance_event : Ifc_rel_connects {
 	std::vector<Ifc_asset *> related_assets;
 	Ifc_maintenance_work_order *relating_work_order;
 
@@ -3695,40 +3695,40 @@ struct Ifc_rel_maintenance_event : IfcRelConnects {
 		entity = "Ifc_rel_maintenance_event";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_maintenance_event &o) {
-		return os << "Ifc_rel_maintenance_event(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_assets << ", " << o.relating_work_order << ")";
+		return os << "Ifc_rel_maintenance_event(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_assets.size() << ")" << ", " << o.relating_work_order << ")";
 	}
-}
+};
 
-struct Ifc_rel_nests : IfcRelDecomposes {
+struct Ifc_rel_nests : Ifc_rel_decomposes {
 	Ifc_rel_nests() {
 		entity = "Ifc_rel_nests";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_nests &o) {
-		return os << "Ifc_rel_nests(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << o.related_objects << ")";
+		return os << "Ifc_rel_nests(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << "vector(" << o.related_objects.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_occupies_spaces : IfcRelAssignsToActor {
+struct Ifc_rel_occupies_spaces : Ifc_rel_assigns_to_actor {
 	Ifc_rel_occupies_spaces() {
 		entity = "Ifc_rel_occupies_spaces";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_occupies_spaces &o) {
-		return os << "Ifc_rel_occupies_spaces(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_actor << ", " << o.acting_role << ")";
+		return os << "Ifc_rel_occupies_spaces(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_actor << ", " << o.acting_role << ")";
 	}
-}
+};
 
-struct Ifc_rel_overrides_properties : IfcRelDefinesByProperties {
+struct Ifc_rel_overrides_properties : Ifc_rel_defines_by_properties {
 	std::vector<Ifc_property *> overriding_properties;
 
 	Ifc_rel_overrides_properties() {
 		entity = "Ifc_rel_overrides_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_overrides_properties &o) {
-		return os << "Ifc_rel_overrides_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.relating_property_definition << ", " << o.overriding_properties << ")";
+		return os << "Ifc_rel_overrides_properties(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.relating_property_definition << ", " << "vector(" << o.overriding_properties.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_sequence : IfcRelConnects {
+struct Ifc_rel_sequence : Ifc_rel_connects {
 	Ifc_process *relating_process;
 	Ifc_process *related_process;
 	Ifc_time_measure time_lag;
@@ -3740,9 +3740,9 @@ struct Ifc_rel_sequence : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_sequence &o) {
 		return os << "Ifc_rel_sequence(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_process << ", " << o.related_process << ", " << o.time_lag << ", " << o.sequence_type << ")";
 	}
-}
+};
 
-struct Ifc_rel_services_buildings : IfcRelConnects {
+struct Ifc_rel_services_buildings : Ifc_rel_connects {
 	Ifc_system *relating_system;
 	std::vector<Ifc_building *> related_buildings;
 
@@ -3750,11 +3750,11 @@ struct Ifc_rel_services_buildings : IfcRelConnects {
 		entity = "Ifc_rel_services_buildings";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_services_buildings &o) {
-		return os << "Ifc_rel_services_buildings(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_system << ", " << o.related_buildings << ")";
+		return os << "Ifc_rel_services_buildings(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_system << ", " << "vector(" << o.related_buildings.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_space_boundary : IfcRelConnects {
+struct Ifc_rel_space_boundary : Ifc_rel_connects {
 	Ifc_space *relating_space;
 	Ifc_building_element *related_building_element;
 	Ifc_connection_surface_geometry *connection_geometry;
@@ -3767,9 +3767,9 @@ struct Ifc_rel_space_boundary : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_space_boundary &o) {
 		return os << "Ifc_rel_space_boundary(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_space << ", " << o.related_building_element << ", " << o.connection_geometry << ", " << o.physical_or_virtual_boundary << ", " << o.internal_or_external_boundary << ")";
 	}
-}
+};
 
-struct Ifc_rel_uses_resource : IfcRelAssignsToResource {
+struct Ifc_rel_uses_resource : Ifc_rel_assigns_to_resource {
 	Ifc_time_measure duration;
 	Ifc_measure_with_unit *quantity;
 	Ifc_measure_with_unit *productivity_conversion_rate;
@@ -3781,11 +3781,11 @@ struct Ifc_rel_uses_resource : IfcRelAssignsToResource {
 		entity = "Ifc_rel_uses_resource";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_uses_resource &o) {
-		return os << "Ifc_rel_uses_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_resource << ", " << o.duration << ", " << o.quantity << ", " << o.productivity_conversion_rate << ", " << o.converter_multiplier_or_divider << ", " << o.resource_use_costs << ", " << o.waste_factor << ")";
+		return os << "Ifc_rel_uses_resource(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_resource << ", " << o.duration << ", " << o.quantity << ", " << o.productivity_conversion_rate << ", " << o.converter_multiplier_or_divider << ", " << "vector(" << o.resource_use_costs.size() << ")" << ", " << o.waste_factor << ")";
 	}
-}
+};
 
-struct Ifc_rel_voids_element : IfcRelConnects {
+struct Ifc_rel_voids_element : Ifc_rel_connects {
 	Ifc_building_element *relating_building_element;
 	Ifc_opening_element *related_opening_element;
 
@@ -3795,9 +3795,9 @@ struct Ifc_rel_voids_element : IfcRelConnects {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_voids_element &o) {
 		return os << "Ifc_rel_voids_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_building_element << ", " << o.related_opening_element << ")";
 	}
-}
+};
 
-struct Ifc_revolved_area_solid : IfcSweptAreaSolid {
+struct Ifc_revolved_area_solid : Ifc_swept_area_solid {
 	Ifc_axis_1_placement *axis;
 	Ifc_plane_angle_measure *angle;
 
@@ -3807,9 +3807,9 @@ struct Ifc_revolved_area_solid : IfcSweptAreaSolid {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_revolved_area_solid &o) {
 		return os << "Ifc_revolved_area_solid(" << o.swept_area << ", " << o.position << ", " << o.axis << ", " << o.angle << ")";
 	}
-}
+};
 
-struct Ifc_schedule_time_control : IfcControl {
+struct Ifc_schedule_time_control : Ifc_control {
 	Ifc_calendar_date *actual_start;
 	Ifc_calendar_date *early_start;
 	Ifc_calendar_date *late_start;
@@ -3835,9 +3835,9 @@ struct Ifc_schedule_time_control : IfcControl {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_schedule_time_control &o) {
 		return os << "Ifc_schedule_time_control(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.actual_start << ", " << o.early_start << ", " << o.late_start << ", " << o.schedule_start << ", " << o.actual_finish << ", " << o.early_finish << ", " << o.late_finish << ", " << o.schedule_finish << ", " << o.schedule_duration << ", " << o.actual_duration << ", " << o.remaining_time << ", " << o.free_float << ", " << o.total_float << ", " << o.is_critical << ", " << o.status_time << ", " << o.start_float << ", " << o.finish_float << ", " << o.completion << ")";
 	}
-}
+};
 
-struct Ifc_site : IfcSpatialStructureElement {
+struct Ifc_site : Ifc_spatial_structure_element {
 	Ifc_compound_plane_angle_measure ref_latitude;
 	Ifc_compound_plane_angle_measure ref_longitude;
 	Ifc_length_measure ref_elevation;
@@ -3850,9 +3850,9 @@ struct Ifc_site : IfcSpatialStructureElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_site &o) {
 		return os << "Ifc_site(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.ref_latitude << ", " << o.ref_longitude << ", " << o.ref_elevation << ", " << o.land_title_number << ", " << o.site_address << ")";
 	}
-}
+};
 
-struct Ifc_space : IfcSpatialStructureElement {
+struct Ifc_space : Ifc_spatial_structure_element {
 	Ifc_internal_or_external_enum interior_or_exterior_space;
 	Ifc_length_measure elevation_with_flooring;
 
@@ -3862,9 +3862,9 @@ struct Ifc_space : IfcSpatialStructureElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_space &o) {
 		return os << "Ifc_space(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.interior_or_exterior_space << ", " << o.elevation_with_flooring << ")";
 	}
-}
+};
 
-struct Ifc_space_program : IfcControl {
+struct Ifc_space_program : Ifc_control {
 	Ifc_identifier space_program_identifier;
 	Ifc_area_measure max_required_area;
 	Ifc_area_measure min_required_area;
@@ -3879,9 +3879,9 @@ struct Ifc_space_program : IfcControl {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_space_program &o) {
 		return os << "Ifc_space_program(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.space_program_identifier << ", " << o.max_required_area << ", " << o.min_required_area << ", " << o.requested_location << ", " << o.min_estimated_cost << ", " << o.max_estimated_cost << ", " << o.standard_required_area << ")";
 	}
-}
+};
 
-struct Ifc_space_program_group : IfcGroup {
+struct Ifc_space_program_group : Ifc_group {
 	Ifc_area_measure required_group_area;
 	Ifc_label group_role;
 	Ifc_actor_select *group_assignment;
@@ -3892,9 +3892,9 @@ struct Ifc_space_program_group : IfcGroup {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_space_program_group &o) {
 		return os << "Ifc_space_program_group(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.required_group_area << ", " << o.group_role << ", " << o.group_assignment << ")";
 	}
-}
+};
 
-struct Ifc_surface_of_linear_extrusion : IfcSweptSurface {
+struct Ifc_surface_of_linear_extrusion : Ifc_swept_surface {
 	Ifc_direction *extruded_direction;
 	Ifc_length_measure *depth;
 
@@ -3904,9 +3904,9 @@ struct Ifc_surface_of_linear_extrusion : IfcSweptSurface {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_of_linear_extrusion &o) {
 		return os << "Ifc_surface_of_linear_extrusion(" << o.swept_curve << ", " << o.position << ", " << o.extruded_direction << ", " << o.depth << ")";
 	}
-}
+};
 
-struct Ifc_surface_of_revolution : IfcSweptSurface {
+struct Ifc_surface_of_revolution : Ifc_swept_surface {
 	Ifc_axis_1_placement *axis_position;
 
 	Ifc_surface_of_revolution() {
@@ -3915,9 +3915,9 @@ struct Ifc_surface_of_revolution : IfcSweptSurface {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_of_revolution &o) {
 		return os << "Ifc_surface_of_revolution(" << o.swept_curve << ", " << o.position << ", " << o.axis_position << ")";
 	}
-}
+};
 
-struct Ifc_surface_rendering_properties : IfcSurfaceShadingProperties {
+struct Ifc_surface_rendering_properties : Ifc_surface_shading_properties {
 	Ifc_normalised_ratio_measure ambient_intensity;
 	Ifc_color_r_g_b diffuse_color;
 	Ifc_normalised_ratio_measure transparency;
@@ -3931,27 +3931,27 @@ struct Ifc_surface_rendering_properties : IfcSurfaceShadingProperties {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_rendering_properties &o) {
 		return os << "Ifc_surface_rendering_properties(" << o.usage_identifier << ", " << o.ambient_color << ", " << o.ambient_intensity << ", " << o.diffuse_color << ", " << o.transparency << ", " << o.emmisive_color << ", " << o.specular_intensity << ", " << o.specular_color << ")";
 	}
-}
+};
 
-struct Ifc_system : IfcGroup {
+struct Ifc_system : Ifc_group {
 	Ifc_system() {
 		entity = "Ifc_system";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_system &o) {
 		return os << "Ifc_system(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ")";
 	}
-}
+};
 
-struct Ifc_system_furniture_element : IfcFurnishingElement {
+struct Ifc_system_furniture_element : Ifc_furnishing_element {
 	Ifc_system_furniture_element() {
 		entity = "Ifc_system_furniture_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_system_furniture_element &o) {
 		return os << "Ifc_system_furniture_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_transport_element : IfcElement {
+struct Ifc_transport_element : Ifc_element {
 	Ifc_transport_element_type_enum operation_type;
 	Ifc_mass_measure capacity_by_weight;
 	Ifc_count_measure capacity_by_number;
@@ -3962,9 +3962,9 @@ struct Ifc_transport_element : IfcElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_transport_element &o) {
 		return os << "Ifc_transport_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.operation_type << ", " << o.capacity_by_weight << ", " << o.capacity_by_number << ")";
 	}
-}
+};
 
-struct Ifc_work_control : IfcControl {
+struct Ifc_work_control : Ifc_control {
 	Ifc_identifier identifier;
 	Ifc_calendar_date *creation_date;
 	std::vector<Ifc_person *> creators;
@@ -3976,9 +3976,9 @@ struct Ifc_work_control : IfcControl {
 	Ifc_work_control_type_enum work_control_type;
 
 	virtual ~Ifc_work_control() {}
-}
+};
 
-struct Ifc_work_order : IfcProjectOrder {
+struct Ifc_work_order : Ifc_project_order {
 	Ifc_label product_description;
 	Ifc_label short_job_description;
 	Ifc_label long_job_description;
@@ -4000,38 +4000,38 @@ struct Ifc_work_order : IfcProjectOrder {
 		entity = "Ifc_work_order";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_work_order &o) {
-		return os << "Ifc_work_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << o.issued_to << ", " << o.additional_contacts << ", " << o.remarks << ", " << o.signoff << ", " << o.budget_source << ", " << o.product_description << ", " << o.short_job_description << ", " << o.long_job_description << ", " << o.work_type_requested << ", " << o.contractual_type << ", " << o.if_not_accomplished << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.actual_start_time << ", " << o.actual_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << o.work_order_risk_type << ", " << o.performed_by << ", " << o.actual_cost << ")";
+		return os << "Ifc_work_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << "vector(" << o.issued_to.size() << ")" << ", " << "vector(" << o.additional_contacts.size() << ")" << ", " << "vector(" << o.remarks.size() << ")" << ", " << o.signoff << ", " << o.budget_source << ", " << o.product_description << ", " << o.short_job_description << ", " << o.long_job_description << ", " << o.work_type_requested << ", " << o.contractual_type << ", " << "vector(" << o.if_not_accomplished.size() << ")" << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.actual_start_time << ", " << o.actual_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << "vector(" << o.work_order_risk_type.size() << ")" << ", " << "vector(" << o.performed_by.size() << ")" << ", " << o.actual_cost << ")";
 	}
-}
+};
 
-struct Ifc_work_plan : IfcWorkControl {
+struct Ifc_work_plan : Ifc_work_control {
 	Ifc_work_plan() {
 		entity = "Ifc_work_plan";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_work_plan &o) {
-		return os << "Ifc_work_plan(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.identifier << ", " << o.creation_date << ", " << o.creators << ", " << o.purpose << ", " << o.duration << ", " << o.total_float << ", " << o.start_time << ", " << o.finish_time << ", " << o.work_control_type << ")";
+		return os << "Ifc_work_plan(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.identifier << ", " << o.creation_date << ", " << "vector(" << o.creators.size() << ")" << ", " << o.purpose << ", " << o.duration << ", " << o.total_float << ", " << o.start_time << ", " << o.finish_time << ", " << o.work_control_type << ")";
 	}
-}
+};
 
-struct Ifc_work_schedule : IfcWorkControl {
+struct Ifc_work_schedule : Ifc_work_control {
 	Ifc_work_schedule() {
 		entity = "Ifc_work_schedule";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_work_schedule &o) {
-		return os << "Ifc_work_schedule(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.identifier << ", " << o.creation_date << ", " << o.creators << ", " << o.purpose << ", " << o.duration << ", " << o.total_float << ", " << o.start_time << ", " << o.finish_time << ", " << o.work_control_type << ")";
+		return os << "Ifc_work_schedule(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.identifier << ", " << o.creation_date << ", " << "vector(" << o.creators.size() << ")" << ", " << o.purpose << ", " << o.duration << ", " << o.total_float << ", " << o.start_time << ", " << o.finish_time << ", " << o.work_control_type << ")";
 	}
-}
+};
 
-struct Ifc_zone : IfcGroup {
+struct Ifc_zone : Ifc_group {
 	Ifc_zone() {
 		entity = "Ifc_zone";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_zone &o) {
 		return os << "Ifc_zone(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ")";
 	}
-}
+};
 
-struct Ifc_approval_usage : IfcControl {
+struct Ifc_approval_usage : Ifc_control {
 	Ifc_approval *approval;
 
 	Ifc_approval_usage() {
@@ -4040,9 +4040,9 @@ struct Ifc_approval_usage : IfcControl {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_approval_usage &o) {
 		return os << "Ifc_approval_usage(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.approval << ")";
 	}
-}
+};
 
-struct Ifc_assessory : IfcEquipmentElement {
+struct Ifc_assessory : Ifc_equipment_element {
 	Ifc_label mounting_type;
 
 	Ifc_assessory() {
@@ -4051,9 +4051,9 @@ struct Ifc_assessory : IfcEquipmentElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_assessory &o) {
 		return os << "Ifc_assessory(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.mounting_type << ")";
 	}
-}
+};
 
-struct Ifc_asset : IfcGroup {
+struct Ifc_asset : Ifc_group {
 	Ifc_spatial_structure_element *asset_location;
 	Ifc_label asset_identifier;
 	std::vector<Ifc_risk_type_enum> asset_risks;
@@ -4076,24 +4076,24 @@ struct Ifc_asset : IfcGroup {
 		entity = "Ifc_asset";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_asset &o) {
-		return os << "Ifc_asset(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.asset_location << ", " << o.asset_identifier << ", " << o.asset_risks << ", " << o.original_value << ", " << o.current_value << ", " << o.total_replacement_cost << ", " << o.owner << ", " << o.user << ", " << o.leased_from << ", " << o.leased_to << ", " << o.responsible_person << ", " << o.incorporation_date << ", " << o.commissioning_date << ", " << o.warranty_duration << ", " << o.expected_life << ", " << o.operating_function << ", " << o.depreciated_value << ")";
+		return os << "Ifc_asset(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.asset_location << ", " << o.asset_identifier << ", " << "vector(" << o.asset_risks.size() << ")" << ", " << o.original_value << ", " << o.current_value << ", " << o.total_replacement_cost << ", " << o.owner << ", " << o.user << ", " << o.leased_from << ", " << o.leased_to << ", " << o.responsible_person << ", " << o.incorporation_date << ", " << o.commissioning_date << ", " << o.warranty_duration << ", " << o.expected_life << ", " << o.operating_function << ", " << o.depreciated_value << ")";
 	}
-}
+};
 
-struct Ifc_boolean_clipping_result : IfcBooleanResult {
+struct Ifc_boolean_clipping_result : Ifc_boolean_result {
 	Ifc_boolean_clipping_result() {
 		entity = "Ifc_boolean_clipping_result";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_clipping_result &o) {
 		return os << "Ifc_boolean_clipping_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
-}
+};
 
-struct Ifc_bounded_curve : IfcCurve {
+struct Ifc_bounded_curve : Ifc_curve {
 	virtual ~Ifc_bounded_curve() {}
-}
+};
 
-struct Ifc_budget : IfcCostSchedule {
+struct Ifc_budget : Ifc_cost_schedule {
 	Ifc_label budget_source;
 	Ifc_cost_value *balance;
 
@@ -4101,15 +4101,15 @@ struct Ifc_budget : IfcCostSchedule {
 		entity = "Ifc_budget";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_budget &o) {
-		return os << "Ifc_budget(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.title << ", " << o.submitted_by << ", " << o.approved_by << ", " << o.prepared_by << ", " << o.submitted_on << ", " << o.total_cost << ", " << o.cost_elements << ", " << o.status << ", " << o.intended_use << ", " << o.comments << ", " << o.target_users << ", " << o.valid_from_date << ", " << o.valid_to_date << ", " << o.update_date << ", " << o.schedule_number << ", " << o.budget_source << ", " << o.balance << ")";
+		return os << "Ifc_budget(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.title << ", " << o.submitted_by << ", " << "vector(" << o.approved_by.size() << ")" << ", " << o.prepared_by << ", " << o.submitted_on << ", " << o.total_cost << ", " << "vector(" << o.cost_elements.size() << ")" << ", " << o.status << ", " << o.intended_use << ", " << "vector(" << o.comments.size() << ")" << ", " << "vector(" << o.target_users.size() << ")" << ", " << o.valid_from_date << ", " << o.valid_to_date << ", " << o.update_date << ", " << o.schedule_number << ", " << o.budget_source << ", " << o.balance << ")";
 	}
-}
+};
 
-struct Ifc_building_element : IfcElement {
+struct Ifc_building_element : Ifc_element {
 	virtual ~Ifc_building_element() {}
-}
+};
 
-struct Ifc_building_element_proxy : IfcBuildingElement {
+struct Ifc_building_element_proxy : Ifc_building_element {
 	Ifc_element_composition_enum composition_type;
 
 	Ifc_building_element_proxy() {
@@ -4118,9 +4118,9 @@ struct Ifc_building_element_proxy : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_building_element_proxy &o) {
 		return os << "Ifc_building_element_proxy(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.composition_type << ")";
 	}
-}
+};
 
-struct Ifc_built_in : IfcFurnishingElement {
+struct Ifc_built_in : Ifc_furnishing_element {
 	Ifc_built_in_type_enum predefined_type;
 
 	Ifc_built_in() {
@@ -4129,9 +4129,9 @@ struct Ifc_built_in : IfcFurnishingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_built_in &o) {
 		return os << "Ifc_built_in(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_c_m_doc_package : IfcGroup {
+struct Ifc_c_m_doc_package : Ifc_group {
 	Ifc_identifier doc_package_i_d;
 	Ifc_label doc_package_name;
 	Ifc_date_time_select *creation_date;
@@ -4141,11 +4141,11 @@ struct Ifc_c_m_doc_package : IfcGroup {
 		entity = "Ifc_c_m_doc_package";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_c_m_doc_package &o) {
-		return os << "Ifc_c_m_doc_package(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.doc_package_i_d << ", " << o.doc_package_name << ", " << o.creation_date << ", " << o.authors << ")";
+		return os << "Ifc_c_m_doc_package(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.doc_package_i_d << ", " << o.doc_package_name << ", " << o.creation_date << ", " << "vector(" << o.authors.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_change_order : IfcProjectOrder {
+struct Ifc_change_order : Ifc_project_order {
 	Ifc_text change_description;
 	Ifc_text reason_for_change;
 	Ifc_date_and_time *requested_start_time;
@@ -4160,20 +4160,20 @@ struct Ifc_change_order : IfcProjectOrder {
 		entity = "Ifc_change_order";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_change_order &o) {
-		return os << "Ifc_change_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << o.issued_to << ", " << o.additional_contacts << ", " << o.remarks << ", " << o.signoff << ", " << o.budget_source << ", " << o.change_description << ", " << o.reason_for_change << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << o.actual_start_time << ", " << o.actual_finish_time << ")";
+		return os << "Ifc_change_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << "vector(" << o.issued_to.size() << ")" << ", " << "vector(" << o.additional_contacts.size() << ")" << ", " << "vector(" << o.remarks.size() << ")" << ", " << o.signoff << ", " << o.budget_source << ", " << o.change_description << ", " << o.reason_for_change << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << o.actual_start_time << ", " << o.actual_finish_time << ")";
 	}
-}
+};
 
-struct Ifc_column : IfcBuildingElement {
+struct Ifc_column : Ifc_building_element {
 	Ifc_column() {
 		entity = "Ifc_column";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_column &o) {
 		return os << "Ifc_column(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_compartment : IfcZone {
+struct Ifc_compartment : Ifc_zone {
 	int has_natural_ventilation;
 	int has_sprinkler_protection;
 	int fire_risk_factor;
@@ -4184,9 +4184,9 @@ struct Ifc_compartment : IfcZone {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_compartment &o) {
 		return os << "Ifc_compartment(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.has_natural_ventilation << ", " << o.has_sprinkler_protection << ", " << o.fire_risk_factor << ")";
 	}
-}
+};
 
-struct Ifc_composite_curve : IfcBoundedCurve {
+struct Ifc_composite_curve : Ifc_bounded_curve {
 	std::vector<Ifc_composite_curve_segment *> segments;
 	int self_intersect;
 
@@ -4194,17 +4194,17 @@ struct Ifc_composite_curve : IfcBoundedCurve {
 		entity = "Ifc_composite_curve";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_composite_curve &o) {
-		return os << "Ifc_composite_curve(" << o.segments << ", " << o.self_intersect << ")";
+		return os << "Ifc_composite_curve(" << "vector(" << o.segments.size() << ")" << ", " << o.self_intersect << ")";
 	}
-}
+};
 
-struct Ifc_conic : IfcCurve {
+struct Ifc_conic : Ifc_curve {
 	Ifc_axis_2_placement *position;
 
 	virtual ~Ifc_conic() {}
-}
+};
 
-struct Ifc_constraint_usage : IfcControl {
+struct Ifc_constraint_usage : Ifc_control {
 	Ifc_constraint_intent_enum intent;
 	Ifc_constraint *constraint;
 
@@ -4214,9 +4214,9 @@ struct Ifc_constraint_usage : IfcControl {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_constraint_usage &o) {
 		return os << "Ifc_constraint_usage(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.intent << ", " << o.constraint << ")";
 	}
-}
+};
 
-struct Ifc_covering : IfcBuildingElement {
+struct Ifc_covering : Ifc_building_element {
 	Ifc_covering_type_enum predefined_type;
 
 	Ifc_covering() {
@@ -4225,18 +4225,18 @@ struct Ifc_covering : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_covering &o) {
 		return os << "Ifc_covering(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_curtain_wall : IfcBuildingElement {
+struct Ifc_curtain_wall : Ifc_building_element {
 	Ifc_curtain_wall() {
 		entity = "Ifc_curtain_wall";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_curtain_wall &o) {
 		return os << "Ifc_curtain_wall(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_discrete_element : IfcEquipmentElement {
+struct Ifc_discrete_element : Ifc_equipment_element {
 	Ifc_discrete_element_type_enum predefined_type;
 
 	Ifc_discrete_element() {
@@ -4245,18 +4245,18 @@ struct Ifc_discrete_element : IfcEquipmentElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_discrete_element &o) {
 		return os << "Ifc_discrete_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_distribution_element : IfcElement {
+struct Ifc_distribution_element : Ifc_element {
 	Ifc_distribution_element() {
 		entity = "Ifc_distribution_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_distribution_element &o) {
 		return os << "Ifc_distribution_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_distribution_flow_element : IfcDistributionElement {
+struct Ifc_distribution_flow_element : Ifc_distribution_element {
 	Ifc_distribution_flow_element_type_enum flow_element_type;
 
 	Ifc_distribution_flow_element() {
@@ -4265,9 +4265,9 @@ struct Ifc_distribution_flow_element : IfcDistributionElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_distribution_flow_element &o) {
 		return os << "Ifc_distribution_flow_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ")";
 	}
-}
+};
 
-struct Ifc_door : IfcBuildingElement {
+struct Ifc_door : Ifc_building_element {
 	Ifc_positive_length_measure overall_height;
 	Ifc_positive_length_measure overall_width;
 
@@ -4277,18 +4277,18 @@ struct Ifc_door : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_door &o) {
 		return os << "Ifc_door(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.overall_height << ", " << o.overall_width << ")";
 	}
-}
+};
 
-struct Ifc_electrical_element : IfcElement {
+struct Ifc_electrical_element : Ifc_element {
 	Ifc_electrical_element() {
 		entity = "Ifc_electrical_element";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_electrical_element &o) {
 		return os << "Ifc_electrical_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_ellipse : IfcConic {
+struct Ifc_ellipse : Ifc_conic {
 	Ifc_positive_length_measure *semi_axis_1;
 	Ifc_positive_length_measure *semi_axis_2;
 
@@ -4298,38 +4298,38 @@ struct Ifc_ellipse : IfcConic {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_ellipse &o) {
 		return os << "Ifc_ellipse(" << o.position << ", " << o.semi_axis_1 << ", " << o.semi_axis_2 << ")";
 	}
-}
+};
 
-struct Ifc_faceted_brep : IfcManifoldSolidBrep {
+struct Ifc_faceted_brep : Ifc_manifold_solid_brep {
 	Ifc_faceted_brep() {
 		entity = "Ifc_faceted_brep";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_faceted_brep &o) {
 		return os << "Ifc_faceted_brep(" << o.outer << ")";
 	}
-}
+};
 
-struct Ifc_faceted_brep_with_voids : IfcManifoldSolidBrep {
+struct Ifc_faceted_brep_with_voids : Ifc_manifold_solid_brep {
 	std::vector<Ifc_closed_shell *> voids;
 
 	Ifc_faceted_brep_with_voids() {
 		entity = "Ifc_faceted_brep_with_voids";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_faceted_brep_with_voids &o) {
-		return os << "Ifc_faceted_brep_with_voids(" << o.outer << ", " << o.voids << ")";
+		return os << "Ifc_faceted_brep_with_voids(" << o.outer << ", " << "vector(" << o.voids.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_flow_controller : IfcDistributionFlowElement {
+struct Ifc_flow_controller : Ifc_distribution_flow_element {
 	Ifc_flow_controller() {
 		entity = "Ifc_flow_controller";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_flow_controller &o) {
 		return os << "Ifc_flow_controller(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ")";
 	}
-}
+};
 
-struct Ifc_flow_fitting : IfcDistributionFlowElement {
+struct Ifc_flow_fitting : Ifc_distribution_flow_element {
 	Ifc_flow_fitting_type_enum predefined_type;
 	Ifc_primary_fitting_enum primary_fitting_type;
 
@@ -4339,9 +4339,9 @@ struct Ifc_flow_fitting : IfcDistributionFlowElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_flow_fitting &o) {
 		return os << "Ifc_flow_fitting(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.predefined_type << ", " << o.primary_fitting_type << ")";
 	}
-}
+};
 
-struct Ifc_flow_segment : IfcDistributionFlowElement {
+struct Ifc_flow_segment : Ifc_distribution_flow_element {
 	Ifc_flow_segment_type_enum predefined_type;
 
 	Ifc_flow_segment() {
@@ -4350,18 +4350,18 @@ struct Ifc_flow_segment : IfcDistributionFlowElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_flow_segment &o) {
 		return os << "Ifc_flow_segment(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_flow_terminal : IfcDistributionFlowElement {
+struct Ifc_flow_terminal : Ifc_distribution_flow_element {
 	Ifc_flow_terminal() {
 		entity = "Ifc_flow_terminal";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_flow_terminal &o) {
 		return os << "Ifc_flow_terminal(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ")";
 	}
-}
+};
 
-struct Ifc_fluid_moving_device : IfcDistributionFlowElement {
+struct Ifc_fluid_moving_device : Ifc_distribution_flow_element {
 	Ifc_energy_source_enum primary_energy_source;
 	Ifc_length_measure impeller_diameter;
 
@@ -4371,9 +4371,9 @@ struct Ifc_fluid_moving_device : IfcDistributionFlowElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_fluid_moving_device &o) {
 		return os << "Ifc_fluid_moving_device(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.primary_energy_source << ", " << o.impeller_diameter << ")";
 	}
-}
+};
 
-struct Ifc_heat_transfer_device : IfcDistributionFlowElement {
+struct Ifc_heat_transfer_device : Ifc_distribution_flow_element {
 	Ifc_power_measure heat_transfer_rate;
 	Ifc_positive_ratio_measure thermal_efficiency;
 	Ifc_energy_source_enum primary_energy_source;
@@ -4384,9 +4384,9 @@ struct Ifc_heat_transfer_device : IfcDistributionFlowElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_heat_transfer_device &o) {
 		return os << "Ifc_heat_transfer_device(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ")";
 	}
-}
+};
 
-struct Ifc_hydronic_heater : IfcFlowTerminal {
+struct Ifc_hydronic_heater : Ifc_flow_terminal {
 	Ifc_hydronic_heater_type_enum hydronic_heater_type;
 	Ifc_power_measure heat_output;
 	Ifc_label enclosure;
@@ -4400,9 +4400,9 @@ struct Ifc_hydronic_heater : IfcFlowTerminal {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_hydronic_heater &o) {
 		return os << "Ifc_hydronic_heater(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.hydronic_heater_type << ", " << o.heat_output << ", " << o.enclosure << ", " << o.body_mass << ", " << o.number_of_panels << ", " << o.number_of_sections << ")";
 	}
-}
+};
 
-struct Ifc_light_fixture : IfcElectricalElement {
+struct Ifc_light_fixture : Ifc_electrical_element {
 	Ifc_power_measure maximum_space_sensible_load;
 	Ifc_power_measure maximum_plenum_sensible_load__;
 	Ifc_positive_ratio_measure sensible_load_to_radiant;
@@ -4413,9 +4413,9 @@ struct Ifc_light_fixture : IfcElectricalElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_light_fixture &o) {
 		return os << "Ifc_light_fixture(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.maximum_space_sensible_load << ", " << o.maximum_plenum_sensible_load__ << ", " << o.sensible_load_to_radiant << ")";
 	}
-}
+};
 
-struct Ifc_maintenance_work_order : IfcWorkOrder {
+struct Ifc_maintenance_work_order : Ifc_work_order {
 	std::vector<Ifc_label> spares_tools_equipment_consumables;
 	Ifc_maintenance_type_enum maintenance_type;
 	Ifc_priority_enum fault_priority;
@@ -4429,11 +4429,11 @@ struct Ifc_maintenance_work_order : IfcWorkOrder {
 		entity = "Ifc_maintenance_work_order";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_maintenance_work_order &o) {
-		return os << "Ifc_maintenance_work_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << o.issued_to << ", " << o.additional_contacts << ", " << o.remarks << ", " << o.signoff << ", " << o.budget_source << ", " << o.product_description << ", " << o.short_job_description << ", " << o.long_job_description << ", " << o.work_type_requested << ", " << o.contractual_type << ", " << o.if_not_accomplished << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.actual_start_time << ", " << o.actual_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << o.work_order_risk_type << ", " << o.performed_by << ", " << o.actual_cost << ", " << o.spares_tools_equipment_consumables << ", " << o.maintenance_type << ", " << o.fault_priority << ", " << o.location_priority << ", " << o.asset_downtime << ", " << o.scheduled_frequency << ", " << o.required_response_time << ", " << o.lead_craft << ")";
+		return os << "Ifc_maintenance_work_order(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.order_number << ", " << o.transaction_code << ", " << o.issuing_date << ", " << o.issued_by << ", " << "vector(" << o.issued_to.size() << ")" << ", " << "vector(" << o.additional_contacts.size() << ")" << ", " << "vector(" << o.remarks.size() << ")" << ", " << o.signoff << ", " << o.budget_source << ", " << o.product_description << ", " << o.short_job_description << ", " << o.long_job_description << ", " << o.work_type_requested << ", " << o.contractual_type << ", " << "vector(" << o.if_not_accomplished.size() << ")" << ", " << o.requested_start_time << ", " << o.requested_finish_time << ", " << o.actual_start_time << ", " << o.actual_finish_time << ", " << o.cost_estimate << ", " << o.work_plan << ", " << o.status << ", " << "vector(" << o.work_order_risk_type.size() << ")" << ", " << "vector(" << o.performed_by.size() << ")" << ", " << o.actual_cost << ", " << "vector(" << o.spares_tools_equipment_consumables.size() << ")" << ", " << o.maintenance_type << ", " << o.fault_priority << ", " << o.location_priority << ", " << o.asset_downtime << ", " << o.scheduled_frequency << ", " << o.required_response_time << ", " << o.lead_craft << ")";
 	}
-}
+};
 
-struct Ifc_outlet : IfcElectricalElement {
+struct Ifc_outlet : Ifc_electrical_element {
 	Ifc_outlet_type_enum outlet_type;
 
 	Ifc_outlet() {
@@ -4442,20 +4442,20 @@ struct Ifc_outlet : IfcElectricalElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_outlet &o) {
 		return os << "Ifc_outlet(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.outlet_type << ")";
 	}
-}
+};
 
-struct Ifc_polyline : IfcBoundedCurve {
+struct Ifc_polyline : Ifc_bounded_curve {
 	std::vector<Ifc_cartesian_point *> points;
 
 	Ifc_polyline() {
 		entity = "Ifc_polyline";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_polyline &o) {
-		return os << "Ifc_polyline(" << o.points << ")";
+		return os << "Ifc_polyline(" << "vector(" << o.points.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_pump : IfcFluidMovingDevice {
+struct Ifc_pump : Ifc_fluid_moving_device {
 	Ifc_pump_type_enum pump_type;
 	Ifc_pressure_measure net_positive_suction_head;
 	Ifc_material_select *impeller_seal_material;
@@ -4468,9 +4468,9 @@ struct Ifc_pump : IfcFluidMovingDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_pump &o) {
 		return os << "Ifc_pump(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.primary_energy_source << ", " << o.impeller_diameter << ", " << o.pump_type << ", " << o.net_positive_suction_head << ", " << o.impeller_seal_material << ", " << o.pump_base_type << ", " << o.motor_drive_type << ")";
 	}
-}
+};
 
-struct Ifc_railing : IfcBuildingElement {
+struct Ifc_railing : Ifc_building_element {
 	Ifc_railing_type_enum predefined_type;
 
 	Ifc_railing() {
@@ -4479,9 +4479,9 @@ struct Ifc_railing : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_railing &o) {
 		return os << "Ifc_railing(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_ramp : IfcBuildingElement {
+struct Ifc_ramp : Ifc_building_element {
 	Ifc_ramp_type_enum shape_type;
 
 	Ifc_ramp() {
@@ -4490,27 +4490,27 @@ struct Ifc_ramp : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_ramp &o) {
 		return os << "Ifc_ramp(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.shape_type << ")";
 	}
-}
+};
 
-struct Ifc_ramp_flight : IfcBuildingElement {
+struct Ifc_ramp_flight : Ifc_building_element {
 	Ifc_ramp_flight() {
 		entity = "Ifc_ramp_flight";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_ramp_flight &o) {
 		return os << "Ifc_ramp_flight(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_rel_aggregates : IfcRelDecomposes {
+struct Ifc_rel_aggregates : Ifc_rel_decomposes {
 	Ifc_rel_aggregates() {
 		entity = "Ifc_rel_aggregates";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_aggregates &o) {
-		return os << "Ifc_rel_aggregates(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << o.related_objects << ")";
+		return os << "Ifc_rel_aggregates(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << "vector(" << o.related_objects.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_aggregates_resources : IfcRelAggregates {
+struct Ifc_rel_aggregates_resources : Ifc_rel_aggregates {
 	Ifc_physical_quantity *required_quantity;
 	Ifc_measure_with_unit *conversion_rate;
 
@@ -4518,11 +4518,11 @@ struct Ifc_rel_aggregates_resources : IfcRelAggregates {
 		entity = "Ifc_rel_aggregates_resources";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_aggregates_resources &o) {
-		return os << "Ifc_rel_aggregates_resources(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << o.related_objects << ", " << o.required_quantity << ", " << o.conversion_rate << ")";
+		return os << "Ifc_rel_aggregates_resources(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.relating_object << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.required_quantity << ", " << o.conversion_rate << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_f_m_standard : IfcRelConnects {
+struct Ifc_rel_assigns_f_m_standard : Ifc_rel_connects {
 	Ifc_label job_function;
 	Ifc_f_m_standard_select *relating_standard;
 	std::vector<Ifc_actor *> related_persons;
@@ -4531,11 +4531,11 @@ struct Ifc_rel_assigns_f_m_standard : IfcRelConnects {
 		entity = "Ifc_rel_assigns_f_m_standard";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_f_m_standard &o) {
-		return os << "Ifc_rel_assigns_f_m_standard(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.job_function << ", " << o.relating_standard << ", " << o.related_persons << ")";
+		return os << "Ifc_rel_assigns_f_m_standard(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.job_function << ", " << o.relating_standard << ", " << "vector(" << o.related_persons.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_rel_assigns_tasks : IfcRelAssignsToControl {
+struct Ifc_rel_assigns_tasks : Ifc_rel_assigns_to_control {
 	Ifc_schedule_time_control *time_for_task;
 	Ifc_task_milestone_enum milestone;
 
@@ -4543,11 +4543,11 @@ struct Ifc_rel_assigns_tasks : IfcRelAssignsToControl {
 		entity = "Ifc_rel_assigns_tasks";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_rel_assigns_tasks &o) {
-		return os << "Ifc_rel_assigns_tasks(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.related_objects << ", " << o.related_objects_type << ", " << o.relating_control << ", " << o.time_for_task << ", " << o.milestone << ")";
+		return os << "Ifc_rel_assigns_tasks(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << "vector(" << o.related_objects.size() << ")" << ", " << o.related_objects_type << ", " << o.relating_control << ", " << o.time_for_task << ", " << o.milestone << ")";
 	}
-}
+};
 
-struct Ifc_roof : IfcBuildingElement {
+struct Ifc_roof : Ifc_building_element {
 	Ifc_roof_type_enum shape_type;
 
 	Ifc_roof() {
@@ -4556,9 +4556,9 @@ struct Ifc_roof : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_roof &o) {
 		return os << "Ifc_roof(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.shape_type << ")";
 	}
-}
+};
 
-struct Ifc_sanitary_terminal : IfcFlowTerminal {
+struct Ifc_sanitary_terminal : Ifc_flow_terminal {
 	Ifc_sanitary_terminal_type_enum predefined_type;
 
 	Ifc_sanitary_terminal() {
@@ -4567,9 +4567,9 @@ struct Ifc_sanitary_terminal : IfcFlowTerminal {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_sanitary_terminal &o) {
 		return os << "Ifc_sanitary_terminal(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_slab : IfcBuildingElement {
+struct Ifc_slab : Ifc_building_element {
 	Ifc_slab_type_enum predefined_type;
 
 	Ifc_slab() {
@@ -4578,9 +4578,9 @@ struct Ifc_slab : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_slab &o) {
 		return os << "Ifc_slab(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_stair : IfcBuildingElement {
+struct Ifc_stair : Ifc_building_element {
 	Ifc_stair_type_enum shape_type;
 
 	Ifc_stair() {
@@ -4589,9 +4589,9 @@ struct Ifc_stair : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_stair &o) {
 		return os << "Ifc_stair(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.shape_type << ")";
 	}
-}
+};
 
-struct Ifc_stair_flight : IfcBuildingElement {
+struct Ifc_stair_flight : Ifc_building_element {
 	int number_of_riser;
 	int number_of_treads;
 	Ifc_positive_length_measure riser_height;
@@ -4603,18 +4603,18 @@ struct Ifc_stair_flight : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_stair_flight &o) {
 		return os << "Ifc_stair_flight(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.number_of_riser << ", " << o.number_of_treads << ", " << o.riser_height << ", " << o.tread_length << ")";
 	}
-}
+};
 
-struct Ifc_storage_device : IfcDistributionFlowElement {
+struct Ifc_storage_device : Ifc_distribution_flow_element {
 	Ifc_storage_device() {
 		entity = "Ifc_storage_device";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_storage_device &o) {
 		return os << "Ifc_storage_device(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ")";
 	}
-}
+};
 
-struct Ifc_tank : IfcStorageDevice {
+struct Ifc_tank : Ifc_storage_device {
 	Ifc_volume_measure volume;
 	Ifc_pressure_measure relief_valve_setting;
 	Ifc_pressure_measure charge_pressure;
@@ -4626,18 +4626,18 @@ struct Ifc_tank : IfcStorageDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_tank &o) {
 		return os << "Ifc_tank(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.volume << ", " << o.relief_valve_setting << ", " << o.charge_pressure << ", " << o.pressure_regulator_setting << ")";
 	}
-}
+};
 
-struct Ifc_treatment_device : IfcDistributionFlowElement {
+struct Ifc_treatment_device : Ifc_distribution_flow_element {
 	Ifc_treatment_device() {
 		entity = "Ifc_treatment_device";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_treatment_device &o) {
 		return os << "Ifc_treatment_device(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ")";
 	}
-}
+};
 
-struct Ifc_trimmed_curve : IfcBoundedCurve {
+struct Ifc_trimmed_curve : Ifc_bounded_curve {
 	Ifc_curve *basis_curve;
 	std::vector<Ifc_trimming_select *> trim_1;
 	std::vector<Ifc_trimming_select *> trim_2;
@@ -4648,11 +4648,11 @@ struct Ifc_trimmed_curve : IfcBoundedCurve {
 		entity = "Ifc_trimmed_curve";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_trimmed_curve &o) {
-		return os << "Ifc_trimmed_curve(" << o.basis_curve << ", " << o.trim_1 << ", " << o.trim_2 << ", " << o.sense_agreement << ", " << o.master_representation << ")";
+		return os << "Ifc_trimmed_curve(" << o.basis_curve << ", " << "vector(" << o.trim_1.size() << ")" << ", " << "vector(" << o.trim_2.size() << ")" << ", " << o.sense_agreement << ", " << o.master_representation << ")";
 	}
-}
+};
 
-struct Ifc_tube_bundle : IfcHeatTransferDevice {
+struct Ifc_tube_bundle : Ifc_heat_transfer_device {
 	Ifc_positive_length_measure tube_size;
 	Ifc_material_select *tube_material;
 	Ifc_positive_length_measure tube_length;
@@ -4672,20 +4672,20 @@ struct Ifc_tube_bundle : IfcHeatTransferDevice {
 		entity = "Ifc_tube_bundle";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_tube_bundle &o) {
-		return os << "Ifc_tube_bundle(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.tube_size << ", " << o.tube_material << ", " << o.tube_length << ", " << o.tube_spacing << ", " << o.tube_fluid_entering_temperature << ", " << o.tube_fluid_leaving_temperature << ", " << o.fin_material << ", " << o.shell_material << ", " << o.fin_spacing << ", " << o.tube_fouling_factor << ", " << o.number_of_tube_circuits << ", " << o.number_of_tube_rows << ", " << o.shell_fluid_leaving_temperature << ", " << o.shell_fluid_entering_temperature << ")";
+		return os << "Ifc_tube_bundle(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.tube_size << ", " << o.tube_material << ", " << o.tube_length << ", " << o.tube_spacing << ", " << "vector(" << o.tube_fluid_entering_temperature.size() << ")" << ", " << "vector(" << o.tube_fluid_leaving_temperature.size() << ")" << ", " << o.fin_material << ", " << o.shell_material << ", " << o.fin_spacing << ", " << o.tube_fouling_factor << ", " << o.number_of_tube_circuits << ", " << o.number_of_tube_rows << ", " << "vector(" << o.shell_fluid_leaving_temperature.size() << ")" << ", " << "vector(" << o.shell_fluid_entering_temperature.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_unit_heater : IfcHeatTransferDevice {
+struct Ifc_unit_heater : Ifc_heat_transfer_device {
 	Ifc_unit_heater() {
 		entity = "Ifc_unit_heater";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_unit_heater &o) {
 		return os << "Ifc_unit_heater(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ")";
 	}
-}
+};
 
-struct Ifc_valve : IfcFlowController {
+struct Ifc_valve : Ifc_flow_controller {
 	Ifc_pressure_measure close_off_rating;
 	Ifc_measure_with_unit *valve_flow_coefficient;
 	Ifc_valve_enum valve_type;
@@ -4696,27 +4696,27 @@ struct Ifc_valve : IfcFlowController {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_valve &o) {
 		return os << "Ifc_valve(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.close_off_rating << ", " << o.valve_flow_coefficient << ", " << o.valve_type << ")";
 	}
-}
+};
 
-struct Ifc_wall : IfcBuildingElement {
+struct Ifc_wall : Ifc_building_element {
 	Ifc_wall() {
 		entity = "Ifc_wall";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_wall &o) {
 		return os << "Ifc_wall(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_wall_standard_case : IfcWall {
+struct Ifc_wall_standard_case : Ifc_wall {
 	Ifc_wall_standard_case() {
 		entity = "Ifc_wall_standard_case";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_wall_standard_case &o) {
 		return os << "Ifc_wall_standard_case(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_window : IfcBuildingElement {
+struct Ifc_window : Ifc_building_element {
 	Ifc_positive_length_measure overall_height;
 	Ifc_positive_length_measure overall_width;
 
@@ -4726,18 +4726,18 @@ struct Ifc_window : IfcBuildingElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_window &o) {
 		return os << "Ifc_window(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.overall_height << ", " << o.overall_width << ")";
 	}
-}
+};
 
-struct Ifc_2_d_composite_curve : IfcCompositeCurve {
+struct Ifc_2_d_composite_curve : Ifc_composite_curve {
 	Ifc_2_d_composite_curve() {
 		entity = "Ifc_2_d_composite_curve";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_2_d_composite_curve &o) {
-		return os << "Ifc_2_d_composite_curve(" << o.segments << ", " << o.self_intersect << ")";
+		return os << "Ifc_2_d_composite_curve(" << "vector(" << o.segments.size() << ")" << ", " << o.self_intersect << ")";
 	}
-}
+};
 
-struct Ifc_air_filter : IfcTreatmentDevice {
+struct Ifc_air_filter : Ifc_treatment_device {
 	Ifc_pressure_measure dirty_pressure_drop;
 	Ifc_pressure_measure clean_pressure_drop;
 	Ifc_ratio_measure efficiency;
@@ -4748,9 +4748,9 @@ struct Ifc_air_filter : IfcTreatmentDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_air_filter &o) {
 		return os << "Ifc_air_filter(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.dirty_pressure_drop << ", " << o.clean_pressure_drop << ", " << o.efficiency << ")";
 	}
-}
+};
 
-struct Ifc_air_terminal : IfcFlowTerminal {
+struct Ifc_air_terminal : Ifc_flow_terminal {
 	Ifc_air_flow_type_enum air_flow_type;
 	Ifc_length_measure throw;
 	Ifc_real air_diffusion_performance_index;
@@ -4769,9 +4769,9 @@ struct Ifc_air_terminal : IfcFlowTerminal {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_air_terminal &o) {
 		return os << "Ifc_air_terminal(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.air_flow_type << ", " << o.throw << ", " << o.air_diffusion_performance_index << ", " << o.finish_type << ", " << o.finish_color << ", " << o.mounting_type << ", " << o.face_type << ", " << o.core_type << ", " << o.core_set_vertical << ", " << o.core_set_horizontal << ", " << o.integral_control << ")";
 	}
-}
+};
 
-struct Ifc_air_terminal_box : IfcFlowController {
+struct Ifc_air_terminal_box : Ifc_flow_controller {
 	Ifc_air_terminal_box_enum terminal_box_type;
 	Ifc_measure_with_unit *sound_level;
 
@@ -4781,18 +4781,18 @@ struct Ifc_air_terminal_box : IfcFlowController {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_air_terminal_box &o) {
 		return os << "Ifc_air_terminal_box(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.terminal_box_type << ", " << o.sound_level << ")";
 	}
-}
+};
 
-struct Ifc_beam : IfcBuildingElement {
+struct Ifc_beam : Ifc_building_element {
 	Ifc_beam() {
 		entity = "Ifc_beam";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_beam &o) {
 		return os << "Ifc_beam(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ")";
 	}
-}
+};
 
-struct Ifc_boiler : IfcHeatTransferDevice {
+struct Ifc_boiler : Ifc_heat_transfer_device {
 	Ifc_boiler_type_enum boiler_type;
 	Ifc_power_measure heat_output;
 	Ifc_pressure_measure pressure_rating;
@@ -4804,9 +4804,9 @@ struct Ifc_boiler : IfcHeatTransferDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boiler &o) {
 		return os << "Ifc_boiler(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.boiler_type << ", " << o.heat_output << ", " << o.pressure_rating << ", " << o.energy_input_rate << ")";
 	}
-}
+};
 
-struct Ifc_chiller : IfcHeatTransferDevice {
+struct Ifc_chiller : Ifc_heat_transfer_device {
 	Ifc_chiller_type_enum chiller_type;
 	Ifc_power_measure nominal_cooling_capacity__;
 
@@ -4816,9 +4816,9 @@ struct Ifc_chiller : IfcHeatTransferDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_chiller &o) {
 		return os << "Ifc_chiller(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.chiller_type << ", " << o.nominal_cooling_capacity__ << ")";
 	}
-}
+};
 
-struct Ifc_circle : IfcConic {
+struct Ifc_circle : Ifc_conic {
 	Ifc_positive_length_measure *radius;
 
 	Ifc_circle() {
@@ -4827,9 +4827,9 @@ struct Ifc_circle : IfcConic {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_circle &o) {
 		return os << "Ifc_circle(" << o.position << ", " << o.radius << ")";
 	}
-}
+};
 
-struct Ifc_coil : IfcFlowTerminal {
+struct Ifc_coil : Ifc_flow_terminal {
 	Ifc_coil_type_enum coil_type;
 	Ifc_ratio_measure bypass_factor;
 	Ifc_linear_velocity_measure face_velocity;
@@ -4841,9 +4841,9 @@ struct Ifc_coil : IfcFlowTerminal {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_coil &o) {
 		return os << "Ifc_coil(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.coil_type << ", " << o.bypass_factor << ", " << o.face_velocity << ", " << o.flow_arrangement << ")";
 	}
-}
+};
 
-struct Ifc_compressor : IfcFluidMovingDevice {
+struct Ifc_compressor : Ifc_fluid_moving_device {
 	Ifc_compressor_type_enum compressor_type;
 	Ifc_boolean hot_gas_bypass;
 
@@ -4853,9 +4853,9 @@ struct Ifc_compressor : IfcFluidMovingDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_compressor &o) {
 		return os << "Ifc_compressor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.primary_energy_source << ", " << o.impeller_diameter << ", " << o.compressor_type << ", " << o.hot_gas_bypass << ")";
 	}
-}
+};
 
-struct Ifc_control_element : IfcDistributionElement {
+struct Ifc_control_element : Ifc_distribution_element {
 	Ifc_label control_element_id;
 
 	Ifc_control_element() {
@@ -4864,18 +4864,18 @@ struct Ifc_control_element : IfcDistributionElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_control_element &o) {
 		return os << "Ifc_control_element(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.control_element_id << ")";
 	}
-}
+};
 
-struct Ifc_controller : IfcControlElement {
+struct Ifc_controller : Ifc_control_element {
 	Ifc_controller() {
 		entity = "Ifc_controller";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_controller &o) {
 		return os << "Ifc_controller(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.control_element_id << ")";
 	}
-}
+};
 
-struct Ifc_cooling_tower : IfcHeatTransferDevice {
+struct Ifc_cooling_tower : Ifc_heat_transfer_device {
 	Ifc_cooling_tower_type_enum cooling_tower_type;
 	std::vector<Ifc_thermodynamic_temperature_measure> ambient_design_temperature;
 
@@ -4883,11 +4883,11 @@ struct Ifc_cooling_tower : IfcHeatTransferDevice {
 		entity = "Ifc_cooling_tower";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_cooling_tower &o) {
-		return os << "Ifc_cooling_tower(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.cooling_tower_type << ", " << o.ambient_design_temperature << ")";
+		return os << "Ifc_cooling_tower(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.cooling_tower_type << ", " << "vector(" << o.ambient_design_temperature.size() << ")" << ")";
 	}
-}
+};
 
-struct Ifc_damper : IfcFlowController {
+struct Ifc_damper : Ifc_flow_controller {
 	Ifc_damper_type_enum predefined_type;
 	Ifc_length_measure frame_depth;
 	Ifc_damper_sizing_method_enum sizing_method;
@@ -4901,9 +4901,9 @@ struct Ifc_damper : IfcFlowController {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_damper &o) {
 		return os << "Ifc_damper(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.predefined_type << ", " << o.frame_depth << ", " << o.sizing_method << ", " << o.close_off_rating << ", " << o.leakage_air_flow_rate << ", " << o.percent_open << ")";
 	}
-}
+};
 
-struct Ifc_electric_motor : IfcElectricalElement {
+struct Ifc_electric_motor : Ifc_electrical_element {
 	Ifc_motor_winding_enum motor_winding_type;
 	Ifc_positive_ratio_measure efficiency;
 	Ifc_power_measure power_output;
@@ -4917,9 +4917,9 @@ struct Ifc_electric_motor : IfcElectricalElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_electric_motor &o) {
 		return os << "Ifc_electric_motor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.motor_winding_type << ", " << o.efficiency << ", " << o.power_output << ", " << o.frame_configuration << ", " << o.insulation_rating__ << ", " << o.motor_housing << ")";
 	}
-}
+};
 
-struct Ifc_electrical_appliance : IfcElectricalElement {
+struct Ifc_electrical_appliance : Ifc_electrical_element {
 	Ifc_electrical_appliance_type_enum appliance_type;
 
 	Ifc_electrical_appliance() {
@@ -4928,9 +4928,9 @@ struct Ifc_electrical_appliance : IfcElectricalElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_electrical_appliance &o) {
 		return os << "Ifc_electrical_appliance(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.appliance_type << ")";
 	}
-}
+};
 
-struct Ifc_fan : IfcFluidMovingDevice {
+struct Ifc_fan : Ifc_fluid_moving_device {
 	Ifc_air_flow_type_enum air_flow_type;
 	Ifc_pressure_measure static_pressure;
 	Ifc_fan_pressure_class_enum fan_pressure_class;
@@ -4955,9 +4955,9 @@ struct Ifc_fan : IfcFluidMovingDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_fan &o) {
 		return os << "Ifc_fan(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.primary_energy_source << ", " << o.impeller_diameter << ", " << o.air_flow_type << ", " << o.static_pressure << ", " << o.fan_pressure_class << ", " << o.fan_wheel_type << ", " << o.wheel_material << ", " << o.wheel_tip_speed << ", " << o.discharge_velocity << ", " << o.housing_material << ", " << o.discharge_pressure_loss << ", " << o.fan_discharge_type << ", " << o.fan_arrangement << ", " << o.fan_rotation << ", " << o.fan_drive_arrangement << ", " << o.drive_power_loss__ << ", " << o.motor_drive_type << ", " << o.motor_in_airstream__ << ", " << o.fan_mounting_type << ")";
 	}
-}
+};
 
-struct Ifc_heat_exchanger : IfcHeatTransferDevice {
+struct Ifc_heat_exchanger : Ifc_heat_transfer_device {
 	Ifc_heat_exchanger_type_enum heat_exchanger_type;
 	Ifc_heat_exchanger_arrangement_enum heat_exchanger_arrangement;
 	Ifc_integer number_of_plates;
@@ -4968,9 +4968,9 @@ struct Ifc_heat_exchanger : IfcHeatTransferDevice {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_heat_exchanger &o) {
 		return os << "Ifc_heat_exchanger(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.heat_transfer_rate << ", " << o.thermal_efficiency << ", " << o.primary_energy_source << ", " << o.heat_exchanger_type << ", " << o.heat_exchanger_arrangement << ", " << o.number_of_plates << ")";
 	}
-}
+};
 
-struct Ifc_sensor : IfcControlElement {
+struct Ifc_sensor : Ifc_control_element {
 	Ifc_sensor_type_enum predefined_type;
 
 	Ifc_sensor() {
@@ -4979,9 +4979,9 @@ struct Ifc_sensor : IfcControlElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_sensor &o) {
 		return os << "Ifc_sensor(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.control_element_id << ", " << o.predefined_type << ")";
 	}
-}
+};
 
-struct Ifc_actuator : IfcControlElement {
+struct Ifc_actuator : Ifc_control_element {
 	Ifc_actuator_type_enum predefined_type;
 	Ifc_actuator_fail_position_enum fail_position;
 
@@ -4991,9 +4991,9 @@ struct Ifc_actuator : IfcControlElement {
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_actuator &o) {
 		return os << "Ifc_actuator(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.control_element_id << ", " << o.predefined_type << ", " << o.fail_position << ")";
 	}
-}
+};
 
-class Ifc_2x_parser {
+class Ifc_2x_schema {
 private:
 	Step_parser step_parser;
 
@@ -5005,4 +5005,4 @@ public:
 	void print_object_info(Ifc *object);
 };
 
-#endif /* Ifc_2x_parser_hpp */
+#endif /* Ifc_2x_schema_hpp */

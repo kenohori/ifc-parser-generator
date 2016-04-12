@@ -20,12 +20,12 @@ namespace phoenix = boost::phoenix;
 
 class Express_parser {
   std::map<std::string, std::string> pod_types;
+  std::set<std::string> reserved_keywords;
   
   unsigned int unparsed_types, unparsed_entities, parsed_entities, unparsed_entity_attributes, parsed_entity_attributes;
   std::map<std::string, std::string> types_code, enumerations_code, selects_code;
   std::map<std::string, std::list<std::string>> dependencies; // key depends on values
-  std::map<std::string, std::list<std::string>> select_types; // key is the subclass of values
-  std::map<std::string, std::list<std::string>> entity_attributes, entity_parsing_attributes; // key has the attributes in values
+  std::map<std::string, std::tuple<std::list<std::string>, std::list<std::string>, std::list<std::string>>> entity_attributes; // name, definition, parser
   std::set<std::string> abstract_entities;
   
   std::string format_attribute(const std::string &ifc_name);

@@ -20,6 +20,7 @@ Express_parser::Express_parser() {
   pod_types["LOGICAL"] = "int";
   pod_types["NUMBER"] = "unsigned int";
   pod_types["BINARY(32)"] = "std::uint32_t";
+  pod_types["BINARY"] = "char *";
 }
 
 std::string Express_parser::format_attribute(const std::string &ifc_name) {
@@ -84,7 +85,7 @@ void Express_parser::parse_type(const std::string &contents) {
   else {
     
     // Try to parse as a pod type
-    auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
+    auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)") | qi::string("BINARY")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
     std::string::iterator type_position = type_definition.begin();
     qi::phrase_parse(type_position, type_definition.end(), pods, qi::space);
     if (type_position == type_definition.end()) {
@@ -231,7 +232,7 @@ void Express_parser::parse_entity(const std::string &contents) {
 
       // Try to parse as pod type
       std::string this_pod = "";
-      auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
+      auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)") | qi::string("BINARY")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
       std::string::iterator attribute_position = current_attribute_definition->begin();
       qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1], qi::space);
       if (attribute_position == current_attribute_definition->end()) {
@@ -356,7 +357,10 @@ void Express_parser::parse_entity(const std::string &contents) {
 //      std::cout << "\tUniques: " << entity_uniques << std::endl;
 //      std::cout << "\tWheres: " << entity_wheres << std::endl;
       ++unparsed_entities;
-    } else return;
+    } else {
+      ++parsed_entities;
+      return;
+    }
   }
 }
 
@@ -390,7 +394,7 @@ void Express_parser::parse_schema(const std::string &contents) {
     else if (s.substr(0, 6) == "ENTITY") parse_entity(s);
   }
   
-  std::cout << "Parsed " << types_code.size() << "/" << types_code.size()+unparsed_types << " types, " << entities_code.size() << "/" << entities_code.size()+unparsed_entities << " entities, " << parsed_entity_attributes << "/" << parsed_entity_attributes+unparsed_entity_attributes << " entity attributes" << "." << std::endl;
+  std::cout << "Parsed " << types_code.size() << "/" << types_code.size()+unparsed_types << " types, " << parsed_entities << "/" << parsed_entities+unparsed_entities << " entities, " << parsed_entity_attributes << "/" << parsed_entity_attributes+unparsed_entity_attributes << " entity attributes" << "." << std::endl;
 }
 
 void Express_parser::parse_express(const std::string &contents) {
@@ -436,6 +440,60 @@ void Express_parser::parse_file(const char *path) {
   in_stream.close();
   
   parse_express(contents);
+}
+
+void Express_parser::generate_hpp(const char *path) {
+  std::ofstream out_stream(path);
   
-//  std::cout << number_of_types << " types, " << number_of_entities << " entities." << std::endl;
+  std::set<std::string> in_output;
+  std::list<std::string> types_to_do;
+  
+  if (!out_stream) {
+    return;
+  }
+  
+  out_stream << "#ifndef Ifc_parser_h\n#define Ifc_parser_h\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\n// Defined types (" << types_code.size() << ")\n";
+  
+  // Types
+  for (auto const &type : types_code) {
+    bool dependencies_met = true;
+    for (auto const &dependency : dependencies[type.first]) {
+      if (in_output.count(dependency) == 0) {
+        dependencies_met = false;
+        break;
+      }
+    } if (dependencies_met) {
+      out_stream << type.second << std::endl;
+      in_output.insert(type.first);
+    } else {
+      types_to_do.push_back(type.first);
+    }
+  } unsigned int max_failed_iterations = 100000;
+  while (!types_to_do.empty() && max_failed_iterations > 0) {
+    bool dependencies_met = true;
+    for (auto const &dependency : dependencies[types_to_do.front()]) {
+      if (in_output.count(dependency) == 0) {
+        dependencies_met = false;
+        break;
+      }
+    } if (dependencies_met) {
+      out_stream << types_code[types_to_do.front()] << std::endl;
+      in_output.insert(types_to_do.front());
+    } else {
+      types_to_do.push_back(types_to_do.front());
+    } types_to_do.pop_front();
+    --max_failed_iterations;
+  } if (!types_to_do.empty()) {
+    std::cout << types_to_do.size() << " type(s) have entity dependencies:" << std::endl;
+    for (auto const &current_item : types_to_do) {
+      std::cout << "\t" << current_item << " as " << types_code[current_item] << std::endl;
+    }
+  }
+  
+  // Enums
+  out_stream << "\n// Enums (" << enumerations_code.size() << ")\n";
+  for (auto const &enumeration : enumerations_code) {
+    out_stream << enumeration.second << std::endl;
+    in_output.insert(enumeration.first);
+  }
 }

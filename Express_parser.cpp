@@ -598,4 +598,95 @@ void Express_parser::generate_hpp(const char *path) {
       std::cout << "\t" << current_item << std::endl;
     }
   }
+  
+  // Types with entity dependencies
+  if (!types_to_do.empty()) {
+    out_stream << "// Types with entity dependencies (" << types_to_do.size() << ")\n";
+    max_failed_iterations = 100000;
+    while (!types_to_do.empty() && max_failed_iterations > 0) {
+      bool dependencies_met = true;
+      for (auto const &dependency : dependencies[types_to_do.front()]) {
+        if (in_output.count(dependency) == 0) {
+          dependencies_met = false;
+          break;
+        }
+      } if (dependencies_met) {
+        out_stream << types_code[types_to_do.front()] << std::endl;
+        in_output.insert(types_to_do.front());
+      } else {
+        types_to_do.push_back(types_to_do.front());
+      } types_to_do.pop_front();
+      --max_failed_iterations;
+    } if (!types_to_do.empty()) {
+      std::cout << types_to_do.size() << " type(s) couldn't be processed:" << std::endl;
+      for (auto const &current_item : types_to_do) {
+        std::cout << "\t" << current_item << " as " << types_code[current_item] << std::endl;
+      }
+    } out_stream << "\n";
+  }
+  
+  // Class
+  out_stream << "class Ifc_parser {\nprivate:\n\tStep_parser step_parser;\n\npublic:\n\tstd::list<Ifc **> links_to_resolve;\n\tstd::list<std::vector<Ifc *> *> lists_of_links_to_resolve;\n\n\tIfc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);\n\tvoid print_object_info(Ifc *object);\n};\n\n#endif /* Ifc_parser_h */\n";
+}
+
+void Express_parser::generate_cpp(const char *path) {
+  std::ofstream out_stream(path);
+  
+  if (!out_stream) {
+    return;
+  }
+  
+  // Parser
+  out_stream << "#include \"Ifc_parser.hpp\"\n\nIfc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
+  unsigned int current_entity_number = 0;
+  for (auto const &entity : entity_attributes) {
+    if (current_entity_number > 0) out_stream << "else ";
+    out_stream << "if (boost::iequals(object_class, \"" << entity.first << "\")) {\n\t\t" << format_name(entity.first) << " *o = new " << format_name(entity.first) << "();\n";
+    
+    // Get inherited attributes
+    std::list<std::string> superclasses_to_check, all_attribute_parsers;
+    superclasses_to_check.push_front(entity.first);
+    while (!superclasses_to_check.empty()) {
+      std::string current_entity = superclasses_to_check.front();
+      superclasses_to_check.pop_front();
+      for (auto const &current_sc : dependencies[current_entity]) {
+        if (entity_attributes.count(current_sc)) {
+          superclasses_to_check.push_front(current_sc);
+        }
+      } for (std::list<std::string>::const_reverse_iterator current_inherited_attribute_parser = std::get<2>(entity_attributes[current_entity]).rbegin();
+             current_inherited_attribute_parser != std::get<2>(entity_attributes[current_entity]).rend();
+             ++current_inherited_attribute_parser) {
+        all_attribute_parsers.push_front(*current_inherited_attribute_parser);
+      }
+    }
+
+    // Put all attributes parsers
+    for (auto const &attribute_parser : all_attribute_parsers) {
+      std::string current_parser(attribute_parser);
+      out_stream << "\t\t" << current_parser << "\n";
+    }
+    
+//
+//      } else if (current_part_number == entity.second.size()-1) out_stream << part;
+//      else {
+//        std::string copied_part(part);
+//        boost::replace_all(copied_part, "%d", std::to_string(current_part_number+inherited_attributes-1));
+//        out_stream << copied_part;
+//      }
+//      ++current_part_number;
+//    } out_stream << "\n\n";
+//    ++current_entity_number;
+  }
+//
+//  // Write object
+//  out_stream << "void Ifc_schema::print_object_info(Ifc *object) {";
+//  
+//  current_entity_number = 0;
+//  for (auto const &entity : entities_code) {
+//    out_stream << "\t";
+//    if (current_entity_number > 0) out_stream << "else ";
+//    out_stream << "if (object->entity == \"" << format_name(entity.first) << "\") {\n\t\t" + format_name(entity.first) + " *o = reinterpret_cast<" + format_name(entity.first) + " *>(object);\n\t\tstd::cout << *o;\n\t}\n ";
+//  } out_stream << "\telse {\n\t\tstd::cout << \"MISSING ENTITY \" << object->entity << \"!!!\" << std::endl;\n\t}\n}";
+  
+  
 }

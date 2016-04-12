@@ -8210,3 +8210,16 @@ struct Ifc_reinforcing_bar : IfcReinforcingElement {
 	}
 }
 
+class Ifc_parser {
+private:
+	Step_parser step_parser;
+
+public:
+	std::list<Ifc **> links_to_resolve;
+	std::list<std::vector<Ifc *> *> lists_of_links_to_resolve;
+
+	Ifc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);
+	void print_object_info(Ifc *object);
+};
+
+#endif /* Ifc_parser_h */

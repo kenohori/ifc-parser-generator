@@ -27,8 +27,8 @@ int main(int argc, const char * argv[]) {
   parser_4.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_parser.cpp");
   
   parser_4_add1.parse_file("/Users/ken/Versioned/ifc-parser-generator/IFC schemata/IFC4_ADD1.exp");
-  parser_4_add1.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4Add1_parser.hpp");
-  parser_4_add1.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4Add1_parser.cpp");
+  parser_4_add1.generate_hpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_parser.hpp");
+  parser_4_add1.generate_cpp("/Users/ken/Versioned/ifc-parser-generator/Generated parsers/Ifc_4_add_1_parser.cpp");
   
   return 0;
 }

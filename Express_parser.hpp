@@ -9,6 +9,8 @@
 #define Express_parser_hpp
 
 #include <fstream>
+#include <regex>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>

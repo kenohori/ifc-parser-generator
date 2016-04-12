@@ -1,6 +1,6 @@
-#include "Ifc_parser.hpp"
+#include "Ifc_4_parser.hpp"
 
-Ifc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+Ifc *Ifc_4_parser::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "IfcActionRequest")) {
 		Ifc_action_request *o = new Ifc_action_request();
@@ -10814,7 +10814,7 @@ Ifc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vec
 
 }
 
-void Ifc_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
+void Ifc_4_parser::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
 		Ifc_action_request *o = reinterpret_cast<Ifc_action_request *>(object);
 		std::cout << *o;
 	}

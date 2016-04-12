@@ -1,6 +1,6 @@
-#include "Ifc_parser.hpp"
+#include "Ifc_2x3_parser.hpp"
 
-Ifc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+Ifc *Ifc_2x3_parser::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "Ifc2DCompositeCurve")) {
 		Ifc_2_d_composite_curve *o = new Ifc_2_d_composite_curve();
@@ -8679,7 +8679,7 @@ Ifc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vec
 
 }
 
-void Ifc_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_2_d_composite_curve") {
+void Ifc_2x3_parser::print_object_info(Ifc *object) {	if (object->entity == "Ifc_2_d_composite_curve") {
 		Ifc_2_d_composite_curve *o = reinterpret_cast<Ifc_2_d_composite_curve *>(object);
 		std::cout << *o;
 	}

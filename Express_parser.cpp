@@ -456,11 +456,18 @@ void Express_parser::generate_hpp(const char *path) {
   std::set<std::string> in_output;
   std::list<std::string> types_to_do, entities_to_do;
   
+  std::smatch match_results;
+  std::string path_as_string = std::string(path);
+  bool matched = std::regex_search(path_as_string, match_results, std::regex("/([^/]+)\\.hpp"));
+  if (!matched) {
+    return;
+  } std::string filename = match_results[1];
+  
   if (!out_stream) {
     return;
   }
   
-  out_stream << "#ifndef Ifc_parser_h\n#define Ifc_parser_h\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\n// Defined types (" << types_code.size() << ")\n";
+  out_stream << "#ifndef " << filename << "_hpp\n#define " << filename << "_hpp\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\n// Defined types (" << types_code.size() << ")\n";
   
   // Types
   for (auto const &type : types_code) types_to_do.push_back(type.first);
@@ -626,18 +633,25 @@ void Express_parser::generate_hpp(const char *path) {
   }
   
   // Class
-  out_stream << "class Ifc_parser {\nprivate:\n\tStep_parser step_parser;\n\npublic:\n\tstd::list<Ifc **> links_to_resolve;\n\tstd::list<std::vector<Ifc *> *> lists_of_links_to_resolve;\n\n\tIfc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);\n\tvoid print_object_info(Ifc *object);\n};\n\n#endif /* Ifc_parser_h */\n";
+  out_stream << "class " << filename << " {\nprivate:\n\tStep_parser step_parser;\n\npublic:\n\tstd::list<Ifc **> links_to_resolve;\n\tstd::list<std::vector<Ifc *> *> lists_of_links_to_resolve;\n\n\tIfc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);\n\tvoid print_object_info(Ifc *object);\n};\n\n#endif /* " << filename << "_hpp */\n";
 }
 
 void Express_parser::generate_cpp(const char *path) {
   std::ofstream out_stream(path);
+  
+  std::smatch match_results;
+  std::string path_as_string = std::string(path);
+  bool matched = std::regex_search(path_as_string, match_results, std::regex("/([^/]+)\\.cpp"));
+  if (!matched) {
+    return;
+  } std::string filename = match_results[1];
   
   if (!out_stream) {
     return;
   }
   
   // Parser
-  out_stream << "#include \"Ifc_parser.hpp\"\n\nIfc *Ifc_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
+  out_stream << "#include \"" << filename << ".hpp\"\n\nIfc *" << filename << "::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
   unsigned int current_entity_number = 0;
   for (auto const &entity : entity_attributes) {
     out_stream << "\t";
@@ -676,7 +690,7 @@ void Express_parser::generate_cpp(const char *path) {
   } out_stream << "}\n\n";
 
   // Write object
-  out_stream << "void Ifc_schema::print_object_info(Ifc *object) {";
+  out_stream << "void " << filename << "::print_object_info(Ifc *object) {";
   
   current_entity_number = 0;
   for (auto const &entity : entity_attributes) {

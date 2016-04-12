@@ -1,5 +1,5 @@
-#ifndef Ifc_parser_h
-#define Ifc_parser_h
+#ifndef Ifc_2x2_parser_hpp
+#define Ifc_2x2_parser_hpp
 
 #include <boost/algorithm/string.hpp>
 
@@ -7827,7 +7827,7 @@ struct Ifc_controller_type : IfcDistributionControlElementType {
 	}
 }
 
-class Ifc_parser {
+class Ifc_2x2_parser {
 private:
 	Step_parser step_parser;
 
@@ -7839,4 +7839,4 @@ public:
 	void print_object_info(Ifc *object);
 };
 
-#endif /* Ifc_parser_h */
+#endif /* Ifc_2x2_parser_hpp */

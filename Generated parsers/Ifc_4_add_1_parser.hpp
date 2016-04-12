@@ -1,5 +1,5 @@
-#ifndef Ifc_parser_h
-#define Ifc_parser_h
+#ifndef Ifc_4_add_1_parser_hpp
+#define Ifc_4_add_1_parser_hpp
 
 #include <boost/algorithm/string.hpp>
 
@@ -9602,7 +9602,7 @@ struct Ifc_controller : IfcDistributionControlElement {
 // Types with entity dependencies (1)
 typedef std::vector<Ifc_property_set_definition> Ifc_property_set_definition_set;
 
-class Ifc_parser {
+class Ifc_4_add_1_parser {
 private:
 	Step_parser step_parser;
 
@@ -9614,4 +9614,4 @@ public:
 	void print_object_info(Ifc *object);
 };
 
-#endif /* Ifc_parser_h */
+#endif /* Ifc_4_add_1_parser_hpp */

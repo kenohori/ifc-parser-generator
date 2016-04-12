@@ -198,6 +198,9 @@ void Express_parser::parse_entity(const std::string &contents) {
   
   else {
     
+    // Name
+    this->entity_attributes[entity_name] = std::list<std::string>();
+    
     // Superclasses
     for (auto const &sc : entity_superclasses) {
       dependencies[entity_name].push_back(sc);
@@ -496,4 +499,23 @@ void Express_parser::generate_hpp(const char *path) {
     out_stream << enumeration.second << std::endl;
     in_output.insert(enumeration.first);
   }
+  
+  // Forward declarations
+  out_stream << "\n// Forward declarations (" << entity_attributes.size() << ")\n";
+  for (auto const &entity : entity_attributes) {
+    out_stream << "struct " << format_name(entity.first) << ";" << std::endl;
+  }
+  
+  // Base class
+  out_stream << "\n// Base class\nstruct Ifc {\n\tstd::string entity;\n\tvirtual ~Ifc() {}\n};\n";
+  
+  // Select types
+  out_stream << "\n// Select types (" << selects_code.size() << ")" << std::endl;
+  for (auto const &select : selects_code) {
+    out_stream << select.second << std::endl;
+    in_output.insert(select.first);
+  }
+  
+  // Entities
+  out_stream << "\n// Entities (" << entity_attributes.size() << ")" << std::endl;
 }

@@ -2154,13 +2154,12 @@ namespace Ifc_4_add_1_schema {
 
 	struct Ifc_structural_load_configuration : Ifc_structural_load {
 		std::vector<Ifc_structural_load_or_result *> values;
-		std::vector<std::vector<Ifc_length_measure>> locations;
 
 		Ifc_structural_load_configuration() {
 			entity = "Ifc_structural_load_configuration";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_structural_load_configuration &o) {
-			return os << "Ifc_structural_load_configuration(" << o.name << ", " << "vector(" << o.values.size() << ")" << ", " << "vector(" << o.locations.size() << ")" << ")";
+			return os << "Ifc_structural_load_configuration(" << o.name << ", " << "vector(" << o.values.size() << ")" << ")";
 		}
 	};
 
@@ -2474,13 +2473,11 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_texture_vertex_list : Ifc_presentation_item {
-		std::vector<std::vector<Ifc_parameter_value>> tex_coords_list;
-
 		Ifc_texture_vertex_list() {
 			entity = "Ifc_texture_vertex_list";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_texture_vertex_list &o) {
-			return os << "Ifc_texture_vertex_list(" << "vector(" << o.tex_coords_list.size() << ")" << ")";
+			return os << "Ifc_texture_vertex_list(" << ")";
 		}
 	};
 
@@ -2688,13 +2685,11 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_colour_rgb_list : Ifc_presentation_item {
-		std::vector<std::vector<Ifc_normalised_ratio_measure>> colour_list;
-
 		Ifc_colour_rgb_list() {
 			entity = "Ifc_colour_rgb_list";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_colour_rgb_list &o) {
-			return os << "Ifc_colour_rgb_list(" << "vector(" << o.colour_list.size() << ")" << ")";
+			return os << "Ifc_colour_rgb_list(" << ")";
 		}
 	};
 
@@ -3147,13 +3142,11 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_indexed_triangle_texture_map : Ifc_indexed_texture_map {
-		std::vector<std::vector<Ifc_positive_integer>> tex_coord_index;
-
 		Ifc_indexed_triangle_texture_map() {
 			entity = "Ifc_indexed_triangle_texture_map";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_indexed_triangle_texture_map &o) {
-			return os << "Ifc_indexed_triangle_texture_map(" << "vector(" << o.maps.size() << ")" << ", " << o.mapped_to << ", " << o.tex_coords << ", " << "vector(" << o.tex_coord_index.size() << ")" << ")";
+			return os << "Ifc_indexed_triangle_texture_map(" << "vector(" << o.maps.size() << ")" << ", " << o.mapped_to << ", " << o.tex_coords << ")";
 		}
 	};
 
@@ -4304,24 +4297,20 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_cartesian_point_list_2_d : Ifc_cartesian_point_list {
-		std::vector<std::vector<Ifc_length_measure>> coord_list;
-
 		Ifc_cartesian_point_list_2_d() {
 			entity = "Ifc_cartesian_point_list_2_d";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_point_list_2_d &o) {
-			return os << "Ifc_cartesian_point_list_2_d(" << "vector(" << o.coord_list.size() << ")" << ")";
+			return os << "Ifc_cartesian_point_list_2_d(" << ")";
 		}
 	};
 
 	struct Ifc_cartesian_point_list_3_d : Ifc_cartesian_point_list {
-		std::vector<std::vector<Ifc_length_measure>> coord_list;
-
 		Ifc_cartesian_point_list_3_d() {
 			entity = "Ifc_cartesian_point_list_3_d";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_cartesian_point_list_3_d &o) {
-			return os << "Ifc_cartesian_point_list_3_d(" << "vector(" << o.coord_list.size() << ")" << ")";
+			return os << "Ifc_cartesian_point_list_3_d(" << ")";
 		}
 	};
 
@@ -5867,7 +5856,6 @@ namespace Ifc_4_add_1_schema {
 
 	struct Ifc_tessellated_face_set : Ifc_tessellated_item {
 		Ifc_cartesian_point_list_3_d *coordinates;
-		std::vector<std::vector<Ifc_parameter_value>> normals;
 		Ifc_boolean closed;
 
 		virtual ~Ifc_tessellated_face_set() {}
@@ -5885,14 +5873,11 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_triangulated_face_set : Ifc_tessellated_face_set {
-		std::vector<std::vector<Ifc_positive_integer>> coord_index;
-		std::vector<std::vector<Ifc_positive_integer>> normal_index;
-
 		Ifc_triangulated_face_set() {
 			entity = "Ifc_triangulated_face_set";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_triangulated_face_set &o) {
-			return os << "Ifc_triangulated_face_set(" << o.coordinates << ", " << "vector(" << o.normals.size() << ")" << ", " << o.closed << ", " << "vector(" << o.coord_index.size() << ")" << ", " << "vector(" << o.normal_index.size() << ")" << ")";
+			return os << "Ifc_triangulated_face_set(" << o.coordinates << ", " << o.closed << ")";
 		}
 	};
 
@@ -5976,7 +5961,6 @@ namespace Ifc_4_add_1_schema {
 	struct Ifc_b_spline_surface : Ifc_bounded_surface {
 		Ifc_integer u_degree;
 		Ifc_integer v_degree;
-		std::vector<std::vector<Ifc_cartesian_point *>> control_points_list;
 		Ifc_b_spline_surface_form surface_form;
 		Ifc_logical u_closed;
 		Ifc_logical v_closed;
@@ -5996,7 +5980,7 @@ namespace Ifc_4_add_1_schema {
 			entity = "Ifc_b_spline_surface_with_knots";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_b_spline_surface_with_knots &o) {
-			return os << "Ifc_b_spline_surface_with_knots(" << o.u_degree << ", " << o.v_degree << ", " << "vector(" << o.control_points_list.size() << ")" << ", " << o.surface_form << ", " << o.u_closed << ", " << o.v_closed << ", " << o.self_intersect << ", " << "vector(" << o.u_multiplicities.size() << ")" << ", " << "vector(" << o.v_multiplicities.size() << ")" << ", " << "vector(" << o.u_knots.size() << ")" << ", " << "vector(" << o.v_knots.size() << ")" << ", " << o.knot_spec << ")";
+			return os << "Ifc_b_spline_surface_with_knots(" << o.u_degree << ", " << o.v_degree << ", " << o.surface_form << ", " << o.u_closed << ", " << o.v_closed << ", " << o.self_intersect << ", " << "vector(" << o.u_multiplicities.size() << ")" << ", " << "vector(" << o.v_multiplicities.size() << ")" << ", " << "vector(" << o.u_knots.size() << ")" << ", " << "vector(" << o.v_knots.size() << ")" << ", " << o.knot_spec << ")";
 		}
 	};
 
@@ -6996,13 +6980,11 @@ namespace Ifc_4_add_1_schema {
 	};
 
 	struct Ifc_rational_b_spline_surface_with_knots : Ifc_b_spline_surface_with_knots {
-		std::vector<std::vector<Ifc_real>> weights_data;
-
 		Ifc_rational_b_spline_surface_with_knots() {
 			entity = "Ifc_rational_b_spline_surface_with_knots";
 		}
 		friend std::ostream &operator<<(std::ostream &os, const Ifc_rational_b_spline_surface_with_knots &o) {
-			return os << "Ifc_rational_b_spline_surface_with_knots(" << o.u_degree << ", " << o.v_degree << ", " << "vector(" << o.control_points_list.size() << ")" << ", " << o.surface_form << ", " << o.u_closed << ", " << o.v_closed << ", " << o.self_intersect << ", " << "vector(" << o.u_multiplicities.size() << ")" << ", " << "vector(" << o.v_multiplicities.size() << ")" << ", " << "vector(" << o.u_knots.size() << ")" << ", " << "vector(" << o.v_knots.size() << ")" << ", " << o.knot_spec << ", " << "vector(" << o.weights_data.size() << ")" << ")";
+			return os << "Ifc_rational_b_spline_surface_with_knots(" << o.u_degree << ", " << o.v_degree << ", " << o.surface_form << ", " << o.u_closed << ", " << o.v_closed << ", " << o.self_intersect << ", " << "vector(" << o.u_multiplicities.size() << ")" << ", " << "vector(" << o.v_multiplicities.size() << ")" << ", " << "vector(" << o.u_knots.size() << ")" << ", " << "vector(" << o.v_knots.size() << ")" << ", " << o.knot_spec << ")";
 		}
 	};
 

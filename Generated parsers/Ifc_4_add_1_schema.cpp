@@ -498,11 +498,10 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_b_spline_surface *o = new Ifc_b_spline_surface();
 		o->u_degree = step_parser.parse_integer(object_attributes[0]);
 		o->v_degree = step_parser.parse_integer(object_attributes[1]);
-				//TODO: parse container of container
-		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
+		o->surface_form = step_parser.parse_constant(object_attributes[2]);
+		o->u_closed = step_parser.parse_integer(object_attributes[3]);
+		o->v_closed = step_parser.parse_integer(object_attributes[4]);
+		o->self_intersect = step_parser.parse_integer(object_attributes[5]);
 		return o;
 	}
 
@@ -510,16 +509,15 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_b_spline_surface_with_knots *o = new Ifc_b_spline_surface_with_knots();
 		o->u_degree = step_parser.parse_integer(object_attributes[0]);
 		o->v_degree = step_parser.parse_integer(object_attributes[1]);
-				//TODO: parse container of container
-		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
+		o->surface_form = step_parser.parse_constant(object_attributes[2]);
+		o->u_closed = step_parser.parse_integer(object_attributes[3]);
+		o->v_closed = step_parser.parse_integer(object_attributes[4]);
+		o->self_intersect = step_parser.parse_integer(object_attributes[5]);
 		//TODO: parse container of type
 		//TODO: parse container of type
-		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
-		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[10]);
-		o->knot_spec = step_parser.parse_constant(object_attributes[11]);
+		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[8]);
+		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
+		o->knot_spec = step_parser.parse_constant(object_attributes[10]);
 		return o;
 	}
 
@@ -1122,13 +1120,11 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcCartesianPointList2D")) {
 		Ifc_cartesian_point_list_2_d *o = new Ifc_cartesian_point_list_2_d();
-				//TODO: parse container of container
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCartesianPointList3D")) {
 		Ifc_cartesian_point_list_3_d *o = new Ifc_cartesian_point_list_3_d();
-				//TODO: parse container of container
 		return o;
 	}
 
@@ -1418,7 +1414,6 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcColourRgbList")) {
 		Ifc_colour_rgb_list *o = new Ifc_colour_rgb_list();
-				//TODO: parse container of container
 		return o;
 	}
 
@@ -4588,7 +4583,6 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		links_to_resolve.push_back((Ifc **)&o->mapped_to);
 		o->tex_coords = (Ifc_texture_vertex_list *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->tex_coords);
-				//TODO: parse container of container
 		return o;
 	}
 
@@ -6808,17 +6802,15 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_rational_b_spline_surface_with_knots *o = new Ifc_rational_b_spline_surface_with_knots();
 		o->u_degree = step_parser.parse_integer(object_attributes[0]);
 		o->v_degree = step_parser.parse_integer(object_attributes[1]);
-				//TODO: parse container of container
-		o->surface_form = step_parser.parse_constant(object_attributes[3]);
-		o->u_closed = step_parser.parse_integer(object_attributes[4]);
-		o->v_closed = step_parser.parse_integer(object_attributes[5]);
-		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
+		o->surface_form = step_parser.parse_constant(object_attributes[2]);
+		o->u_closed = step_parser.parse_integer(object_attributes[3]);
+		o->v_closed = step_parser.parse_integer(object_attributes[4]);
+		o->self_intersect = step_parser.parse_integer(object_attributes[5]);
 		//TODO: parse container of type
 		//TODO: parse container of type
-		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
-		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[10]);
-		o->knot_spec = step_parser.parse_constant(object_attributes[11]);
-				//TODO: parse container of container
+		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[8]);
+		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
+		o->knot_spec = step_parser.parse_constant(object_attributes[10]);
 		return o;
 	}
 
@@ -8902,7 +8894,6 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->values.push_back((Ifc_structural_load_or_result *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->values);
-				//TODO: parse container of container
 		return o;
 	}
 
@@ -9854,8 +9845,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_tessellated_face_set *o = new Ifc_tessellated_face_set();
 		o->coordinates = (Ifc_cartesian_point_list_3_d *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->coordinates);
-				//TODO: parse container of container
-		o->closed = step_parser.parse_boolean(object_attributes[2]);
+		o->closed = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -9970,7 +9960,6 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcTextureVertexList")) {
 		Ifc_texture_vertex_list *o = new Ifc_texture_vertex_list();
-				//TODO: parse container of container
 		return o;
 	}
 
@@ -10105,10 +10094,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_triangulated_face_set *o = new Ifc_triangulated_face_set();
 		o->coordinates = (Ifc_cartesian_point_list_3_d *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->coordinates);
-				//TODO: parse container of container
-		o->closed = step_parser.parse_boolean(object_attributes[2]);
-				//TODO: parse container of container
-				//TODO: parse container of container
+		o->closed = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 

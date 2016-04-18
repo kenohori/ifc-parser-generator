@@ -7,6 +7,8 @@
 #include "Ifc_2x_schema.hpp"
 #include "Ifc_2x2_schema.hpp"
 #include "Ifc_2x3_schema.hpp"
+#include "Ifc_4_schema.hpp"
+#include "Ifc_4_add_1_schema.hpp"
 
 struct Object_definition {
   std::string object_class;
@@ -46,6 +48,8 @@ private:
   Ifc_2x_schema::Schema ifc_2x_schema;
   Ifc_2x2_schema::Schema ifc_2x2_schema;
   Ifc_2x3_schema::Schema ifc_2x3_schema;
+  Ifc_4_schema::Schema ifc_4_schema;
+  Ifc_4_add_1_schema::Schema ifc_4_add_1_schema;
   
   std::string schema;
   

@@ -351,9 +351,23 @@ void Express_parser::parse_entity(const std::string &contents) {
         ++parsed_entity_attributes;
         continue;
       }
+      
+      // Try as a container of a container of a pod type
+      auto const container_of_container_of_pod_type = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1];
+      attribute_position = current_attribute_definition->begin();
+      qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> container_of_container_of_pod_type, qi::space);
+      if (attribute_position == current_attribute_definition->end()) {
+        std::get<0>(this->entity_attributes[entity_name]).push_back(format_attribute(*current_attribute_name));
+        std::get<1>(this->entity_attributes[entity_name]).push_back("std::vector<std::vector<" + pod_types[this_pod] + ">>");
+        std::get<2>(this->entity_attributes[entity_name]).push_back("\t\t//TODO: parse container of container");
+        ++current_attribute_name;
+        ++current_attribute_definition;
+        ++parsed_entity_attributes;
+        continue;
+      }
 
-      // Try as a container of a container another type
-      auto const container_of_container_of_another_type = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(this_type) = qi::_1];
+      // Try as a container of a container of another type
+      auto const container_of_container_of_another_type = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> -qi::lit("UNIQUE") >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1];
       attribute_position = current_attribute_definition->begin();
       qi::phrase_parse(attribute_position, current_attribute_definition->end(), optional >> container_of_container_of_another_type, qi::space);
       if (attribute_position == current_attribute_definition->end()) {

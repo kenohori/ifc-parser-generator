@@ -49,16 +49,16 @@ private:
   
   std::string schema;
   
-  void parse_preamble(const std::string &definition);
+  void parse_preamble(const std::string &statement);
   template <typename Ifc_schema>
-  typename Ifc_schema::Ifc *parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition);
+  Ifc *parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition);
   template <typename Ifc_schema>
   void parse_statement(Ifc_schema &ifc_schema, const std::string &statement);
   template <typename Ifc_schema>
   void resolve_links(Ifc_schema &ifc_schema);
   
 public:
-  std::map<std::uintptr_t, void *> contents;
+  std::map<std::uintptr_t, Ifc *> contents;
   
   Ifc_parser();
   void parse_file(const char *path);

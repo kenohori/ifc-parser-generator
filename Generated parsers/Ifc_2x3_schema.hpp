@@ -3,6 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include "Ifc.hpp"
 #include "Step_parser.hpp"
 
 namespace Ifc_2x3_schema {
@@ -946,12 +947,6 @@ namespace Ifc_2x3_schema {
 	struct Ifc_work_schedule;
 	struct Ifc_z_shape_profile_def;
 	struct Ifc_zone;
-
-	// Base class
-	struct Ifc {
-		std::string entity;
-		virtual ~Ifc() {}
-	};
 
 	// Select types (46)
 	struct Ifc_actor_select {virtual ~Ifc_actor_select() {} };

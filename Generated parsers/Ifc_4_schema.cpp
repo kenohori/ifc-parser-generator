@@ -2,7 +2,7 @@
 
 using namespace Ifc_4_schema;
 
-Ifc_4_schema::Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "IfcActionRequest")) {
 		Ifc_action_request *o = new Ifc_action_request();

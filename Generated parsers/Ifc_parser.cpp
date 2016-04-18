@@ -2,8 +2,17 @@
 
 #include "Ifc_parser.hpp"
 
+void Ifc_parser::parse_preamble(const std::string &statement) {
+  std::cout << "Statement (preamble): " << statement << std::endl;
+  
+  auto const ifc_schema_definition = qi::lit("FILE_SCHEMA") >> qi::lit('(') >> qi::lit('(') >> qi::lit('\'') >> qi::as_string[qi::lexeme[+qi::alnum]][phoenix::ref(schema) = qi::_1] >> qi::lit('\'') >> qi::lit(')') >> qi::lit(')') >> qi::lit(';');
+  
+  std::string::const_iterator iter = statement.begin();
+  qi::phrase_parse(iter, statement.end(), ifc_schema_definition, qi::space);
+}
+
 template <typename Ifc_schema>
-typename Ifc_schema::Ifc *Ifc_parser::parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition) {
+Ifc *Ifc_parser::parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition) {
 //  std::cout << "\tObject: " << definition << std::endl;
   
   Object_definition object_definition;
@@ -20,7 +29,7 @@ typename Ifc_schema::Ifc *Ifc_parser::parse_object_definition(Ifc_schema &ifc_sc
 //    for (auto &a : object_definition.object_attributes) {
 //      std::cout << a << " ";
 //    } std::cout << std::endl;
-    return new typename Ifc_schema::Ifc();
+    return new Ifc();
   }
 }
 
@@ -36,7 +45,7 @@ void Ifc_parser::parse_statement(Ifc_schema &ifc_schema, const std::string &stat
   qi::phrase_parse(statement.begin(), statement.end(), ifc_object, qi::space);
   
   if (object_id != 0) {
-    parse_object_definition<Ifc_schema>(ifc_schema, object_definition);
+    contents[object_id] = parse_object_definition(ifc_schema, object_definition);
     
     std::cout << "\t" << contents[object_id] << " [" << object_id << "] = ";
     ifc_schema.print_object_info(contents[object_id]);

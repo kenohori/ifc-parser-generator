@@ -2,7 +2,7 @@
 
 using namespace Ifc_2x2_schema;
 
-Ifc_2x2_schema::Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "Ifc2DCompositeCurve")) {
 		Ifc_2_d_composite_curve *o = new Ifc_2_d_composite_curve();

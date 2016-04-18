@@ -496,7 +496,7 @@ void Express_parser::generate_hpp(const char *path) {
     return;
   }
   
-  out_stream << "#ifndef " << filename << "_hpp\n#define " << filename << "_hpp\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\nnamespace " << filename << " {\n\n\t// Defined types (" << types_code.size() << ")\n";
+  out_stream << "#ifndef " << filename << "_hpp\n#define " << filename << "_hpp\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Ifc.hpp\"\n#include \"Step_parser.hpp\"\n\nnamespace " << filename << " {\n\n\t// Defined types (" << types_code.size() << ")\n";
   
   // Types
   for (auto const &type : types_code) types_to_do.push_back(type.first);
@@ -536,7 +536,7 @@ void Express_parser::generate_hpp(const char *path) {
   }
   
   // Base class
-  out_stream << "\n\t// Base class\n\tstruct Ifc {\n\t\tstd::string entity;\n\t\tvirtual ~Ifc() {}\n\t};\n";
+//  out_stream << "\n\t// Base class\n\tstruct Ifc {\n\t\tstd::string entity;\n\t\tvirtual ~Ifc() {}\n\t};\n";
   
   // Select types
   out_stream << "\n\t// Select types (" << selects_code.size() << ")\n";
@@ -691,7 +691,7 @@ void Express_parser::generate_cpp(const char *path) {
   }
   
   // Parser
-  out_stream << "#include \"" << filename << ".hpp\"\n\nusing namespace " << filename << ";\n\n" << filename << "::Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
+  out_stream << "#include \"" << filename << ".hpp\"\n\nusing namespace " << filename << ";\n\nIfc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
   unsigned int current_entity_number = 0;
   for (auto const &entity : entity_attributes) {
     out_stream << "\t";

@@ -2907,14 +2907,14 @@ struct Ifc_conversion_based_unit : Ifc_named_unit {
 
 struct Ifc_derived_profile_def : Ifc_profile_def {
 	Ifc_profile_def *parent_profile;
-	Ifc_cartesian_transformation_operator_2_d *operator;
+	Ifc_cartesian_transformation_operator_2_d *_operator;
 	Ifc_label label;
 
 	Ifc_derived_profile_def() {
 		entity = "Ifc_derived_profile_def";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_derived_profile_def &o) {
-		return os << "Ifc_derived_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.parent_profile << ", " << o.operator << ", " << o.label << ")";
+		return os << "Ifc_derived_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.parent_profile << ", " << o._operator << ", " << o.label << ")";
 	}
 };
 
@@ -4308,7 +4308,7 @@ struct Ifc_axis_2_placement_3_d : Ifc_placement {
 };
 
 struct Ifc_boolean_result : Ifc_geometric_representation_item {
-	Ifc_boolean_operator operator;
+	Ifc_boolean_operator _operator;
 	Ifc_boolean_operand *first_operand;
 	Ifc_boolean_operand *second_operand;
 
@@ -4316,7 +4316,7 @@ struct Ifc_boolean_result : Ifc_geometric_representation_item {
 		entity = "Ifc_boolean_result";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_result &o) {
-		return os << "Ifc_boolean_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
+		return os << "Ifc_boolean_result(" << o._operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
 };
 
@@ -5853,7 +5853,7 @@ struct Ifc_site : Ifc_spatial_structure_element {
 		entity = "Ifc_site";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_site &o) {
-		return os << "Ifc_site(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.ref_latitude << ", " << o.ref_longitude << ", " << o.ref_elevation << ", " << o.land_title_number << ", " << o.site_address << ")";
+		return os << "Ifc_site(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << "vector(" << o.ref_latitude.size() << ")" << ", " << "vector(" << o.ref_longitude.size() << ")" << ", " << o.ref_elevation << ", " << o.land_title_number << ", " << o.site_address << ")";
 	}
 };
 
@@ -6237,7 +6237,7 @@ struct Ifc_boolean_clipping_result : Ifc_boolean_result {
 		entity = "Ifc_boolean_clipping_result";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_clipping_result &o) {
-		return os << "Ifc_boolean_clipping_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
+		return os << "Ifc_boolean_clipping_result(" << o._operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
 };
 

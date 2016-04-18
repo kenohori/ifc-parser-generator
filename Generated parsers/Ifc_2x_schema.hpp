@@ -1402,7 +1402,7 @@ struct Ifc_presentation_light_source : Ifc {
 		entity = "Ifc_presentation_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_presentation_light_source &o) {
-		return os << "Ifc_presentation_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ")";
+		return os << "Ifc_presentation_light_source(" << "vector(" << o.color.size() << ")" << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ")";
 	}
 };
 
@@ -1923,14 +1923,14 @@ struct Ifc_conversion_based_unit : Ifc_named_unit {
 
 struct Ifc_derived_profile_def : Ifc_profile_def {
 	Ifc_profile_def *parent_profile;
-	Ifc_cartesian_transformation_operator_2_d *operator;
+	Ifc_cartesian_transformation_operator_2_d *_operator;
 	Ifc_label label;
 
 	Ifc_derived_profile_def() {
 		entity = "Ifc_derived_profile_def";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_derived_profile_def &o) {
-		return os << "Ifc_derived_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.parent_profile << ", " << o.operator << ", " << o.label << ")";
+		return os << "Ifc_derived_profile_def(" << o.profile_type << ", " << o.profile_name << ", " << o.parent_profile << ", " << o._operator << ", " << o.label << ")";
 	}
 };
 
@@ -1941,7 +1941,7 @@ struct Ifc_directional_light_source : Ifc_presentation_light_source {
 		entity = "Ifc_directional_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_directional_light_source &o) {
-		return os << "Ifc_directional_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.direction << ")";
+		return os << "Ifc_directional_light_source(" << "vector(" << o.color.size() << ")" << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.direction << ")";
 	}
 };
 
@@ -2234,7 +2234,7 @@ struct Ifc_point_light_source : Ifc_presentation_light_source {
 		entity = "Ifc_point_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_point_light_source &o) {
-		return os << "Ifc_point_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ")";
+		return os << "Ifc_point_light_source(" << "vector(" << o.color.size() << ")" << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ")";
 	}
 };
 
@@ -2477,7 +2477,7 @@ struct Ifc_spot_light_source : Ifc_point_light_source {
 		entity = "Ifc_spot_light_source";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_spot_light_source &o) {
-		return os << "Ifc_spot_light_source(" << o.color << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ", " << o.spread_angle << ", " << o.cut_off_angle << ", " << o.radius << ", " << o.direction << ")";
+		return os << "Ifc_spot_light_source(" << "vector(" << o.color.size() << ")" << ", " << o.ambient_intensity << ", " << o.intensity << ", " << o.in_context << ", " << o.name << ", " << o.description << ", " << o.location << ", " << "vector(" << o.attenuation.size() << ")" << ", " << o.spread_angle << ", " << o.cut_off_angle << ", " << o.radius << ", " << o.direction << ")";
 	}
 };
 
@@ -2518,7 +2518,7 @@ struct Ifc_surface_shading_properties : Ifc_surface_style_properties {
 		entity = "Ifc_surface_shading_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_shading_properties &o) {
-		return os << "Ifc_surface_shading_properties(" << o.usage_identifier << ", " << o.ambient_color << ")";
+		return os << "Ifc_surface_shading_properties(" << o.usage_identifier << ", " << "vector(" << o.ambient_color.size() << ")" << ")";
 	}
 };
 
@@ -2686,7 +2686,7 @@ struct Ifc_axis_2_placement_3_d : Ifc_placement {
 };
 
 struct Ifc_boolean_result : Ifc_geometric_representation_item {
-	Ifc_boolean_operator operator;
+	Ifc_boolean_operator _operator;
 	Ifc_boolean_operand *first_operand;
 	Ifc_boolean_operand *second_operand;
 
@@ -2694,7 +2694,7 @@ struct Ifc_boolean_result : Ifc_geometric_representation_item {
 		entity = "Ifc_boolean_result";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_result &o) {
-		return os << "Ifc_boolean_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
+		return os << "Ifc_boolean_result(" << o._operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
 };
 
@@ -3848,7 +3848,7 @@ struct Ifc_site : Ifc_spatial_structure_element {
 		entity = "Ifc_site";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_site &o) {
-		return os << "Ifc_site(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << o.ref_latitude << ", " << o.ref_longitude << ", " << o.ref_elevation << ", " << o.land_title_number << ", " << o.site_address << ")";
+		return os << "Ifc_site(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.long_name << ", " << o.composition_type << ", " << "vector(" << o.ref_latitude.size() << ")" << ", " << "vector(" << o.ref_longitude.size() << ")" << ", " << o.ref_elevation << ", " << o.land_title_number << ", " << o.site_address << ")";
 	}
 };
 
@@ -3929,7 +3929,7 @@ struct Ifc_surface_rendering_properties : Ifc_surface_shading_properties {
 		entity = "Ifc_surface_rendering_properties";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_surface_rendering_properties &o) {
-		return os << "Ifc_surface_rendering_properties(" << o.usage_identifier << ", " << o.ambient_color << ", " << o.ambient_intensity << ", " << o.diffuse_color << ", " << o.transparency << ", " << o.emmisive_color << ", " << o.specular_intensity << ", " << o.specular_color << ")";
+		return os << "Ifc_surface_rendering_properties(" << o.usage_identifier << ", " << "vector(" << o.ambient_color.size() << ")" << ", " << o.ambient_intensity << ", " << "vector(" << o.diffuse_color.size() << ")" << ", " << o.transparency << ", " << "vector(" << o.emmisive_color.size() << ")" << ", " << o.specular_intensity << ", " << "vector(" << o.specular_color.size() << ")" << ")";
 	}
 };
 
@@ -4085,7 +4085,7 @@ struct Ifc_boolean_clipping_result : Ifc_boolean_result {
 		entity = "Ifc_boolean_clipping_result";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_boolean_clipping_result &o) {
-		return os << "Ifc_boolean_clipping_result(" << o.operator << ", " << o.first_operand << ", " << o.second_operand << ")";
+		return os << "Ifc_boolean_clipping_result(" << o._operator << ", " << o.first_operand << ", " << o.second_operand << ")";
 	}
 };
 
@@ -4752,7 +4752,7 @@ struct Ifc_air_filter : Ifc_treatment_device {
 
 struct Ifc_air_terminal : Ifc_flow_terminal {
 	Ifc_air_flow_type_enum air_flow_type;
-	Ifc_length_measure throw;
+	Ifc_length_measure _throw;
 	Ifc_real air_diffusion_performance_index;
 	Ifc_air_terminal_finish_type_enum finish_type;
 	Ifc_label finish_color;
@@ -4767,7 +4767,7 @@ struct Ifc_air_terminal : Ifc_flow_terminal {
 		entity = "Ifc_air_terminal";
 	}
 	friend std::ostream &operator<<(std::ostream &os, const Ifc_air_terminal &o) {
-		return os << "Ifc_air_terminal(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.air_flow_type << ", " << o.throw << ", " << o.air_diffusion_performance_index << ", " << o.finish_type << ", " << o.finish_color << ", " << o.mounting_type << ", " << o.face_type << ", " << o.core_type << ", " << o.core_set_vertical << ", " << o.core_set_horizontal << ", " << o.integral_control << ")";
+		return os << "Ifc_air_terminal(" << o.global_id << ", " << o.owner_history << ", " << o.name << ", " << o.description << ", " << o.object_type << ", " << o.object_placement << ", " << o.representation << ", " << o.tag << ", " << o.flow_element_type << ", " << o.air_flow_type << ", " << o._throw << ", " << o.air_diffusion_performance_index << ", " << o.finish_type << ", " << o.finish_color << ", " << o.mounting_type << ", " << o.face_type << ", " << o.core_type << ", " << o.core_set_vertical << ", " << o.core_set_horizontal << ", " << o.integral_control << ")";
 	}
 };
 

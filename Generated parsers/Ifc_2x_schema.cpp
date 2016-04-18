@@ -6,7 +6,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_2_d_composite_curve *o = new Ifc_2_d_composite_curve();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		//o->step_parser.parse_logical(object_attributes[1]);
+		//o->self_intersect = step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
@@ -105,7 +105,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->flow_element_type = step_parser.parse_constant(object_attributes[8]);
 		o->air_flow_type = step_parser.parse_constant(object_attributes[9]);
-		o->throw = step_parser.parse_double(object_attributes[10]);
+		o->_throw = step_parser.parse_double(object_attributes[10]);
 		o->air_diffusion_performance_index = step_parser.parse_double(object_attributes[11]);
 		o->finish_type = step_parser.parse_constant(object_attributes[12]);
 		o->finish_color = step_parser.parse_string(object_attributes[13]);
@@ -238,8 +238,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->asset_location = (Ifc_spatial_structure_element *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->asset_location);
 		o->asset_identifier = step_parser.parse_string(object_attributes[6]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->asset_risks.push_back((Ifc_risk_type_enum *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->asset_risks);
+		o->asset_risks = step_parser.parse_list_of_strings(object_attributes[7]);
 		o->original_value = (Ifc_cost_value *)step_parser.parse_link(object_attributes[8]);
 		links_to_resolve.push_back((Ifc **)&o->original_value);
 		o->current_value = (Ifc_cost_value *)step_parser.parse_link(object_attributes[9]);
@@ -340,7 +339,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 
 	else if (boost::iequals(object_class, "IfcBooleanClippingResult")) {
 		Ifc_boolean_clipping_result *o = new Ifc_boolean_clipping_result();
-		o->operator = step_parser.parse_constant(object_attributes[0]);
+		o->_operator = step_parser.parse_constant(object_attributes[0]);
 		o->first_operand = (Ifc_boolean_operand *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->first_operand);
 		o->second_operand = (Ifc_boolean_operand *)step_parser.parse_link(object_attributes[2]);
@@ -350,7 +349,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 
 	else if (boost::iequals(object_class, "IfcBooleanResult")) {
 		Ifc_boolean_result *o = new Ifc_boolean_result();
-		o->operator = step_parser.parse_constant(object_attributes[0]);
+		o->_operator = step_parser.parse_constant(object_attributes[0]);
 		o->first_operand = (Ifc_boolean_operand *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->first_operand);
 		o->second_operand = (Ifc_boolean_operand *)step_parser.parse_link(object_attributes[2]);
@@ -385,7 +384,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_boxed_half_space *o = new Ifc_boxed_half_space();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
 		o->enclosure = (Ifc_bounding_box *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->enclosure);
 		return o;
@@ -414,8 +413,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->cost_elements);
 		o->status = step_parser.parse_string(object_attributes[12]);
 		o->intended_use = step_parser.parse_string(object_attributes[13]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[14])) o->comments.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->comments);
+		//TODO: parse container of type
 		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->target_users.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->target_users);
 		o->valid_from_date = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[16]);
@@ -560,7 +558,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->step_parser.parse_double(object_attributes[3]);
+		o->scale = step_parser.parse_double(object_attributes[3]);
 		return o;
 	}
 
@@ -572,7 +570,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->step_parser.parse_double(object_attributes[3]);
+		o->scale = step_parser.parse_double(object_attributes[3]);
 		return o;
 	}
 
@@ -584,8 +582,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->step_parser.parse_double(object_attributes[3]);
-		o->step_parser.parse_double(object_attributes[4]);
+		o->scale = step_parser.parse_double(object_attributes[3]);
+		o->scale_2 = step_parser.parse_double(object_attributes[4]);
 		return o;
 	}
 
@@ -597,7 +595,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->step_parser.parse_double(object_attributes[3]);
+		o->scale = step_parser.parse_double(object_attributes[3]);
 		o->axis_3 = (Ifc_direction *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->axis_3);
 		return o;
@@ -611,11 +609,11 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->axis_2);
 		o->local_origin = (Ifc_cartesian_point *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->local_origin);
-		o->step_parser.parse_double(object_attributes[3]);
+		o->scale = step_parser.parse_double(object_attributes[3]);
 		o->axis_3 = (Ifc_direction *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->axis_3);
-		o->step_parser.parse_double(object_attributes[5]);
-		o->step_parser.parse_double(object_attributes[6]);
+		o->scale_2 = step_parser.parse_double(object_attributes[5]);
+		o->scale_3 = step_parser.parse_double(object_attributes[6]);
 		return o;
 	}
 
@@ -637,8 +635,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->remarks.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->remarks);
+		//TODO: parse container of type
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -814,9 +811,9 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->object_type = step_parser.parse_string(object_attributes[4]);
-		//o->step_parser.parse_logical(object_attributes[5]);
-		//o->step_parser.parse_logical(object_attributes[6]);
-		o->step_parser.parse_integer(object_attributes[7]);
+		//o->has_natural_ventilation = step_parser.parse_logical(object_attributes[5]);
+		//o->has_sprinkler_protection = step_parser.parse_logical(object_attributes[6]);
+		o->fire_risk_factor = step_parser.parse_integer(object_attributes[7]);
 		return o;
 	}
 
@@ -834,14 +831,14 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_composite_curve *o = new Ifc_composite_curve();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->segments.push_back((Ifc_composite_curve_segment *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->segments);
-		//o->step_parser.parse_logical(object_attributes[1]);
+		//o->self_intersect = step_parser.parse_logical(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCompositeCurveSegment")) {
 		Ifc_composite_curve_segment *o = new Ifc_composite_curve_segment();
 		o->transition = step_parser.parse_constant(object_attributes[0]);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->same_sense = step_parser.parse_boolean(object_attributes[1]);
 		o->parent_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_curve);
 		return o;
@@ -894,8 +891,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 
 	else if (boost::iequals(object_class, "IfcConnectionConstraint")) {
 		Ifc_connection_constraint *o = new Ifc_connection_constraint();
-		//o->step_parser.parse_logical(object_attributes[0]);
-		//o->step_parser.parse_logical(object_attributes[1]);
+		//o->waterproofing_required = step_parser.parse_logical(object_attributes[0]);
+		//o->ventilation_required = step_parser.parse_logical(object_attributes[1]);
 		o->join_type = step_parser.parse_constant(object_attributes[2]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->fire_rating = step_parser.parse_double(object_attributes[4]);
@@ -1115,8 +1112,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
 		o->primary_energy_source = step_parser.parse_constant(object_attributes[11]);
 		o->cooling_tower_type = step_parser.parse_constant(object_attributes[12]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[13])) o->ambient_design_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->ambient_design_temperature);
+		//TODO: parse container of type
 		return o;
 	}
 
@@ -1204,8 +1200,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->cost_elements);
 		o->status = step_parser.parse_string(object_attributes[12]);
 		o->intended_use = step_parser.parse_string(object_attributes[13]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[14])) o->comments.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->comments);
+		//TODO: parse container of type
 		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->target_users.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->target_users);
 		o->valid_from_date = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[16]);
@@ -1351,8 +1346,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->parent_profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_profile);
-		o->operator = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
-		links_to_resolve.push_back((Ifc **)&o->operator);
+		o->_operator = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
+		links_to_resolve.push_back((Ifc **)&o->_operator);
 		o->label = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
@@ -1370,19 +1365,19 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_derived_unit_element *o = new Ifc_derived_unit_element();
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
-		o->step_parser.parse_integer(object_attributes[1]);
+		o->exponent = step_parser.parse_integer(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDimensionalExponents")) {
 		Ifc_dimensional_exponents *o = new Ifc_dimensional_exponents();
-		o->step_parser.parse_integer(object_attributes[0]);
-		o->step_parser.parse_integer(object_attributes[1]);
-		o->step_parser.parse_integer(object_attributes[2]);
-		o->step_parser.parse_integer(object_attributes[3]);
-		o->step_parser.parse_integer(object_attributes[4]);
-		o->step_parser.parse_integer(object_attributes[5]);
-		o->step_parser.parse_integer(object_attributes[6]);
+		o->length_exponent = step_parser.parse_integer(object_attributes[0]);
+		o->mass_exponent = step_parser.parse_integer(object_attributes[1]);
+		o->time_exponent = step_parser.parse_integer(object_attributes[2]);
+		o->electric_current_exponent = step_parser.parse_integer(object_attributes[3]);
+		o->thermodynamic_temperature_exponent = step_parser.parse_integer(object_attributes[4]);
+		o->amount_of_substance_exponent = step_parser.parse_integer(object_attributes[5]);
+		o->luminous_intensity_exponent = step_parser.parse_integer(object_attributes[6]);
 		return o;
 	}
 
@@ -1597,8 +1592,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->operation_type = step_parser.parse_constant(object_attributes[8]);
 		o->construction_type = step_parser.parse_constant(object_attributes[9]);
-		o->step_parser.parse_boolean(object_attributes[10]);
-		o->step_parser.parse_boolean(object_attributes[11]);
+		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
+		o->sizeable = step_parser.parse_boolean(object_attributes[11]);
 		return o;
 	}
 
@@ -1619,7 +1614,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->edge_end);
 		o->edge_geometry = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->edge_geometry);
-		o->step_parser.parse_boolean(object_attributes[3]);
+		o->same_sense = step_parser.parse_boolean(object_attributes[3]);
 		return o;
 	}
 
@@ -1709,12 +1704,12 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->minimum_circuit_current = step_parser.parse_double(object_attributes[8]);
 		o->maximum_power_input = step_parser.parse_double(object_attributes[9]);
 		o->rated_power_input = step_parser.parse_double(object_attributes[10]);
-		o->step_parser.parse_integer(object_attributes[11]);
+		o->input_phase = step_parser.parse_integer(object_attributes[11]);
 		o->inrush_current = step_parser.parse_double(object_attributes[12]);
 		o->locked_rotor_current = step_parser.parse_double(object_attributes[13]);
 		o->circuit_size_power_input = step_parser.parse_double(object_attributes[14]);
 		o->fuse_size = step_parser.parse_double(object_attributes[15]);
-		o->step_parser.parse_boolean(object_attributes[16]);
+		o->grounded = step_parser.parse_boolean(object_attributes[16]);
 		return o;
 	}
 
@@ -1856,7 +1851,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_face_bound *o = new Ifc_face_bound();
 		o->bound = (Ifc_loop *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->bound);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->orientation = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -1864,7 +1859,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_face_outer_bound *o = new Ifc_face_outer_bound();
 		o->bound = (Ifc_loop *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->bound);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->orientation = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -1874,7 +1869,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->bounds);
 		o->face_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->face_surface);
-		o->step_parser.parse_boolean(object_attributes[2]);
+		o->same_sense = step_parser.parse_boolean(object_attributes[2]);
 		return o;
 	}
 
@@ -2019,14 +2014,10 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->fluid = (Ifc_material *)step_parser.parse_link(object_attributes[10]);
 		links_to_resolve.push_back((Ifc **)&o->fluid);
 		o->design_velocity = step_parser.parse_double(object_attributes[11]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[12])) o->design_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->design_temperature);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[13])) o->maximum_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->maximum_temperature);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[14])) o->minimum_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->minimum_temperature);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->working_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->working_temperature);
+		//TODO: parse container of type
+		//TODO: parse container of type
+		//TODO: parse container of type
+		//TODO: parse container of type
 		o->working_quality = step_parser.parse_double(object_attributes[16]);
 		return o;
 	}
@@ -2108,7 +2099,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->context_identifier = step_parser.parse_string(object_attributes[0]);
 		o->context_type = step_parser.parse_string(object_attributes[1]);
 		o->coordinate_space_dimension = step_parser.parse_integer(object_attributes[2]);
-		o->step_parser.parse_double(object_attributes[3]);
+		o->precision = step_parser.parse_double(object_attributes[3]);
 		o->world_coordinate_system = (Ifc_axis_2_placement *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->world_coordinate_system);
 		o->true_north = (Ifc_direction *)step_parser.parse_link(object_attributes[5]);
@@ -2184,7 +2175,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_half_space_solid *o = new Ifc_half_space_solid();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -2314,8 +2305,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->base_unit = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->base_unit);
 		o->title = step_parser.parse_string(object_attributes[7]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->skill_set.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->skill_set);
+		//TODO: parse container of type
 		return o;
 	}
 
@@ -2429,8 +2419,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->remarks.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->remarks);
+		//TODO: parse container of type
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -2440,8 +2429,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->long_job_description = step_parser.parse_string(object_attributes[16]);
 		o->work_type_requested = step_parser.parse_string(object_attributes[17]);
 		o->contractual_type = step_parser.parse_string(object_attributes[18]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[19])) o->if_not_accomplished.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->if_not_accomplished);
+		//TODO: parse container of type
 		o->requested_start_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[20]);
 		links_to_resolve.push_back((Ifc **)&o->requested_start_time);
 		o->requested_finish_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[21]);
@@ -2455,14 +2443,12 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->work_plan = (Ifc_work_plan *)step_parser.parse_link(object_attributes[25]);
 		links_to_resolve.push_back((Ifc **)&o->work_plan);
 		o->status = step_parser.parse_constant(object_attributes[26]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[27])) o->work_order_risk_type.push_back((Ifc_work_order_risk_type_enum *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->work_order_risk_type);
+		o->work_order_risk_type = step_parser.parse_list_of_strings(object_attributes[27]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[28])) o->performed_by.push_back((Ifc_person *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->performed_by);
 		o->actual_cost = (Ifc_cost_value *)step_parser.parse_link(object_attributes[29]);
 		links_to_resolve.push_back((Ifc **)&o->actual_cost);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[30])) o->spares_tools_equipment_consumables.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->spares_tools_equipment_consumables);
+		//TODO: parse container of type
 		o->maintenance_type = step_parser.parse_constant(object_attributes[31]);
 		o->fault_priority = step_parser.parse_constant(object_attributes[32]);
 		o->location_priority = step_parser.parse_constant(object_attributes[33]);
@@ -2640,13 +2626,10 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->productivity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->productivity);
 		o->task_id = step_parser.parse_string(object_attributes[6]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->w_b_s_code.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->w_b_s_code);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->w_b_s_source.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->w_b_s_source);
+		//TODO: parse container of type
+		//TODO: parse container of type
 		o->status = step_parser.parse_constant(object_attributes[9]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->milestones.push_back((Ifc_task_milestone_enum *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->milestones);
+		o->milestones = step_parser.parse_list_of_strings(object_attributes[10]);
 		o->work_method = step_parser.parse_string(object_attributes[11]);
 		o->in_place_quantity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->in_place_quantity);
@@ -2654,15 +2637,14 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->estimated_quantity);
 		o->budget_quantity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[14]);
 		links_to_resolve.push_back((Ifc **)&o->budget_quantity);
-		o->step_parser.parse_boolean(object_attributes[15]);
+		o->is_root_task = step_parser.parse_boolean(object_attributes[15]);
 		o->move_from = (Ifc_spatial_structure_element *)step_parser.parse_link(object_attributes[16]);
 		links_to_resolve.push_back((Ifc **)&o->move_from);
 		o->move_to = (Ifc_spatial_structure_element *)step_parser.parse_link(object_attributes[17]);
 		links_to_resolve.push_back((Ifc **)&o->move_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[18])) o->move_constraints.push_back((Ifc_action_time_control *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->move_constraints);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[19])) o->punch_list.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->punch_list);
+		//TODO: parse container of type
 		return o;
 	}
 
@@ -2722,7 +2704,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->leese_or_rental_date);
 		o->leese_or_rental_period = step_parser.parse_double(object_attributes[7]);
 		o->occupation_type = step_parser.parse_constant(object_attributes[8]);
-		//o->step_parser.parse_logical(object_attributes[9]);
+		//o->unlimited_period = step_parser.parse_logical(object_attributes[9]);
 		return o;
 	}
 
@@ -2732,7 +2714,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->basis_curve);
 		o->distance = (Ifc_length_measure *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->distance);
-		//o->step_parser.parse_logical(object_attributes[2]);
+		//o->self_intersect = step_parser.parse_logical(object_attributes[2]);
 		return o;
 	}
 
@@ -2742,7 +2724,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->basis_curve);
 		o->distance = (Ifc_length_measure *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->distance);
-		//o->step_parser.parse_logical(object_attributes[2]);
+		//o->self_intersect = step_parser.parse_logical(object_attributes[2]);
 		o->ref_direction = (Ifc_direction *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->ref_direction);
 		return o;
@@ -2823,7 +2805,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->edge_end);
 		o->edge_element = (Ifc_edge *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->edge_element);
-		o->step_parser.parse_boolean(object_attributes[3]);
+		o->orientation = step_parser.parse_boolean(object_attributes[3]);
 		return o;
 	}
 
@@ -2970,7 +2952,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_polygonal_bounded_half_space *o = new Ifc_polygonal_bounded_half_space();
 		o->base_surface = (Ifc_surface *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->base_surface);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->agreement_flag = step_parser.parse_boolean(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_3_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		o->polygonal_boundary = (Ifc_polyline *)step_parser.parse_link(object_attributes[3]);
@@ -3109,8 +3091,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->remarks.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->remarks);
+		//TODO: parse container of type
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -3288,8 +3269,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->remarks.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->remarks);
+		//TODO: parse container of type
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -3300,7 +3280,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->scheduled_date);
 		o->actual_date = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[16]);
 		links_to_resolve.push_back((Ifc **)&o->actual_date);
-		o->step_parser.parse_boolean(object_attributes[17]);
+		o->is_f_o_b = step_parser.parse_boolean(object_attributes[17]);
 		o->ship_method = step_parser.parse_string(object_attributes[18]);
 		o->purchase_items = (Ifc_cost_schedule *)step_parser.parse_link(object_attributes[19]);
 		links_to_resolve.push_back((Ifc **)&o->purchase_items);
@@ -3433,8 +3413,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->u_2);
 		o->v_2 = (Ifc_parameter_value *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->v_2);
-		o->step_parser.parse_boolean(object_attributes[5]);
-		o->step_parser.parse_boolean(object_attributes[6]);
+		o->usense = step_parser.parse_boolean(object_attributes[5]);
+		o->vsense = step_parser.parse_boolean(object_attributes[6]);
 		return o;
 	}
 
@@ -3762,8 +3742,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->relating_element);
 		o->related_element = (Ifc_element *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->related_element);
-		o->relating_priorities = step_parser.parse_integer(object_attributes[7]);
-		o->related_priorities = step_parser.parse_integer(object_attributes[8]);
+		//o->relating_priorities = step_parser.parse_list_of_integers(object_attributes[7]);
+		//o->related_priorities = step_parser.parse_list_of_integers(object_attributes[8]);
 		o->related_connection_type = step_parser.parse_constant(object_attributes[9]);
 		o->relating_connection_type = step_parser.parse_constant(object_attributes[10]);
 		return o;
@@ -4063,7 +4043,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->converter_multiplier_or_divider = step_parser.parse_constant(object_attributes[10]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->resource_use_costs.push_back((Ifc_cost_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->resource_use_costs);
-		o->step_parser.parse_double(object_attributes[12]);
+		o->waste_factor = step_parser.parse_double(object_attributes[12]);
 		return o;
 	}
 
@@ -4246,7 +4226,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->remaining_time = step_parser.parse_double(object_attributes[15]);
 		o->free_float = step_parser.parse_double(object_attributes[16]);
 		o->total_float = step_parser.parse_double(object_attributes[17]);
-		o->step_parser.parse_boolean(object_attributes[18]);
+		o->is_critical = step_parser.parse_boolean(object_attributes[18]);
 		o->status_time = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[19]);
 		links_to_resolve.push_back((Ifc **)&o->status_time);
 		o->start_float = step_parser.parse_double(object_attributes[20]);
@@ -4290,7 +4270,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->shape_representations);
 		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
-		//o->step_parser.parse_logical(object_attributes[3]);
+		//o->product_definitional = step_parser.parse_logical(object_attributes[3]);
 		o->part_of_product_definition_shape = (Ifc_product_definition_shape *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->part_of_product_definition_shape);
 		return o;
@@ -4431,7 +4411,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
 		o->thermal_load_source = step_parser.parse_constant(object_attributes[5]);
 		o->requirement_or_criteria = step_parser.parse_constant(object_attributes[6]);
-		o->step_parser.parse_boolean(object_attributes[7]);
+		o->constant_load = step_parser.parse_boolean(object_attributes[7]);
 		o->loss_or_gain = step_parser.parse_constant(object_attributes[8]);
 		o->source_description = step_parser.parse_string(object_attributes[9]);
 		o->maximum_value = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[10]);
@@ -4508,8 +4488,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
 		o->tag = step_parser.parse_string(object_attributes[7]);
-		o->step_parser.parse_integer(object_attributes[8]);
-		o->step_parser.parse_integer(object_attributes[9]);
+		o->number_of_riser = step_parser.parse_integer(object_attributes[8]);
+		o->number_of_treads = step_parser.parse_integer(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		return o;
@@ -4680,7 +4660,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 
 	else if (boost::iequals(object_class, "IfcTable")) {
 		Ifc_table *o = new Ifc_table();
-		o->step_parser.parse_string(object_attributes[0]);
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->rows.push_back((Ifc_table_row *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->rows);
 		return o;
@@ -4690,7 +4670,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		Ifc_table_row *o = new Ifc_table_row();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->row_cells.push_back((Ifc_measure_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->row_cells);
-		o->step_parser.parse_boolean(object_attributes[1]);
+		o->is_heading = step_parser.parse_boolean(object_attributes[1]);
 		return o;
 	}
 
@@ -4726,13 +4706,10 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->productivity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->productivity);
 		o->task_id = step_parser.parse_string(object_attributes[6]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->w_b_s_code.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->w_b_s_code);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->w_b_s_source.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->w_b_s_source);
+		//TODO: parse container of type
+		//TODO: parse container of type
 		o->status = step_parser.parse_constant(object_attributes[9]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->milestones.push_back((Ifc_task_milestone_enum *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->milestones);
+		o->milestones = step_parser.parse_list_of_strings(object_attributes[10]);
 		o->work_method = step_parser.parse_string(object_attributes[11]);
 		o->in_place_quantity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->in_place_quantity);
@@ -4740,7 +4717,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->estimated_quantity);
 		o->budget_quantity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[14]);
 		links_to_resolve.push_back((Ifc **)&o->budget_quantity);
-		o->step_parser.parse_boolean(object_attributes[15]);
+		o->is_root_task = step_parser.parse_boolean(object_attributes[15]);
 		return o;
 	}
 
@@ -4837,7 +4814,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->trim_1);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->trim_2.push_back((Ifc_trimming_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->trim_2);
-		o->step_parser.parse_boolean(object_attributes[3]);
+		o->sense_agreement = step_parser.parse_boolean(object_attributes[3]);
 		o->master_representation = step_parser.parse_constant(object_attributes[4]);
 		return o;
 	}
@@ -4864,10 +4841,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		links_to_resolve.push_back((Ifc **)&o->tube_material);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
-		for (auto i : step_parser.parse_list_of_links(object_attributes[16])) o->tube_fluid_entering_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->tube_fluid_entering_temperature);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[17])) o->tube_fluid_leaving_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->tube_fluid_leaving_temperature);
+		//TODO: parse container of type
+		//TODO: parse container of type
 		o->fin_material = (Ifc_material_select *)step_parser.parse_link(object_attributes[18]);
 		links_to_resolve.push_back((Ifc **)&o->fin_material);
 		o->shell_material = (Ifc_material_select *)step_parser.parse_link(object_attributes[19]);
@@ -4876,10 +4851,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->tube_fouling_factor = step_parser.parse_double(object_attributes[21]);
 		o->number_of_tube_circuits = step_parser.parse_integer(object_attributes[22]);
 		o->number_of_tube_rows = step_parser.parse_integer(object_attributes[23]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[24])) o->shell_fluid_leaving_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->shell_fluid_leaving_temperature);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[25])) o->shell_fluid_entering_temperature.push_back((Ifc_thermodynamic_temperature_measure *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->shell_fluid_entering_temperature);
+		//TODO: parse container of type
+		//TODO: parse container of type
 		return o;
 	}
 
@@ -5091,8 +5064,8 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->construction_type = step_parser.parse_constant(object_attributes[8]);
 		o->operation_type = step_parser.parse_constant(object_attributes[9]);
-		o->step_parser.parse_boolean(object_attributes[10]);
-		o->step_parser.parse_boolean(object_attributes[11]);
+		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
+		o->sizeable = step_parser.parse_boolean(object_attributes[11]);
 		return o;
 	}
 
@@ -5138,8 +5111,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[11])) o->remarks.push_back((Ifc_text *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->remarks);
+		//TODO: parse container of type
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -5149,8 +5121,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->long_job_description = step_parser.parse_string(object_attributes[16]);
 		o->work_type_requested = step_parser.parse_string(object_attributes[17]);
 		o->contractual_type = step_parser.parse_string(object_attributes[18]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[19])) o->if_not_accomplished.push_back((Ifc_label *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->if_not_accomplished);
+		//TODO: parse container of type
 		o->requested_start_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[20]);
 		links_to_resolve.push_back((Ifc **)&o->requested_start_time);
 		o->requested_finish_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[21]);
@@ -5164,8 +5135,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		o->work_plan = (Ifc_work_plan *)step_parser.parse_link(object_attributes[25]);
 		links_to_resolve.push_back((Ifc **)&o->work_plan);
 		o->status = step_parser.parse_constant(object_attributes[26]);
-		for (auto i : step_parser.parse_list_of_links(object_attributes[27])) o->work_order_risk_type.push_back((Ifc_work_order_risk_type_enum *)i);
-		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->work_order_risk_type);
+		o->work_order_risk_type = step_parser.parse_list_of_strings(object_attributes[27]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[28])) o->performed_by.push_back((Ifc_person *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->performed_by);
 		o->actual_cost = (Ifc_cost_value *)step_parser.parse_link(object_attributes[29]);
@@ -5232,6 +5202,7 @@ Ifc *Ifc_2x_schema::parse_ifc_object_definition(std::string &object_class, std::
 		return o;
 	}
 
+	else return new Ifc();
 }
 
 void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_2_d_composite_curve") {
@@ -5254,11 +5225,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_actuator *o = reinterpret_cast<Ifc_actuator *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_address") {
-		Ifc_address *o = reinterpret_cast<Ifc_address *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_air_filter") {
+ 		else if (object->entity == "Ifc_air_filter") {
 		Ifc_air_filter *o = reinterpret_cast<Ifc_air_filter *>(object);
 		std::cout << *o;
 	}
@@ -5330,11 +5297,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_boolean_result *o = reinterpret_cast<Ifc_boolean_result *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_bounded_curve") {
-		Ifc_bounded_curve *o = reinterpret_cast<Ifc_bounded_curve *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_bounded_surface") {
+ 		else if (object->entity == "Ifc_bounded_surface") {
 		Ifc_bounded_surface *o = reinterpret_cast<Ifc_bounded_surface *>(object);
 		std::cout << *o;
 	}
@@ -5354,11 +5317,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_building *o = reinterpret_cast<Ifc_building *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_building_element") {
-		Ifc_building_element *o = reinterpret_cast<Ifc_building_element *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_building_element_proxy") {
+ 		else if (object->entity == "Ifc_building_element_proxy") {
 		Ifc_building_element_proxy *o = reinterpret_cast<Ifc_building_element_proxy *>(object);
 		std::cout << *o;
 	}
@@ -5382,11 +5341,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_cartesian_point *o = reinterpret_cast<Ifc_cartesian_point *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_cartesian_transformation_operator") {
-		Ifc_cartesian_transformation_operator *o = reinterpret_cast<Ifc_cartesian_transformation_operator *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_cartesian_transformation_operator_2_d") {
+ 		else if (object->entity == "Ifc_cartesian_transformation_operator_2_d") {
 		Ifc_cartesian_transformation_operator_2_d *o = reinterpret_cast<Ifc_cartesian_transformation_operator_2_d *>(object);
 		std::cout << *o;
 	}
@@ -5478,11 +5433,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_compressor *o = reinterpret_cast<Ifc_compressor *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_conic") {
-		Ifc_conic *o = reinterpret_cast<Ifc_conic *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_connected_face_set") {
+ 		else if (object->entity == "Ifc_connected_face_set") {
 		Ifc_connected_face_set *o = reinterpret_cast<Ifc_connected_face_set *>(object);
 		std::cout << *o;
 	}
@@ -5494,11 +5445,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_connection_curve_geometry *o = reinterpret_cast<Ifc_connection_curve_geometry *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_connection_geometry") {
-		Ifc_connection_geometry *o = reinterpret_cast<Ifc_connection_geometry *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_connection_point_geometry") {
+ 		else if (object->entity == "Ifc_connection_point_geometry") {
 		Ifc_connection_point_geometry *o = reinterpret_cast<Ifc_connection_point_geometry *>(object);
 		std::cout << *o;
 	}
@@ -5538,11 +5485,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_context_dependent_unit *o = reinterpret_cast<Ifc_context_dependent_unit *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_control") {
-		Ifc_control *o = reinterpret_cast<Ifc_control *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_control_element") {
+ 		else if (object->entity == "Ifc_control_element") {
 		Ifc_control_element *o = reinterpret_cast<Ifc_control_element *>(object);
 		std::cout << *o;
 	}
@@ -5606,11 +5549,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_curtain_wall *o = reinterpret_cast<Ifc_curtain_wall *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_curve") {
-		Ifc_curve *o = reinterpret_cast<Ifc_curve *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_curve_bounded_plane") {
+ 		else if (object->entity == "Ifc_curve_bounded_plane") {
 		Ifc_curve_bounded_plane *o = reinterpret_cast<Ifc_curve_bounded_plane *>(object);
 		std::cout << *o;
 	}
@@ -5718,19 +5657,11 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_electrical_extended_properties *o = reinterpret_cast<Ifc_electrical_extended_properties *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_element") {
-		Ifc_element *o = reinterpret_cast<Ifc_element *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_element_quantity") {
+ 		else if (object->entity == "Ifc_element_quantity") {
 		Ifc_element_quantity *o = reinterpret_cast<Ifc_element_quantity *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_elementary_surface") {
-		Ifc_elementary_surface *o = reinterpret_cast<Ifc_elementary_surface *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_ellipse") {
+ 		else if (object->entity == "Ifc_ellipse") {
 		Ifc_ellipse *o = reinterpret_cast<Ifc_ellipse *>(object);
 		std::cout << *o;
 	}
@@ -5750,11 +5681,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_extended_material_properties *o = reinterpret_cast<Ifc_extended_material_properties *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_external_reference") {
-		Ifc_external_reference *o = reinterpret_cast<Ifc_external_reference *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_extruded_area_solid") {
+ 		else if (object->entity == "Ifc_extruded_area_solid") {
 		Ifc_extruded_area_solid *o = reinterpret_cast<Ifc_extruded_area_solid *>(object);
 		std::cout << *o;
 	}
@@ -5834,11 +5761,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_geometric_representation_context *o = reinterpret_cast<Ifc_geometric_representation_context *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_geometric_representation_item") {
-		Ifc_geometric_representation_item *o = reinterpret_cast<Ifc_geometric_representation_item *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_geometric_set") {
+ 		else if (object->entity == "Ifc_geometric_set") {
 		Ifc_geometric_set *o = reinterpret_cast<Ifc_geometric_set *>(object);
 		std::cout << *o;
 	}
@@ -5926,11 +5849,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_maintenance_work_order *o = reinterpret_cast<Ifc_maintenance_work_order *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_manifold_solid_brep") {
-		Ifc_manifold_solid_brep *o = reinterpret_cast<Ifc_manifold_solid_brep *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_manufacturer_information") {
+ 		else if (object->entity == "Ifc_manufacturer_information") {
 		Ifc_manufacturer_information *o = reinterpret_cast<Ifc_manufacturer_information *>(object);
 		std::cout << *o;
 	}
@@ -5962,11 +5881,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_material_list *o = reinterpret_cast<Ifc_material_list *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_material_properties") {
-		Ifc_material_properties *o = reinterpret_cast<Ifc_material_properties *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_measure_with_unit") {
+ 		else if (object->entity == "Ifc_measure_with_unit") {
 		Ifc_measure_with_unit *o = reinterpret_cast<Ifc_measure_with_unit *>(object);
 		std::cout << *o;
 	}
@@ -5994,19 +5909,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_move *o = reinterpret_cast<Ifc_move *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_named_unit") {
-		Ifc_named_unit *o = reinterpret_cast<Ifc_named_unit *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_object") {
-		Ifc_object *o = reinterpret_cast<Ifc_object *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_object_placement") {
-		Ifc_object_placement *o = reinterpret_cast<Ifc_object_placement *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_objective") {
+ 				else if (object->entity == "Ifc_objective") {
 		Ifc_objective *o = reinterpret_cast<Ifc_objective *>(object);
 		std::cout << *o;
 	}
@@ -6070,23 +5973,11 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_person_and_organization *o = reinterpret_cast<Ifc_person_and_organization *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_physical_quantity") {
-		Ifc_physical_quantity *o = reinterpret_cast<Ifc_physical_quantity *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_placement") {
-		Ifc_placement *o = reinterpret_cast<Ifc_placement *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_plane") {
+ 			else if (object->entity == "Ifc_plane") {
 		Ifc_plane *o = reinterpret_cast<Ifc_plane *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_point") {
-		Ifc_point *o = reinterpret_cast<Ifc_point *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_point_light_source") {
+ 		else if (object->entity == "Ifc_point_light_source") {
 		Ifc_point_light_source *o = reinterpret_cast<Ifc_point_light_source *>(object);
 		std::cout << *o;
 	}
@@ -6110,15 +6001,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_presentation_light_source *o = reinterpret_cast<Ifc_presentation_light_source *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_process") {
-		Ifc_process *o = reinterpret_cast<Ifc_process *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_product") {
-		Ifc_product *o = reinterpret_cast<Ifc_product *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_product_definition_shape") {
+ 			else if (object->entity == "Ifc_product_definition_shape") {
 		Ifc_product_definition_shape *o = reinterpret_cast<Ifc_product_definition_shape *>(object);
 		std::cout << *o;
 	}
@@ -6126,31 +6009,15 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_product_representation *o = reinterpret_cast<Ifc_product_representation *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_profile_def") {
-		Ifc_profile_def *o = reinterpret_cast<Ifc_profile_def *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_project") {
+ 		else if (object->entity == "Ifc_project") {
 		Ifc_project *o = reinterpret_cast<Ifc_project *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_project_order") {
-		Ifc_project_order *o = reinterpret_cast<Ifc_project_order *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_property") {
-		Ifc_property *o = reinterpret_cast<Ifc_property *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_property_bounded_value") {
+ 			else if (object->entity == "Ifc_property_bounded_value") {
 		Ifc_property_bounded_value *o = reinterpret_cast<Ifc_property_bounded_value *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_property_definition") {
-		Ifc_property_definition *o = reinterpret_cast<Ifc_property_definition *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_property_enumerated_value") {
+ 		else if (object->entity == "Ifc_property_enumerated_value") {
 		Ifc_property_enumerated_value *o = reinterpret_cast<Ifc_property_enumerated_value *>(object);
 		std::cout << *o;
 	}
@@ -6166,11 +6033,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_property_set *o = reinterpret_cast<Ifc_property_set *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_property_set_definition") {
-		Ifc_property_set_definition *o = reinterpret_cast<Ifc_property_set_definition *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_property_single_value") {
+ 		else if (object->entity == "Ifc_property_single_value") {
 		Ifc_property_single_value *o = reinterpret_cast<Ifc_property_single_value *>(object);
 		std::cout << *o;
 	}
@@ -6238,11 +6101,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_reference_face *o = reinterpret_cast<Ifc_reference_face *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_reference_geometry") {
-		Ifc_reference_geometry *o = reinterpret_cast<Ifc_reference_geometry *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_reference_vertex") {
+ 		else if (object->entity == "Ifc_reference_vertex") {
 		Ifc_reference_vertex *o = reinterpret_cast<Ifc_reference_vertex *>(object);
 		std::cout << *o;
 	}
@@ -6258,11 +6117,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_rel_aggregates_resources *o = reinterpret_cast<Ifc_rel_aggregates_resources *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_rel_assigns") {
-		Ifc_rel_assigns *o = reinterpret_cast<Ifc_rel_assigns *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_rel_assigns_f_m_standard") {
+ 		else if (object->entity == "Ifc_rel_assigns_f_m_standard") {
 		Ifc_rel_assigns_f_m_standard *o = reinterpret_cast<Ifc_rel_assigns_f_m_standard *>(object);
 		std::cout << *o;
 	}
@@ -6314,11 +6169,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_rel_associates_material *o = reinterpret_cast<Ifc_rel_associates_material *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_rel_connects") {
-		Ifc_rel_connects *o = reinterpret_cast<Ifc_rel_connects *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_rel_connects_elements") {
+ 		else if (object->entity == "Ifc_rel_connects_elements") {
 		Ifc_rel_connects_elements *o = reinterpret_cast<Ifc_rel_connects_elements *>(object);
 		std::cout << *o;
 	}
@@ -6342,15 +6193,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_rel_covers_bldg_elements *o = reinterpret_cast<Ifc_rel_covers_bldg_elements *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_rel_decomposes") {
-		Ifc_rel_decomposes *o = reinterpret_cast<Ifc_rel_decomposes *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_rel_defines") {
-		Ifc_rel_defines *o = reinterpret_cast<Ifc_rel_defines *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_rel_defines_by_properties") {
+ 			else if (object->entity == "Ifc_rel_defines_by_properties") {
 		Ifc_rel_defines_by_properties *o = reinterpret_cast<Ifc_rel_defines_by_properties *>(object);
 		std::cout << *o;
 	}
@@ -6406,11 +6249,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_rel_voids_element *o = reinterpret_cast<Ifc_rel_voids_element *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_relationship") {
-		Ifc_relationship *o = reinterpret_cast<Ifc_relationship *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_representation") {
+ 		else if (object->entity == "Ifc_representation") {
 		Ifc_representation *o = reinterpret_cast<Ifc_representation *>(object);
 		std::cout << *o;
 	}
@@ -6418,19 +6257,11 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_representation_context *o = reinterpret_cast<Ifc_representation_context *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_representation_item") {
-		Ifc_representation_item *o = reinterpret_cast<Ifc_representation_item *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_representation_map") {
+ 		else if (object->entity == "Ifc_representation_map") {
 		Ifc_representation_map *o = reinterpret_cast<Ifc_representation_map *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_resource") {
-		Ifc_resource *o = reinterpret_cast<Ifc_resource *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_revolved_area_solid") {
+ 		else if (object->entity == "Ifc_revolved_area_solid") {
 		Ifc_revolved_area_solid *o = reinterpret_cast<Ifc_revolved_area_solid *>(object);
 		std::cout << *o;
 	}
@@ -6438,11 +6269,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_roof *o = reinterpret_cast<Ifc_roof *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_root") {
-		Ifc_root *o = reinterpret_cast<Ifc_root *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_rounded_rectangle_profile_def") {
+ 		else if (object->entity == "Ifc_rounded_rectangle_profile_def") {
 		Ifc_rounded_rectangle_profile_def *o = reinterpret_cast<Ifc_rounded_rectangle_profile_def *>(object);
 		std::cout << *o;
 	}
@@ -6478,11 +6305,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_shell_based_surface_model *o = reinterpret_cast<Ifc_shell_based_surface_model *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_simple_property") {
-		Ifc_simple_property *o = reinterpret_cast<Ifc_simple_property *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_site") {
+ 		else if (object->entity == "Ifc_site") {
 		Ifc_site *o = reinterpret_cast<Ifc_site *>(object);
 		std::cout << *o;
 	}
@@ -6490,11 +6313,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_slab *o = reinterpret_cast<Ifc_slab *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_solid_model") {
-		Ifc_solid_model *o = reinterpret_cast<Ifc_solid_model *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_space") {
+ 		else if (object->entity == "Ifc_space") {
 		Ifc_space *o = reinterpret_cast<Ifc_space *>(object);
 		std::cout << *o;
 	}
@@ -6510,11 +6329,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_space_thermal_load *o = reinterpret_cast<Ifc_space_thermal_load *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_spatial_structure_element") {
-		Ifc_spatial_structure_element *o = reinterpret_cast<Ifc_spatial_structure_element *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_spot_light_source") {
+ 		else if (object->entity == "Ifc_spot_light_source") {
 		Ifc_spot_light_source *o = reinterpret_cast<Ifc_spot_light_source *>(object);
 		std::cout << *o;
 	}
@@ -6534,11 +6349,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_sub_contract_resource *o = reinterpret_cast<Ifc_sub_contract_resource *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_surface") {
-		Ifc_surface *o = reinterpret_cast<Ifc_surface *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_surface_extended_properties") {
+ 		else if (object->entity == "Ifc_surface_extended_properties") {
 		Ifc_surface_extended_properties *o = reinterpret_cast<Ifc_surface_extended_properties *>(object);
 		std::cout << *o;
 	}
@@ -6562,23 +6373,11 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_surface_style *o = reinterpret_cast<Ifc_surface_style *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_surface_style_properties") {
-		Ifc_surface_style_properties *o = reinterpret_cast<Ifc_surface_style_properties *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_surface_style_usage") {
+ 		else if (object->entity == "Ifc_surface_style_usage") {
 		Ifc_surface_style_usage *o = reinterpret_cast<Ifc_surface_style_usage *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_swept_area_solid") {
-		Ifc_swept_area_solid *o = reinterpret_cast<Ifc_swept_area_solid *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_swept_surface") {
-		Ifc_swept_surface *o = reinterpret_cast<Ifc_swept_surface *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_system") {
+ 			else if (object->entity == "Ifc_system") {
 		Ifc_system *o = reinterpret_cast<Ifc_system *>(object);
 		std::cout << *o;
 	}
@@ -6610,11 +6409,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_thermal_material_properties *o = reinterpret_cast<Ifc_thermal_material_properties *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_topological_representation_item") {
-		Ifc_topological_representation_item *o = reinterpret_cast<Ifc_topological_representation_item *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_transport_element") {
+ 		else if (object->entity == "Ifc_transport_element") {
 		Ifc_transport_element *o = reinterpret_cast<Ifc_transport_element *>(object);
 		std::cout << *o;
 	}
@@ -6694,11 +6489,7 @@ void Ifc_2x_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_
 		Ifc_window_style *o = reinterpret_cast<Ifc_window_style *>(object);
 		std::cout << *o;
 	}
- 	else if (object->entity == "Ifc_work_control") {
-		Ifc_work_control *o = reinterpret_cast<Ifc_work_control *>(object);
-		std::cout << *o;
-	}
- 	else if (object->entity == "Ifc_work_order") {
+ 		else if (object->entity == "Ifc_work_order") {
 		Ifc_work_order *o = reinterpret_cast<Ifc_work_order *>(object);
 		std::cout << *o;
 	}

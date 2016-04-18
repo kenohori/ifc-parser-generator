@@ -41,7 +41,7 @@ struct Object_definition_parser : qi::grammar<Iterator, Object_definition> {
 
 class Ifc_parser {
 private:
-  Ifc_2x3 ifc_schema;
+  Ifc_2x_schema ifc_schema;
   
   Ifc *parse_object_definition(const std::string &definition);
   void parse_statement(const std::string &statement);

@@ -19,7 +19,7 @@ Ifc *Ifc_parser::parse_object_definition(const std::string &definition) {
 //    for (auto &a : object_definition.object_attributes) {
 //      std::cout << a << " ";
 //    } std::cout << std::endl;
-    return new Unsupported();
+    return new Ifc();
   }
 }
 

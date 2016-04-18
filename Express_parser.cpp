@@ -23,6 +23,8 @@ Express_parser::Express_parser() {
   pod_types["BINARY"] = "char *";
   
   reserved_keywords.insert("id");
+  reserved_keywords.insert("operator");
+  reserved_keywords.insert("throw");
 }
 
 std::string Express_parser::format_attribute(const std::string &ifc_name) {
@@ -260,12 +262,12 @@ void Express_parser::parse_entity(const std::string &contents) {
       if (attribute_position == current_attribute_definition->end()) {
         std::get<0>(this->entity_attributes[entity_name]).push_back(format_attribute(*current_attribute_name));
         std::get<1>(this->entity_attributes[entity_name]).push_back(pod_types[this_pod]);
-        if (this_pod == "REAL") std::get<2>(this->entity_attributes[entity_name]).push_back("o->step_parser.parse_double(object_attributes[%d]);");
-        else if (this_pod == "BOOLEAN") std::get<2>(this->entity_attributes[entity_name]).push_back("o->step_parser.parse_boolean(object_attributes[%d]);");
-        else if (this_pod == "INTEGER") std::get<2>(this->entity_attributes[entity_name]).push_back("o->step_parser.parse_integer(object_attributes[%d]);");
-        else if (this_pod == "STRING") std::get<2>(this->entity_attributes[entity_name]).push_back("o->step_parser.parse_string(object_attributes[%d]);");
-        else if (this_pod == "LOGICAL") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->step_parser.parse_logical(object_attributes[%d]);");
-        else if (this_pod == "NUMBER") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->step_parser.parse_unsigned_integer(object_attributes[%d]);");
+        if (this_pod == "REAL") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_double(object_attributes[%d]);");
+        else if (this_pod == "BOOLEAN") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_boolean(object_attributes[%d]);");
+        else if (this_pod == "INTEGER") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_integer(object_attributes[%d]);");
+        else if (this_pod == "STRING") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_string(object_attributes[%d]);");
+        else if (this_pod == "LOGICAL") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_logical(object_attributes[%d]);");
+        else if (this_pod == "NUMBER") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_unsigned_integer(object_attributes[%d]);");
         else std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse other pod\n");
         ++current_attribute_name;
         ++current_attribute_definition;
@@ -308,11 +310,11 @@ void Express_parser::parse_entity(const std::string &contents) {
         std::get<0>(this->entity_attributes[entity_name]).push_back(format_attribute(*current_attribute_name));
         std::get<1>(this->entity_attributes[entity_name]).push_back("std::vector<" + pod_types[this_pod] + ">");
         if (this_pod == "REAL") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_doubles(object_attributes[%d]);");
-        else if (this_pod == "BOOLEAN") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_booleans(object_attributes[%d]);");
-        else if (this_pod == "INTEGER") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_integer(object_attributes[%d]);");
-        else if (this_pod == "STRING") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_string(object_attributes[%d]);");
-        else if (this_pod == "LOGICAL") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_logical(object_attributes[%d]);");
-        else if (this_pod == "NUMBER") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_unsigned_integer(object_attributes[%d]);");
+        else if (this_pod == "BOOLEAN") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_booleans(object_attributes[%d]);");
+        else if (this_pod == "INTEGER") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_integers(object_attributes[%d]);");
+        else if (this_pod == "STRING") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_strings(object_attributes[%d]);");
+        else if (this_pod == "LOGICAL") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_logicals(object_attributes[%d]);");
+        else if (this_pod == "NUMBER") std::get<2>(this->entity_attributes[entity_name]).push_back("//o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_unsigned_integers(object_attributes[%d]);");
         else std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse other container of pod");
         ++current_attribute_name;
         ++current_attribute_definition;
@@ -329,7 +331,18 @@ void Express_parser::parse_entity(const std::string &contents) {
         std::get<1>(this->entity_attributes[entity_name]).push_back("std::vector<" + format_name(this_type));
         if (types_code.count(this_type) == 0 && enumerations_code.count(this_type) == 0) std::get<1>(this->entity_attributes[entity_name]).back() += " *";
         std::get<1>(this->entity_attributes[entity_name]).back() += ">";
-        std::get<2>(this->entity_attributes[entity_name]).push_back("for (auto i : step_parser.parse_list_of_links(object_attributes[%d])) o->" + format_attribute(*current_attribute_name) + ".push_back((" + format_name(this_type) + " *)i);\nlists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->" + format_attribute(*current_attribute_name) + ");");
+        if (types_code.count(this_type) == 0 && enumerations_code.count(this_type) == 0) {
+          std::get<2>(this->entity_attributes[entity_name]).push_back("for (auto i : step_parser.parse_list_of_links(object_attributes[%d])) o->" + format_attribute(*current_attribute_name) + ".push_back((" + format_name(this_type) + " *)i);\nlists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->" + format_attribute(*current_attribute_name) + ");");
+        } else {
+          if (enumerations_code.count(this_type) > 0) {
+            std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_strings(object_attributes[%d]);");
+          } else if (types_code.count(this_type) > 0) {
+            std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse container of type");
+          } else {
+            std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse container of unknown");
+          }
+        }
+        
         ++current_attribute_name;
         ++current_attribute_definition;
         ++parsed_entity_attributes;
@@ -601,7 +614,7 @@ void Express_parser::generate_hpp(const char *path) {
         attribute_definition = all_attribute_definitions.begin();
         while (attribute_name != all_attribute_names.end()) {
           if (attribute_definition->substr(0, 11) == "std::vector") out_stream << "\"vector(\" << o." << *attribute_name << ".size() << \")\" << ";
-          else if (types_code.count(unformat_name(*attribute_definition)) && types_code[unformat_name(*attribute_definition)].substr(0, 11) == "std::vector") out_stream << "\"vector(\" << o." << *attribute_name << ".size() << \")\" << ";
+          else if (types_code.count(unformat_name(*attribute_definition)) && types_code[unformat_name(*attribute_definition)].substr(8, 11) == "std::vector") out_stream << "\"vector(\" << o." << *attribute_name << ".size() << \")\" << ";
           else out_stream << "o." << *attribute_name << " << ";
           if (*attribute_name != all_attribute_names.back()) out_stream << "\", \" << ";
           ++attribute_name;
@@ -711,7 +724,8 @@ void Express_parser::generate_cpp(const char *path) {
     
     out_stream << "\t\treturn o;\n\t}\n\n";
     ++current_entity_number;
-  } out_stream << "}\n\n";
+  } out_stream << "\telse return new Ifc();\n";
+  out_stream << "}\n\n";
 
   // Write object
   out_stream << "void " << filename << "::print_object_info(Ifc *object) {";
@@ -719,6 +733,7 @@ void Express_parser::generate_cpp(const char *path) {
   current_entity_number = 0;
   for (auto const &entity : entity_attributes) {
     out_stream << "\t";
+    if (abstract_entities.count(entity.first) > 0) continue;
     if (current_entity_number > 0) out_stream << "else ";
     out_stream << "if (object->entity == \"" << format_name(entity.first) << "\") {\n\t\t" + format_name(entity.first) + " *o = reinterpret_cast<" + format_name(entity.first) + " *>(object);\n\t\tstd::cout << *o;\n\t}\n ";
     ++current_entity_number;

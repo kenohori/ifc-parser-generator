@@ -106,16 +106,17 @@ void Express_parser::parse_type(const std::string &contents) {
   else {
     
     // Try to parse as a pod type
+    std::string this_pod;
     auto const pods = (qi::string("REAL") | qi::string("BOOLEAN") | qi::string("INTEGER") | qi::string("STRING") | qi::string("LOGICAL") | qi::string("NUMBER") | qi::string("BINARY(32)") | qi::string("BINARY")) >> -qi::omit[qi::lit('(') >> qi::uint_ >> qi::lit(')')] >> -qi::lit("FIXED");
     std::string::iterator type_position = type_definition.begin();
-    qi::phrase_parse(type_position, type_definition.end(), pods, qi::space);
+    qi::phrase_parse(type_position, type_definition.end(), qi::as_string[pods][phoenix::ref(this_pod) = qi::_1], qi::space);
     if (type_position == type_definition.end()) {
-      types_code[type_name] = "typedef " + pod_types[type_definition] + " " + format_name(type_name) + ";";
+      if (pod_types.count(this_pod) > 0) types_code[type_name] = "typedef " + pod_types[this_pod] + " " + format_name(type_name) + ";";
+      else std::cout << "Couldn't find " << this_pod << " in pod_types" << std::endl;
       return;
     }
 
     // Try as a container of a pod type
-    std::string this_pod;
     auto const container_types = qi::string("ARRAY") | qi::string("LIST") | qi::string("SET") | qi::string("BAG");
     auto const container_of_pod = container_types >> qi::lit('[') >> qi::uint_ >> qi::lit(':') >> (qi::uint_ | qi::char_('?')) >> qi::lit(']')  >> qi::lit("OF") >> qi::as_string[pods][phoenix::ref(this_pod) = qi::_1];
     type_position = type_definition.begin();
@@ -495,7 +496,7 @@ void Express_parser::generate_hpp(const char *path) {
     return;
   }
   
-  out_stream << "#ifndef " << filename << "_hpp\n#define " << filename << "_hpp\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\n// Defined types (" << types_code.size() << ")\n";
+  out_stream << "#ifndef " << filename << "_hpp\n#define " << filename << "_hpp\n\n#include <boost/algorithm/string.hpp>\n\n#include \"Step_parser.hpp\"\n\nnamespace " << filename << " {\n\n\t// Defined types (" << types_code.size() << ")\n";
   
   // Types
   for (auto const &type : types_code) types_to_do.push_back(type.first);
@@ -508,7 +509,7 @@ void Express_parser::generate_hpp(const char *path) {
         break;
       }
     } if (dependencies_met) {
-      out_stream << types_code[types_to_do.front()] << std::endl;
+      out_stream << "\t" << types_code[types_to_do.front()] << std::endl;
       in_output.insert(types_to_do.front());
     } else {
       types_to_do.push_back(types_to_do.front());
@@ -522,30 +523,30 @@ void Express_parser::generate_hpp(const char *path) {
   }
   
   // Enums
-  out_stream << "\n// Enums (" << enumerations_code.size() << ")\n";
+  out_stream << "\n\t// Enums (" << enumerations_code.size() << ")\n";
   for (auto const &enumeration : enumerations_code) {
-    out_stream << enumeration.second << "\n";
+    out_stream << "\t" << enumeration.second << "\n";
     in_output.insert(enumeration.first);
   }
   
   // Forward declarations
-  out_stream << "\n// Forward declarations (" << entity_attributes.size() << ")\n";
+  out_stream << "\n\t// Forward declarations (" << entity_attributes.size() << ")\n";
   for (auto const &entity : entity_attributes) {
-    out_stream << "struct " << format_name(entity.first) << ";\n";
+    out_stream << "\tstruct " << format_name(entity.first) << ";\n";
   }
   
   // Base class
-  out_stream << "\n// Base class\nstruct Ifc {\n\tstd::string entity;\n\tvirtual ~Ifc() {}\n};\n";
+  out_stream << "\n\t// Base class\n\tstruct Ifc {\n\t\tstd::string entity;\n\t\tvirtual ~Ifc() {}\n\t};\n";
   
   // Select types
-  out_stream << "\n// Select types (" << selects_code.size() << ")\n";
+  out_stream << "\n\t// Select types (" << selects_code.size() << ")\n";
   for (auto const &select : selects_code) {
-    out_stream << select.second << "\n";
+    out_stream << "\t" << select.second << "\n";
     in_output.insert(select.first);
   }
   
   // Entities
-  out_stream << "\n// Entities (" << entity_attributes.size() << ")\n";
+  out_stream << "\n\t// Entities (" << entity_attributes.size() << ")\n";
   for (auto const &entity : entity_attributes) entities_to_do.push_back(entity.first);
   max_failed_iterations = 100000;
   while (!entities_to_do.empty() && max_failed_iterations > 0) {
@@ -556,7 +557,7 @@ void Express_parser::generate_hpp(const char *path) {
         break;
       }
     } if (dependencies_met) {
-      out_stream << "struct " << format_name(entities_to_do.front()) << " : ";
+      out_stream << "\tstruct " << format_name(entities_to_do.front()) << " : ";
       if (dependencies[entities_to_do.front()].empty()) {
         out_stream << "Ifc";
       } else {
@@ -570,7 +571,7 @@ void Express_parser::generate_hpp(const char *path) {
       std::list<std::string>::const_iterator current_attribute_name = std::get<0>(entity_attributes[entities_to_do.front()]).begin(),
       current_attribute_definition = std::get<1>(entity_attributes[entities_to_do.front()]).begin();
       while (current_attribute_name != std::get<0>(entity_attributes[entities_to_do.front()]).end()) {
-        out_stream << "\t" << *current_attribute_definition;
+        out_stream << "\t\t" << *current_attribute_definition;
         if (current_attribute_definition->back() != '*') out_stream << " ";
         out_stream << *current_attribute_name << ";\n";
         ++current_attribute_name;
@@ -583,11 +584,11 @@ void Express_parser::generate_hpp(const char *path) {
       
       // Constructor and <<operator
       if (!abstract_entities.count(entities_to_do.front())) {
-        out_stream << "\t" + format_name(entities_to_do.front()) + "() {\n";
-        out_stream << "\t\tentity = \"" + format_name(entities_to_do.front()) + "\";\n";
-        out_stream << "\t}\n";
-        out_stream << "\tfriend std::ostream &operator<<(std::ostream &os, const " + format_name(entities_to_do.front()) + " &o) {\n";
-        out_stream << "\t\treturn os << \"" + format_name(entities_to_do.front()) + "(\" << ";
+        out_stream << "\t\t" + format_name(entities_to_do.front()) + "() {\n";
+        out_stream << "\t\t\tentity = \"" + format_name(entities_to_do.front()) + "\";\n";
+        out_stream << "\t\t}\n";
+        out_stream << "\t\tfriend std::ostream &operator<<(std::ostream &os, const " + format_name(entities_to_do.front()) + " &o) {\n";
+        out_stream << "\t\t\treturn os << \"" + format_name(entities_to_do.front()) + "(\" << ";
         
         // Get inherited attributes
         std::list<std::string> superclasses_to_check, all_attribute_names, all_attribute_definitions;
@@ -622,15 +623,15 @@ void Express_parser::generate_hpp(const char *path) {
         }
         
         out_stream << "\")\";\n";
-        out_stream << "\t}\n";
+        out_stream << "\t\t}\n";
       }
       
       // Destructor
       else {
-        out_stream << "\tvirtual ~" + format_name(entities_to_do.front()) + "() {}\n";
+        out_stream << "\t\tvirtual ~" + format_name(entities_to_do.front()) + "() {}\n";
       }
       
-      out_stream << "};\n\n";
+      out_stream << "\t};\n\n";
       in_output.insert(entities_to_do.front());
     } else {
       entities_to_do.push_back(entities_to_do.front());
@@ -670,7 +671,9 @@ void Express_parser::generate_hpp(const char *path) {
   }
   
   // Class
-  out_stream << "class " << filename << " {\nprivate:\n\tStep_parser step_parser;\n\npublic:\n\tstd::list<Ifc **> links_to_resolve;\n\tstd::list<std::vector<Ifc *> *> lists_of_links_to_resolve;\n\n\tIfc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);\n\tvoid print_object_info(Ifc *object);\n};\n\n#endif /* " << filename << "_hpp */\n";
+  out_stream << "\tclass Schema {\n\tprivate:\n\t\tStep_parser step_parser;\n\n\tpublic:\n\t\tstd::list<Ifc **> links_to_resolve;\n\t\tstd::list<std::vector<Ifc *> *> lists_of_links_to_resolve;\n\n\t\tIfc *parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes);\n\t\tvoid print_object_info(Ifc *object);\n\t};\n\n";
+  
+  out_stream << "}\n\n#endif /* " << filename << "_hpp */\n";
 }
 
 void Express_parser::generate_cpp(const char *path) {
@@ -688,7 +691,7 @@ void Express_parser::generate_cpp(const char *path) {
   }
   
   // Parser
-  out_stream << "#include \"" << filename << ".hpp\"\n\nIfc *" << filename << "::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
+  out_stream << "#include \"" << filename << ".hpp\"\n\nusing namespace " << filename << ";\n\n" << filename << "::Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {\n\n";
   unsigned int current_entity_number = 0;
   for (auto const &entity : entity_attributes) {
     out_stream << "\t";
@@ -728,7 +731,7 @@ void Express_parser::generate_cpp(const char *path) {
   out_stream << "}\n\n";
 
   // Write object
-  out_stream << "void " << filename << "::print_object_info(Ifc *object) {";
+  out_stream << "void Schema::print_object_info(Ifc *object) {";
   
   current_entity_number = 0;
   for (auto const &entity : entity_attributes) {

@@ -2,7 +2,8 @@
 
 #include "Ifc_parser.hpp"
 
-Ifc *Ifc_parser::parse_object_definition(const std::string &definition) {
+template <typename Ifc_schema>
+typename Ifc_schema::Ifc *Ifc_parser::parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition) {
 //  std::cout << "\tObject: " << definition << std::endl;
   
   Object_definition object_definition;
@@ -19,11 +20,12 @@ Ifc *Ifc_parser::parse_object_definition(const std::string &definition) {
 //    for (auto &a : object_definition.object_attributes) {
 //      std::cout << a << " ";
 //    } std::cout << std::endl;
-    return new Ifc();
+    return new typename Ifc_schema::Ifc();
   }
 }
 
-void Ifc_parser::parse_statement(const std::string &statement) {
+template <typename Ifc_schema>
+void Ifc_parser::parse_statement(Ifc_schema &ifc_schema, const std::string &statement) {
   std::cout << "Statement: " << statement << std::endl;
   
   std::string object_definition = "";
@@ -34,7 +36,7 @@ void Ifc_parser::parse_statement(const std::string &statement) {
   qi::phrase_parse(statement.begin(), statement.end(), ifc_object, qi::space);
   
   if (object_id != 0) {
-    contents[object_id] = parse_object_definition(object_definition);
+    parse_object_definition<Ifc_schema>(ifc_schema, object_definition);
     
     std::cout << "\t" << contents[object_id] << " [" << object_id << "] = ";
     ifc_schema.print_object_info(contents[object_id]);
@@ -43,7 +45,8 @@ void Ifc_parser::parse_statement(const std::string &statement) {
   }
 }
 
-void Ifc_parser::resolve_links() {
+template <typename Ifc_schema>
+void Ifc_parser::resolve_links(Ifc_schema &ifc_schema) {
   for (auto link : ifc_schema.links_to_resolve) {
 //    std::cout << "Resolving link at " << link << " containing " << (std::uintptr_t)*link << "..." << std::endl;
     *link = contents[(std::uintptr_t)*link];
@@ -60,6 +63,10 @@ void Ifc_parser::resolve_links() {
       link = contents[(std::uintptr_t)link];
     }
   }
+}
+
+Ifc_parser::Ifc_parser() {
+  schema = "";
 }
 
 void Ifc_parser::parse_file(const char *path) {
@@ -86,8 +93,9 @@ void Ifc_parser::parse_file(const char *path) {
   qi::phrase_parse(contents.begin(), contents.end(), *statement, qi::space, raw_statements);
   
   for (auto &s : raw_statements) {
-    parse_statement(s);
+    if (schema == "IFC2X3") parse_statement(ifc_2x3_schema, s);
+    else parse_preamble(s);
   }
   
-  resolve_links();
+  if (schema == "IFC2X3") resolve_links(ifc_2x3_schema);
 }

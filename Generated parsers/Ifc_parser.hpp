@@ -5,6 +5,8 @@
 #include <map>
 
 #include "Ifc_2x_schema.hpp"
+#include "Ifc_2x2_schema.hpp"
+#include "Ifc_2x3_schema.hpp"
 
 struct Object_definition {
   std::string object_class;
@@ -41,15 +43,24 @@ struct Object_definition_parser : qi::grammar<Iterator, Object_definition> {
 
 class Ifc_parser {
 private:
-  Ifc_2x_schema ifc_schema;
+  Ifc_2x_schema::Schema ifc_2x_schema;
+  Ifc_2x2_schema::Schema ifc_2x2_schema;
+  Ifc_2x3_schema::Schema ifc_2x3_schema;
   
-  Ifc *parse_object_definition(const std::string &definition);
-  void parse_statement(const std::string &statement);
-  void resolve_links();
+  std::string schema;
+  
+  void parse_preamble(const std::string &definition);
+  template <typename Ifc_schema>
+  typename Ifc_schema::Ifc *parse_object_definition(Ifc_schema &ifc_schema, const std::string &definition);
+  template <typename Ifc_schema>
+  void parse_statement(Ifc_schema &ifc_schema, const std::string &statement);
+  template <typename Ifc_schema>
+  void resolve_links(Ifc_schema &ifc_schema);
   
 public:
-  std::map<std::uintptr_t, Ifc *> contents;
+  std::map<std::uintptr_t, void *> contents;
   
+  Ifc_parser();
   void parse_file(const char *path);
 };
 

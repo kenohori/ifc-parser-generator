@@ -1,30 +1,32 @@
 #include "Ifc_4_add_1_schema.hpp"
 
-Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
+using namespace Ifc_4_add_1_schema;
+
+Ifc_4_add_1_schema::Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<std::string> &object_attributes) {
 
 	if (boost::iequals(object_class, "IfcActionRequest")) {
 		Ifc_action_request *o = new Ifc_action_request();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[7]);
 		o->long_description = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcActor")) {
 		Ifc_actor *o = new Ifc_actor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->the_actor = (Ifc_actor_select *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->the_actor);
 		return o;
@@ -33,42 +35,42 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcActorRole")) {
 		Ifc_actor_role *o = new Ifc_actor_role();
 		o->role = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_role = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcActuator")) {
 		Ifc_actuator *o = new Ifc_actuator();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcActuatorType")) {
 		Ifc_actuator_type *o = new Ifc_actuator_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -77,7 +79,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_address *o = new Ifc_address();
 		o->purpose = step_parser.parse_constant(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -109,152 +111,152 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcAirTerminal")) {
 		Ifc_air_terminal *o = new Ifc_air_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAirTerminalBox")) {
 		Ifc_air_terminal_box *o = new Ifc_air_terminal_box();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAirTerminalBoxType")) {
 		Ifc_air_terminal_box_type *o = new Ifc_air_terminal_box_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAirTerminalType")) {
 		Ifc_air_terminal_type *o = new Ifc_air_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAirToAirHeatRecovery")) {
 		Ifc_air_to_air_heat_recovery *o = new Ifc_air_to_air_heat_recovery();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAirToAirHeatRecoveryType")) {
 		Ifc_air_to_air_heat_recovery_type *o = new Ifc_air_to_air_heat_recovery_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAlarm")) {
 		Ifc_alarm *o = new Ifc_alarm();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAlarmType")) {
 		Ifc_alarm_type *o = new Ifc_alarm_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAnnotation")) {
 		Ifc_annotation *o = new Ifc_annotation();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -275,15 +277,15 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_application *o = new Ifc_application();
 		o->application_developer = (Ifc_organization *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->application_developer);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->version = step_parser.parse_string(object_attributes[1]);
+		o->application_full_name = step_parser.parse_string(object_attributes[2]);
+		o->application_identifier = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAppliedValue")) {
 		Ifc_applied_value *o = new Ifc_applied_value();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->applied_value = (Ifc_applied_value_select *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->applied_value);
@@ -291,8 +293,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->unit_basis);
 		o->applicable_date = step_parser.parse_string(object_attributes[4]);
 		o->fixed_until_date = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[6]);
+		o->condition = step_parser.parse_string(object_attributes[7]);
 		o->arithmetic_operator = step_parser.parse_constant(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->components.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->components);
@@ -301,12 +303,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcApproval")) {
 		Ifc_approval *o = new Ifc_approval();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identifier = step_parser.parse_string(object_attributes[0]);
+		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		o->time_of_approval = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[4]);
+		o->level = step_parser.parse_string(object_attributes[5]);
 		o->qualifier = step_parser.parse_string(object_attributes[6]);
 		o->requesting_approval = (Ifc_actor_select *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->requesting_approval);
@@ -317,7 +319,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcApprovalRelationship")) {
 		Ifc_approval_relationship *o = new Ifc_approval_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_approval = (Ifc_approval *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_approval);
@@ -329,7 +331,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcArbitraryClosedProfileDef")) {
 		Ifc_arbitrary_closed_profile_def *o = new Ifc_arbitrary_closed_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->outer_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->outer_curve);
 		return o;
@@ -338,7 +340,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcArbitraryOpenProfileDef")) {
 		Ifc_arbitrary_open_profile_def *o = new Ifc_arbitrary_open_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->curve = (Ifc_bounded_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->curve);
 		return o;
@@ -347,7 +349,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcArbitraryProfileDefWithVoids")) {
 		Ifc_arbitrary_profile_def_with_voids *o = new Ifc_arbitrary_profile_def_with_voids();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->outer_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->outer_curve);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->inner_curves.push_back((Ifc_curve *)i);
@@ -357,13 +359,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcAsset")) {
 		Ifc_asset *o = new Ifc_asset();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->original_value = (Ifc_cost_value *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->original_value);
 		o->current_value = (Ifc_cost_value *)step_parser.parse_link(object_attributes[7]);
@@ -385,7 +387,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcAsymmetricIShapeProfileDef")) {
 		Ifc_asymmetric_i_shape_profile_def *o = new Ifc_asymmetric_i_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -405,35 +407,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcAudioVisualAppliance")) {
 		Ifc_audio_visual_appliance *o = new Ifc_audio_visual_appliance();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcAudioVisualApplianceType")) {
 		Ifc_audio_visual_appliance_type *o = new Ifc_audio_visual_appliance_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -523,52 +525,52 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBeam")) {
 		Ifc_beam *o = new Ifc_beam();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBeamStandardCase")) {
 		Ifc_beam_standard_case *o = new Ifc_beam_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBeamType")) {
 		Ifc_beam_type *o = new Ifc_beam_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -577,11 +579,11 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_blob_texture *o = new Ifc_blob_texture();
 		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
 		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
 		//TODO: parse container of type
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->raster_format = step_parser.parse_string(object_attributes[5]);
 		//TODO: parse non-pointer type: typedef char * Ifc_binary;
 		return o;
 	}
@@ -598,35 +600,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoiler")) {
 		Ifc_boiler *o = new Ifc_boiler();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBoilerType")) {
 		Ifc_boiler_type *o = new Ifc_boiler_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -653,7 +655,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoundaryCondition")) {
 		Ifc_boundary_condition *o = new Ifc_boundary_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
@@ -667,7 +669,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoundaryEdgeCondition")) {
 		Ifc_boundary_edge_condition *o = new Ifc_boundary_edge_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->translational_stiffness_by_length_x = (Ifc_modulus_of_translational_subgrade_reaction_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->translational_stiffness_by_length_x);
 		o->translational_stiffness_by_length_y = (Ifc_modulus_of_translational_subgrade_reaction_select *)step_parser.parse_link(object_attributes[2]);
@@ -685,7 +687,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoundaryFaceCondition")) {
 		Ifc_boundary_face_condition *o = new Ifc_boundary_face_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->translational_stiffness_by_area_x = (Ifc_modulus_of_subgrade_reaction_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->translational_stiffness_by_area_x);
 		o->translational_stiffness_by_area_y = (Ifc_modulus_of_subgrade_reaction_select *)step_parser.parse_link(object_attributes[2]);
@@ -697,7 +699,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoundaryNodeCondition")) {
 		Ifc_boundary_node_condition *o = new Ifc_boundary_node_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->translational_stiffness_x = (Ifc_translational_stiffness_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->translational_stiffness_x);
 		o->translational_stiffness_y = (Ifc_translational_stiffness_select *)step_parser.parse_link(object_attributes[2]);
@@ -715,7 +717,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBoundaryNodeConditionWarping")) {
 		Ifc_boundary_node_condition_warping *o = new Ifc_boundary_node_condition_warping();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->translational_stiffness_x = (Ifc_translational_stiffness_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->translational_stiffness_x);
 		o->translational_stiffness_y = (Ifc_translational_stiffness_select *)step_parser.parse_link(object_attributes[2]);
@@ -765,17 +767,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBuilding")) {
 		Ifc_building *o = new Ifc_building();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->composition_type = step_parser.parse_constant(object_attributes[8]);
 		o->elevation_of_ref_height = step_parser.parse_double(object_attributes[9]);
 		o->elevation_of_terrain = step_parser.parse_double(object_attributes[10]);
@@ -786,120 +788,120 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBuildingElement")) {
 		Ifc_building_element *o = new Ifc_building_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingElementPart")) {
 		Ifc_building_element_part *o = new Ifc_building_element_part();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingElementPartType")) {
 		Ifc_building_element_part_type *o = new Ifc_building_element_part_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingElementProxy")) {
 		Ifc_building_element_proxy *o = new Ifc_building_element_proxy();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingElementProxyType")) {
 		Ifc_building_element_proxy_type *o = new Ifc_building_element_proxy_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingElementType")) {
 		Ifc_building_element_type *o = new Ifc_building_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBuildingStorey")) {
 		Ifc_building_storey *o = new Ifc_building_storey();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->composition_type = step_parser.parse_constant(object_attributes[8]);
 		o->elevation = step_parser.parse_double(object_attributes[9]);
 		return o;
@@ -907,48 +909,48 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcBuildingSystem")) {
 		Ifc_building_system *o = new Ifc_building_system();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBurner")) {
 		Ifc_burner *o = new Ifc_burner();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcBurnerType")) {
 		Ifc_burner_type *o = new Ifc_burner_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -956,7 +958,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcCShapeProfileDef")) {
 		Ifc_c_shape_profile_def *o = new Ifc_c_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -969,140 +971,140 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCableCarrierFitting")) {
 		Ifc_cable_carrier_fitting *o = new Ifc_cable_carrier_fitting();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableCarrierFittingType")) {
 		Ifc_cable_carrier_fitting_type *o = new Ifc_cable_carrier_fitting_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableCarrierSegment")) {
 		Ifc_cable_carrier_segment *o = new Ifc_cable_carrier_segment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableCarrierSegmentType")) {
 		Ifc_cable_carrier_segment_type *o = new Ifc_cable_carrier_segment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableFitting")) {
 		Ifc_cable_fitting *o = new Ifc_cable_fitting();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableFittingType")) {
 		Ifc_cable_fitting_type *o = new Ifc_cable_fitting_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableSegment")) {
 		Ifc_cable_segment *o = new Ifc_cable_segment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCableSegmentType")) {
 		Ifc_cable_segment_type *o = new Ifc_cable_segment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -1200,7 +1202,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcCenterLineProfileDef")) {
 		Ifc_center_line_profile_def *o = new Ifc_center_line_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->curve = (Ifc_bounded_curve *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->curve);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -1209,70 +1211,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcChiller")) {
 		Ifc_chiller *o = new Ifc_chiller();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcChillerType")) {
 		Ifc_chiller_type *o = new Ifc_chiller_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcChimney")) {
 		Ifc_chimney *o = new Ifc_chimney();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcChimneyType")) {
 		Ifc_chimney_type *o = new Ifc_chimney_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -1288,7 +1290,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcCircleHollowProfileDef")) {
 		Ifc_circle_hollow_profile_def *o = new Ifc_circle_hollow_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -1299,7 +1301,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcCircleProfileDef")) {
 		Ifc_circle_profile_def *o = new Ifc_circle_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -1308,43 +1310,43 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCivilElement")) {
 		Ifc_civil_element *o = new Ifc_civil_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCivilElementType")) {
 		Ifc_civil_element_type *o = new Ifc_civil_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcClassification")) {
 		Ifc_classification *o = new Ifc_classification();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->source = step_parser.parse_string(object_attributes[0]);
+		o->edition = step_parser.parse_string(object_attributes[1]);
 		o->edition_date = step_parser.parse_string(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[3]);
 		o->description = step_parser.parse_string(object_attributes[4]);
 		o->location = step_parser.parse_string(object_attributes[5]);
 		//TODO: parse container of type
@@ -1354,12 +1356,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcClassificationReference")) {
 		Ifc_classification_reference *o = new Ifc_classification_reference();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->referenced_source = (Ifc_classification_reference_select *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->referenced_source);
 		o->description = step_parser.parse_string(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->sort = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
 
@@ -1372,42 +1374,42 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCoil")) {
 		Ifc_coil *o = new Ifc_coil();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCoilType")) {
 		Ifc_coil_type *o = new Ifc_coil_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcColourRgb")) {
 		Ifc_colour_rgb *o = new Ifc_colour_rgb();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -1422,102 +1424,102 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcColourSpecification")) {
 		Ifc_colour_specification *o = new Ifc_colour_specification();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcColumn")) {
 		Ifc_column *o = new Ifc_column();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcColumnStandardCase")) {
 		Ifc_column_standard_case *o = new Ifc_column_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcColumnType")) {
 		Ifc_column_type *o = new Ifc_column_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCommunicationsAppliance")) {
 		Ifc_communications_appliance *o = new Ifc_communications_appliance();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCommunicationsApplianceType")) {
 		Ifc_communications_appliance_type *o = new Ifc_communications_appliance_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcComplexProperty")) {
 		Ifc_complex_property *o = new Ifc_complex_property();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->usage_name = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->has_properties.push_back((Ifc_property *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_properties);
 		return o;
@@ -1525,12 +1527,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcComplexPropertyTemplate")) {
 		Ifc_complex_property_template *o = new Ifc_complex_property_template();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->usage_name = step_parser.parse_string(object_attributes[4]);
 		o->template_type = step_parser.parse_constant(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->has_property_templates.push_back((Ifc_property_template *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_templates);
@@ -1565,79 +1567,79 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcCompositeProfileDef")) {
 		Ifc_composite_profile_def *o = new Ifc_composite_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->profiles.push_back((Ifc_profile_def *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->profiles);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->label = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCompressor")) {
 		Ifc_compressor *o = new Ifc_compressor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCompressorType")) {
 		Ifc_compressor_type *o = new Ifc_compressor_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCondenser")) {
 		Ifc_condenser *o = new Ifc_condenser();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCondenserType")) {
 		Ifc_condenser_type *o = new Ifc_condenser_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -1711,26 +1713,26 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstraint")) {
 		Ifc_constraint *o = new Ifc_constraint();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->constraint_grade = step_parser.parse_constant(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->constraint_source = step_parser.parse_string(object_attributes[3]);
 		o->creating_actor = (Ifc_actor_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->creating_actor);
 		o->creation_time = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_grade = step_parser.parse_string(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcConstructionEquipmentResource")) {
 		Ifc_construction_equipment_resource *o = new Ifc_construction_equipment_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -1744,17 +1746,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionEquipmentResourceType")) {
 		Ifc_construction_equipment_resource_type *o = new Ifc_construction_equipment_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -1765,13 +1767,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionMaterialResource")) {
 		Ifc_construction_material_resource *o = new Ifc_construction_material_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -1785,17 +1787,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionMaterialResourceType")) {
 		Ifc_construction_material_resource_type *o = new Ifc_construction_material_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -1806,13 +1808,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionProductResource")) {
 		Ifc_construction_product_resource *o = new Ifc_construction_product_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -1826,17 +1828,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionProductResourceType")) {
 		Ifc_construction_product_resource_type *o = new Ifc_construction_product_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -1847,13 +1849,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionResource")) {
 		Ifc_construction_resource *o = new Ifc_construction_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -1866,17 +1868,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcConstructionResourceType")) {
 		Ifc_construction_resource_type *o = new Ifc_construction_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -1886,14 +1888,14 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcContext")) {
 		Ifc_context *o = new Ifc_context();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
+		o->phase = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->representation_contexts.push_back((Ifc_representation_context *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_contexts);
 		o->units_in_context = (Ifc_unit_assignment *)step_parser.parse_link(object_attributes[8]);
@@ -1906,53 +1908,53 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		o->dimensions = (Ifc_dimensional_exponents *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->dimensions);
 		o->unit_type = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcControl")) {
 		Ifc_control *o = new Ifc_control();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcController")) {
 		Ifc_controller *o = new Ifc_controller();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcControllerType")) {
 		Ifc_controller_type *o = new Ifc_controller_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -1962,7 +1964,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		o->dimensions = (Ifc_dimensional_exponents *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->dimensions);
 		o->unit_type = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->conversion_factor = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->conversion_factor);
 		return o;
@@ -1973,7 +1975,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		o->dimensions = (Ifc_dimensional_exponents *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->dimensions);
 		o->unit_type = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->conversion_factor = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->conversion_factor);
 		o->conversion_offset = step_parser.parse_double(object_attributes[4]);
@@ -1982,70 +1984,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCooledBeam")) {
 		Ifc_cooled_beam *o = new Ifc_cooled_beam();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCooledBeamType")) {
 		Ifc_cooled_beam_type *o = new Ifc_cooled_beam_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCoolingTower")) {
 		Ifc_cooling_tower *o = new Ifc_cooling_tower();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCoolingTowerType")) {
 		Ifc_cooling_tower_type *o = new Ifc_cooling_tower_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -2061,22 +2063,22 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCoordinateReferenceSystem")) {
 		Ifc_coordinate_reference_system *o = new Ifc_coordinate_reference_system();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->geodetic_datum = step_parser.parse_string(object_attributes[2]);
+		o->vertical_datum = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCostItem")) {
 		Ifc_cost_item *o = new Ifc_cost_item();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->cost_values.push_back((Ifc_cost_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->cost_values);
@@ -2087,15 +2089,15 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCostSchedule")) {
 		Ifc_cost_schedule *o = new Ifc_cost_schedule();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[7]);
 		o->submitted_on = step_parser.parse_string(object_attributes[8]);
 		o->update_date = step_parser.parse_string(object_attributes[9]);
 		return o;
@@ -2103,7 +2105,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCostValue")) {
 		Ifc_cost_value *o = new Ifc_cost_value();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->applied_value = (Ifc_applied_value_select *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->applied_value);
@@ -2111,8 +2113,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->unit_basis);
 		o->applicable_date = step_parser.parse_string(object_attributes[4]);
 		o->fixed_until_date = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[6]);
+		o->condition = step_parser.parse_string(object_attributes[7]);
 		o->arithmetic_operator = step_parser.parse_constant(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->components.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->components);
@@ -2121,48 +2123,48 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCovering")) {
 		Ifc_covering *o = new Ifc_covering();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCoveringType")) {
 		Ifc_covering_type *o = new Ifc_covering_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCrewResource")) {
 		Ifc_crew_resource *o = new Ifc_crew_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -2176,17 +2178,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCrewResourceType")) {
 		Ifc_crew_resource_type *o = new Ifc_crew_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -2211,7 +2213,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCurrencyRelationship")) {
 		Ifc_currency_relationship *o = new Ifc_currency_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_monetary_unit = (Ifc_monetary_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_monetary_unit);
@@ -2226,35 +2228,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCurtainWall")) {
 		Ifc_curtain_wall *o = new Ifc_curtain_wall();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcCurtainWallType")) {
 		Ifc_curtain_wall_type *o = new Ifc_curtain_wall_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -2287,7 +2289,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCurveStyle")) {
 		Ifc_curve_style *o = new Ifc_curve_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->curve_font = (Ifc_curve_font_or_scaled_curve_font_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->curve_font);
 		o->curve_width = (Ifc_size_select *)step_parser.parse_link(object_attributes[2]);
@@ -2300,7 +2302,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCurveStyleFont")) {
 		Ifc_curve_style_font *o = new Ifc_curve_style_font();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->pattern_list.push_back((Ifc_curve_style_font_pattern *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->pattern_list);
 		return o;
@@ -2308,7 +2310,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcCurveStyleFontAndScaling")) {
 		Ifc_curve_style_font_and_scaling *o = new Ifc_curve_style_font_and_scaling();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->curve_font = (Ifc_curve_style_font_select *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->curve_font);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
@@ -2332,35 +2334,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDamper")) {
 		Ifc_damper *o = new Ifc_damper();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDamperType")) {
 		Ifc_damper_type *o = new Ifc_damper_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -2368,12 +2370,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcDerivedProfileDef")) {
 		Ifc_derived_profile_def *o = new Ifc_derived_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->parent_profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_profile);
 		o->_operator = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->_operator);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->label = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
@@ -2382,7 +2384,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->elements.push_back((Ifc_derived_unit_element *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->elements);
 		o->unit_type = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_type = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -2414,194 +2416,194 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDiscreteAccessory")) {
 		Ifc_discrete_accessory *o = new Ifc_discrete_accessory();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDiscreteAccessoryType")) {
 		Ifc_discrete_accessory_type *o = new Ifc_discrete_accessory_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionChamberElement")) {
 		Ifc_distribution_chamber_element *o = new Ifc_distribution_chamber_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionChamberElementType")) {
 		Ifc_distribution_chamber_element_type *o = new Ifc_distribution_chamber_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionCircuit")) {
 		Ifc_distribution_circuit *o = new Ifc_distribution_circuit();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionControlElement")) {
 		Ifc_distribution_control_element *o = new Ifc_distribution_control_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionControlElementType")) {
 		Ifc_distribution_control_element_type *o = new Ifc_distribution_control_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionElement")) {
 		Ifc_distribution_element *o = new Ifc_distribution_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionElementType")) {
 		Ifc_distribution_element_type *o = new Ifc_distribution_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionFlowElement")) {
 		Ifc_distribution_flow_element *o = new Ifc_distribution_flow_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionFlowElementType")) {
 		Ifc_distribution_flow_element_type *o = new Ifc_distribution_flow_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDistributionPort")) {
 		Ifc_distribution_port *o = new Ifc_distribution_port();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -2614,34 +2616,34 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDistributionSystem")) {
 		Ifc_distribution_system *o = new Ifc_distribution_system();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDocumentInformation")) {
 		Ifc_document_information *o = new Ifc_document_information();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[0]);
+		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		o->location = step_parser.parse_string(object_attributes[3]);
 		o->purpose = step_parser.parse_string(object_attributes[4]);
 		o->intended_use = step_parser.parse_string(object_attributes[5]);
 		o->scope = step_parser.parse_string(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->revision = step_parser.parse_string(object_attributes[7]);
 		o->document_owner = (Ifc_actor_select *)step_parser.parse_link(object_attributes[8]);
 		links_to_resolve.push_back((Ifc **)&o->document_owner);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->editors.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->editors);
 		o->creation_time = step_parser.parse_string(object_attributes[10]);
 		o->last_revision_time = step_parser.parse_string(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->electronic_format = step_parser.parse_string(object_attributes[12]);
 		o->valid_from = step_parser.parse_string(object_attributes[13]);
 		o->valid_until = step_parser.parse_string(object_attributes[14]);
 		o->confidentiality = step_parser.parse_constant(object_attributes[15]);
@@ -2651,21 +2653,21 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDocumentInformationRelationship")) {
 		Ifc_document_information_relationship *o = new Ifc_document_information_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_document = (Ifc_document_information *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_document);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->related_documents.push_back((Ifc_document_information *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_documents);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->relationship_type = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDocumentReference")) {
 		Ifc_document_reference *o = new Ifc_document_reference();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->referenced_document = (Ifc_document_information *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->referenced_document);
@@ -2674,31 +2676,31 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDoor")) {
 		Ifc_door *o = new Ifc_door();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
 		o->operation_type = step_parser.parse_constant(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_operation_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDoorLiningProperties")) {
 		Ifc_door_lining_properties *o = new Ifc_door_lining_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_non_negative_length_measure;
@@ -2719,10 +2721,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDoorPanelProperties")) {
 		Ifc_door_panel_properties *o = new Ifc_door_panel_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->panel_operation = step_parser.parse_constant(object_attributes[5]);
@@ -2735,38 +2737,38 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDoorStandardCase")) {
 		Ifc_door_standard_case *o = new Ifc_door_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
 		o->operation_type = step_parser.parse_constant(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_operation_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDoorStyle")) {
 		Ifc_door_style *o = new Ifc_door_style();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->operation_type = step_parser.parse_constant(object_attributes[8]);
 		o->construction_type = step_parser.parse_constant(object_attributes[9]);
 		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
@@ -2776,138 +2778,138 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcDoorType")) {
 		Ifc_door_type *o = new Ifc_door_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->operation_type = step_parser.parse_constant(object_attributes[10]);
 		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_operation_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDraughtingPreDefinedColour")) {
 		Ifc_draughting_pre_defined_colour *o = new Ifc_draughting_pre_defined_colour();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDraughtingPreDefinedCurveFont")) {
 		Ifc_draughting_pre_defined_curve_font *o = new Ifc_draughting_pre_defined_curve_font();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctFitting")) {
 		Ifc_duct_fitting *o = new Ifc_duct_fitting();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctFittingType")) {
 		Ifc_duct_fitting_type *o = new Ifc_duct_fitting_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctSegment")) {
 		Ifc_duct_segment *o = new Ifc_duct_segment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctSegmentType")) {
 		Ifc_duct_segment_type *o = new Ifc_duct_segment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctSilencer")) {
 		Ifc_duct_silencer *o = new Ifc_duct_silencer();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcDuctSilencerType")) {
 		Ifc_duct_silencer_type *o = new Ifc_duct_silencer_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -2942,243 +2944,243 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcElectricAppliance")) {
 		Ifc_electric_appliance *o = new Ifc_electric_appliance();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricApplianceType")) {
 		Ifc_electric_appliance_type *o = new Ifc_electric_appliance_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricDistributionBoard")) {
 		Ifc_electric_distribution_board *o = new Ifc_electric_distribution_board();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricDistributionBoardType")) {
 		Ifc_electric_distribution_board_type *o = new Ifc_electric_distribution_board_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricFlowStorageDevice")) {
 		Ifc_electric_flow_storage_device *o = new Ifc_electric_flow_storage_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricFlowStorageDeviceType")) {
 		Ifc_electric_flow_storage_device_type *o = new Ifc_electric_flow_storage_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricGenerator")) {
 		Ifc_electric_generator *o = new Ifc_electric_generator();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricGeneratorType")) {
 		Ifc_electric_generator_type *o = new Ifc_electric_generator_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricMotor")) {
 		Ifc_electric_motor *o = new Ifc_electric_motor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricMotorType")) {
 		Ifc_electric_motor_type *o = new Ifc_electric_motor_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricTimeControl")) {
 		Ifc_electric_time_control *o = new Ifc_electric_time_control();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElectricTimeControlType")) {
 		Ifc_electric_time_control_type *o = new Ifc_electric_time_control_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElement")) {
 		Ifc_element *o = new Ifc_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElementAssembly")) {
 		Ifc_element_assembly *o = new Ifc_element_assembly();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->assembly_place = step_parser.parse_constant(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
@@ -3186,63 +3188,63 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcElementAssemblyType")) {
 		Ifc_element_assembly_type *o = new Ifc_element_assembly_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElementComponent")) {
 		Ifc_element_component *o = new Ifc_element_component();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElementComponentType")) {
 		Ifc_element_component_type *o = new Ifc_element_component_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcElementQuantity")) {
 		Ifc_element_quantity *o = new Ifc_element_quantity();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->method_of_measurement = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->quantities.push_back((Ifc_physical_quantity *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->quantities);
 		return o;
@@ -3250,18 +3252,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcElementType")) {
 		Ifc_element_type *o = new Ifc_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
@@ -3284,7 +3286,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcEllipseProfileDef")) {
 		Ifc_ellipse_profile_def *o = new Ifc_ellipse_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -3294,155 +3296,155 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcEnergyConversionDevice")) {
 		Ifc_energy_conversion_device *o = new Ifc_energy_conversion_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEnergyConversionDeviceType")) {
 		Ifc_energy_conversion_device_type *o = new Ifc_energy_conversion_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEngine")) {
 		Ifc_engine *o = new Ifc_engine();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEngineType")) {
 		Ifc_engine_type *o = new Ifc_engine_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEvaporativeCooler")) {
 		Ifc_evaporative_cooler *o = new Ifc_evaporative_cooler();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEvaporativeCoolerType")) {
 		Ifc_evaporative_cooler_type *o = new Ifc_evaporative_cooler_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEvaporator")) {
 		Ifc_evaporator *o = new Ifc_evaporator();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEvaporatorType")) {
 		Ifc_evaporator_type *o = new Ifc_evaporator_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcEvent")) {
 		Ifc_event *o = new Ifc_event();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[7]);
 		o->event_trigger_type = step_parser.parse_constant(object_attributes[8]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_event_trigger_type = step_parser.parse_string(object_attributes[9]);
 		o->event_occurence_time = (Ifc_event_time *)step_parser.parse_link(object_attributes[10]);
 		links_to_resolve.push_back((Ifc **)&o->event_occurence_time);
 		return o;
@@ -3450,9 +3452,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcEventTime")) {
 		Ifc_event_time *o = new Ifc_event_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->actual_date = step_parser.parse_string(object_attributes[3]);
 		o->early_date = step_parser.parse_string(object_attributes[4]);
 		o->late_date = step_parser.parse_string(object_attributes[5]);
@@ -3462,26 +3464,26 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcEventType")) {
 		Ifc_event_type *o = new Ifc_event_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->process_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->event_trigger_type = step_parser.parse_constant(object_attributes[10]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_event_trigger_type = step_parser.parse_string(object_attributes[11]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExtendedProperties")) {
 		Ifc_extended_properties *o = new Ifc_extended_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->properties.push_back((Ifc_property *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->properties);
@@ -3496,14 +3498,14 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcExternalReference")) {
 		Ifc_external_reference *o = new Ifc_external_reference();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExternalReferenceRelationship")) {
 		Ifc_external_reference_relationship *o = new Ifc_external_reference_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_reference = (Ifc_external_reference *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_reference);
@@ -3514,58 +3516,58 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcExternalSpatialElement")) {
 		Ifc_external_spatial_element *o = new Ifc_external_spatial_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExternalSpatialStructureElement")) {
 		Ifc_external_spatial_structure_element *o = new Ifc_external_spatial_structure_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExternallyDefinedHatchStyle")) {
 		Ifc_externally_defined_hatch_style *o = new Ifc_externally_defined_hatch_style();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExternallyDefinedSurfaceStyle")) {
 		Ifc_externally_defined_surface_style *o = new Ifc_externally_defined_surface_style();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcExternallyDefinedTextFont")) {
 		Ifc_externally_defined_text_font *o = new Ifc_externally_defined_text_font();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -3653,7 +3655,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcFailureConnectionCondition")) {
 		Ifc_failure_connection_condition *o = new Ifc_failure_connection_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->tension_failure_x = step_parser.parse_double(object_attributes[1]);
 		o->tension_failure_y = step_parser.parse_double(object_attributes[2]);
 		o->tension_failure_z = step_parser.parse_double(object_attributes[3]);
@@ -3665,125 +3667,125 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcFan")) {
 		Ifc_fan *o = new Ifc_fan();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFanType")) {
 		Ifc_fan_type *o = new Ifc_fan_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFastener")) {
 		Ifc_fastener *o = new Ifc_fastener();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFastenerType")) {
 		Ifc_fastener_type *o = new Ifc_fastener_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFeatureElement")) {
 		Ifc_feature_element *o = new Ifc_feature_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFeatureElementAddition")) {
 		Ifc_feature_element_addition *o = new Ifc_feature_element_addition();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFeatureElementSubtraction")) {
 		Ifc_feature_element_subtraction *o = new Ifc_feature_element_subtraction();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFillAreaStyle")) {
 		Ifc_fill_area_style *o = new Ifc_fill_area_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->fill_styles.push_back((Ifc_fill_style_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->fill_styles);
 		o->modelor_draughting = step_parser.parse_boolean(object_attributes[2]);
@@ -3816,70 +3818,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcFilter")) {
 		Ifc_filter *o = new Ifc_filter();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFilterType")) {
 		Ifc_filter_type *o = new Ifc_filter_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFireSuppressionTerminal")) {
 		Ifc_fire_suppression_terminal *o = new Ifc_fire_suppression_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFireSuppressionTerminalType")) {
 		Ifc_fire_suppression_terminal_type *o = new Ifc_fire_suppression_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -3901,404 +3903,404 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcFlowController")) {
 		Ifc_flow_controller *o = new Ifc_flow_controller();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowControllerType")) {
 		Ifc_flow_controller_type *o = new Ifc_flow_controller_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowFitting")) {
 		Ifc_flow_fitting *o = new Ifc_flow_fitting();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowFittingType")) {
 		Ifc_flow_fitting_type *o = new Ifc_flow_fitting_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowInstrument")) {
 		Ifc_flow_instrument *o = new Ifc_flow_instrument();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowInstrumentType")) {
 		Ifc_flow_instrument_type *o = new Ifc_flow_instrument_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowMeter")) {
 		Ifc_flow_meter *o = new Ifc_flow_meter();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowMeterType")) {
 		Ifc_flow_meter_type *o = new Ifc_flow_meter_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowMovingDevice")) {
 		Ifc_flow_moving_device *o = new Ifc_flow_moving_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowMovingDeviceType")) {
 		Ifc_flow_moving_device_type *o = new Ifc_flow_moving_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowSegment")) {
 		Ifc_flow_segment *o = new Ifc_flow_segment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowSegmentType")) {
 		Ifc_flow_segment_type *o = new Ifc_flow_segment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowStorageDevice")) {
 		Ifc_flow_storage_device *o = new Ifc_flow_storage_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowStorageDeviceType")) {
 		Ifc_flow_storage_device_type *o = new Ifc_flow_storage_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowTerminal")) {
 		Ifc_flow_terminal *o = new Ifc_flow_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowTerminalType")) {
 		Ifc_flow_terminal_type *o = new Ifc_flow_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowTreatmentDevice")) {
 		Ifc_flow_treatment_device *o = new Ifc_flow_treatment_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFlowTreatmentDeviceType")) {
 		Ifc_flow_treatment_device_type *o = new Ifc_flow_treatment_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFooting")) {
 		Ifc_footing *o = new Ifc_footing();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFootingType")) {
 		Ifc_footing_type *o = new Ifc_footing_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFurnishingElement")) {
 		Ifc_furnishing_element *o = new Ifc_furnishing_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFurnishingElementType")) {
 		Ifc_furnishing_element_type *o = new Ifc_furnishing_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFurniture")) {
 		Ifc_furniture *o = new Ifc_furniture();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcFurnitureType")) {
 		Ifc_furniture_type *o = new Ifc_furniture_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->assembly_place = step_parser.parse_constant(object_attributes[9]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
 		return o;
@@ -4306,35 +4308,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGeographicElement")) {
 		Ifc_geographic_element *o = new Ifc_geographic_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcGeographicElementType")) {
 		Ifc_geographic_element_type *o = new Ifc_geographic_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -4348,8 +4350,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGeometricRepresentationContext")) {
 		Ifc_geometric_representation_context *o = new Ifc_geometric_representation_context();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->context_identifier = step_parser.parse_string(object_attributes[0]);
+		o->context_type = step_parser.parse_string(object_attributes[1]);
 		o->coordinate_space_dimension = step_parser.parse_integer(object_attributes[2]);
 		o->precision = step_parser.parse_double(object_attributes[3]);
 		o->world_coordinate_system = (Ifc_axis_2_placement *)step_parser.parse_link(object_attributes[4]);
@@ -4366,8 +4368,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGeometricRepresentationSubContext")) {
 		Ifc_geometric_representation_sub_context *o = new Ifc_geometric_representation_sub_context();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->context_identifier = step_parser.parse_string(object_attributes[0]);
+		o->context_type = step_parser.parse_string(object_attributes[1]);
 		o->coordinate_space_dimension = step_parser.parse_integer(object_attributes[2]);
 		o->precision = step_parser.parse_double(object_attributes[3]);
 		o->world_coordinate_system = (Ifc_axis_2_placement *)step_parser.parse_link(object_attributes[4]);
@@ -4378,7 +4380,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->parent_context);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
 		o->target_view = step_parser.parse_constant(object_attributes[8]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_target_view = step_parser.parse_string(object_attributes[9]);
 		return o;
 	}
 
@@ -4391,12 +4393,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGrid")) {
 		Ifc_grid *o = new Ifc_grid();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -4413,7 +4415,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGridAxis")) {
 		Ifc_grid_axis *o = new Ifc_grid_axis();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->axis_tag = step_parser.parse_string(object_attributes[0]);
 		o->axis_curve = (Ifc_curve *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->axis_curve);
 		o->same_sense = step_parser.parse_boolean(object_attributes[2]);
@@ -4431,12 +4433,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcGroup")) {
 		Ifc_group *o = new Ifc_group();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
@@ -4450,70 +4452,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcHeatExchanger")) {
 		Ifc_heat_exchanger *o = new Ifc_heat_exchanger();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcHeatExchangerType")) {
 		Ifc_heat_exchanger_type *o = new Ifc_heat_exchanger_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcHumidifier")) {
 		Ifc_humidifier *o = new Ifc_humidifier();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcHumidifierType")) {
 		Ifc_humidifier_type *o = new Ifc_humidifier_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -4521,7 +4523,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcIShapeProfileDef")) {
 		Ifc_i_shape_profile_def *o = new Ifc_i_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -4538,7 +4540,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_image_texture *o = new Ifc_image_texture();
 		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
 		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
 		//TODO: parse container of type
@@ -4592,47 +4594,47 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcInterceptor")) {
 		Ifc_interceptor *o = new Ifc_interceptor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcInterceptorType")) {
 		Ifc_interceptor_type *o = new Ifc_interceptor_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcInventory")) {
 		Ifc_inventory *o = new Ifc_inventory();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
 		o->jurisdiction = (Ifc_actor_select *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->jurisdiction);
@@ -4648,13 +4650,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcIrregularTimeSeries")) {
 		Ifc_irregular_time_series *o = new Ifc_irregular_time_series();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->start_time = step_parser.parse_string(object_attributes[2]);
 		o->end_time = step_parser.parse_string(object_attributes[3]);
 		o->time_series_data_type = step_parser.parse_constant(object_attributes[4]);
 		o->data_origin = step_parser.parse_constant(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[6]);
 		o->unit = (Ifc_unit *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[8])) o->values.push_back((Ifc_irregular_time_series_value *)i);
@@ -4672,35 +4674,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcJunctionBox")) {
 		Ifc_junction_box *o = new Ifc_junction_box();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcJunctionBoxType")) {
 		Ifc_junction_box_type *o = new Ifc_junction_box_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -4708,7 +4710,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcLShapeProfileDef")) {
 		Ifc_l_shape_profile_def *o = new Ifc_l_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -4722,13 +4724,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLaborResource")) {
 		Ifc_labor_resource *o = new Ifc_labor_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -4742,17 +4744,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLaborResourceType")) {
 		Ifc_labor_resource_type *o = new Ifc_labor_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -4763,9 +4765,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLagTime")) {
 		Ifc_lag_time *o = new Ifc_lag_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->lag_value = (Ifc_time_or_ratio_select *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->lag_value);
 		o->duration_type = step_parser.parse_constant(object_attributes[4]);
@@ -4774,43 +4776,43 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLamp")) {
 		Ifc_lamp *o = new Ifc_lamp();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcLampType")) {
 		Ifc_lamp_type *o = new Ifc_lamp_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcLibraryInformation")) {
 		Ifc_library_information *o = new Ifc_library_information();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
+		o->version = step_parser.parse_string(object_attributes[1]);
 		o->publisher = (Ifc_actor_select *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->publisher);
 		o->version_date = step_parser.parse_string(object_attributes[3]);
@@ -4822,8 +4824,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcLibraryReference")) {
 		Ifc_library_reference *o = new Ifc_library_reference();
 		o->location = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[1]);
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_identifier Ifc_language_id;
 		o->referenced_library = (Ifc_library_information *)step_parser.parse_link(object_attributes[5]);
@@ -4841,35 +4843,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightFixture")) {
 		Ifc_light_fixture *o = new Ifc_light_fixture();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcLightFixtureType")) {
 		Ifc_light_fixture_type *o = new Ifc_light_fixture_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -4884,7 +4886,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSource")) {
 		Ifc_light_source *o = new Ifc_light_source();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -4894,7 +4896,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSourceAmbient")) {
 		Ifc_light_source_ambient *o = new Ifc_light_source_ambient();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -4904,7 +4906,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSourceDirectional")) {
 		Ifc_light_source_directional *o = new Ifc_light_source_directional();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -4916,7 +4918,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSourceGoniometric")) {
 		Ifc_light_source_goniometric *o = new Ifc_light_source_goniometric();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -4935,7 +4937,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSourcePositional")) {
 		Ifc_light_source_positional *o = new Ifc_light_source_positional();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -4951,7 +4953,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcLightSourceSpot")) {
 		Ifc_light_source_spot *o = new Ifc_light_source_spot();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->light_colour = (Ifc_colour_rgb *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->light_colour);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
@@ -5026,9 +5028,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterial")) {
 		Ifc_material *o = new Ifc_material();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -5043,18 +5045,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterialConstituent")) {
 		Ifc_material_constituent *o = new Ifc_material_constituent();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->material = (Ifc_material *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->material);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_normalised_ratio_measure;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMaterialConstituentSet")) {
 		Ifc_material_constituent_set *o = new Ifc_material_constituent_set();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->material_constituents.push_back((Ifc_material_constituent *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->material_constituents);
@@ -5068,7 +5070,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterialDefinitionRepresentation")) {
 		Ifc_material_definition_representation *o = new Ifc_material_definition_representation();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->representations.push_back((Ifc_representation *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representations);
@@ -5083,9 +5085,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->material);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_non_negative_length_measure;
 		o->is_ventilated = step_parser.parse_integer(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[3]);
 		o->description = step_parser.parse_string(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[5]);
 		o->priority = step_parser.parse_integer(object_attributes[6]);
 		return o;
 	}
@@ -5094,7 +5096,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_material_layer_set *o = new Ifc_material_layer_set();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->material_layers.push_back((Ifc_material_layer *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->material_layers);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->layer_set_name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
@@ -5116,9 +5118,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->material);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_non_negative_length_measure;
 		o->is_ventilated = step_parser.parse_integer(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[3]);
 		o->description = step_parser.parse_string(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[5]);
 		o->priority = step_parser.parse_integer(object_attributes[6]);
 		o->offset_direction = step_parser.parse_constant(object_attributes[7]);
 		//TODO: parse container of type
@@ -5134,20 +5136,20 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterialProfile")) {
 		Ifc_material_profile *o = new Ifc_material_profile();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->material = (Ifc_material *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->material);
 		o->profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->profile);
 		o->priority = step_parser.parse_integer(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMaterialProfileSet")) {
 		Ifc_material_profile_set *o = new Ifc_material_profile_set();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->material_profiles.push_back((Ifc_material_profile *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->material_profiles);
@@ -5179,21 +5181,21 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterialProfileWithOffsets")) {
 		Ifc_material_profile_with_offsets *o = new Ifc_material_profile_with_offsets();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->material = (Ifc_material *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->material);
 		o->profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->profile);
 		o->priority = step_parser.parse_integer(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->category = step_parser.parse_string(object_attributes[5]);
 		//TODO: parse container of type
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMaterialProperties")) {
 		Ifc_material_properties *o = new Ifc_material_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->properties.push_back((Ifc_property *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->properties);
@@ -5204,13 +5206,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMaterialRelationship")) {
 		Ifc_material_relationship *o = new Ifc_material_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_material = (Ifc_material *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_material);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->related_materials.push_back((Ifc_material *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_materials);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->expression = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
@@ -5230,17 +5232,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMechanicalFastener")) {
 		Ifc_mechanical_fastener *o = new Ifc_mechanical_fastener();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
@@ -5249,18 +5251,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMechanicalFastenerType")) {
 		Ifc_mechanical_fastener_type *o = new Ifc_mechanical_fastener_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -5269,103 +5271,103 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcMedicalDevice")) {
 		Ifc_medical_device *o = new Ifc_medical_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMedicalDeviceType")) {
 		Ifc_medical_device_type *o = new Ifc_medical_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMember")) {
 		Ifc_member *o = new Ifc_member();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMemberStandardCase")) {
 		Ifc_member_standard_case *o = new Ifc_member_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMemberType")) {
 		Ifc_member_type *o = new Ifc_member_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMetric")) {
 		Ifc_metric *o = new Ifc_metric();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->constraint_grade = step_parser.parse_constant(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->constraint_source = step_parser.parse_string(object_attributes[3]);
 		o->creating_actor = (Ifc_actor_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->creating_actor);
 		o->creation_time = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_grade = step_parser.parse_string(object_attributes[6]);
 		o->benchmark = step_parser.parse_constant(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->value_source = step_parser.parse_string(object_attributes[8]);
 		o->data_value = (Ifc_metric_value_select *)step_parser.parse_link(object_attributes[9]);
 		links_to_resolve.push_back((Ifc **)&o->data_value);
 		o->reference_path = (Ifc_reference *)step_parser.parse_link(object_attributes[10]);
@@ -5376,52 +5378,52 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcMirroredProfileDef")) {
 		Ifc_mirrored_profile_def *o = new Ifc_mirrored_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->parent_profile = (Ifc_profile_def *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->parent_profile);
 		o->_operator = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->_operator);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->label = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMonetaryUnit")) {
 		Ifc_monetary_unit *o = new Ifc_monetary_unit();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->currency = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMotorConnection")) {
 		Ifc_motor_connection *o = new Ifc_motor_connection();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcMotorConnectionType")) {
 		Ifc_motor_connection_type *o = new Ifc_motor_connection_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -5436,21 +5438,21 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcObject")) {
 		Ifc_object *o = new Ifc_object();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcObjectDefinition")) {
 		Ifc_object_definition *o = new Ifc_object_definition();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
@@ -5462,30 +5464,30 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcObjective")) {
 		Ifc_objective *o = new Ifc_objective();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->constraint_grade = step_parser.parse_constant(object_attributes[2]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->constraint_source = step_parser.parse_string(object_attributes[3]);
 		o->creating_actor = (Ifc_actor_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->creating_actor);
 		o->creation_time = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_grade = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->benchmark_values.push_back((Ifc_constraint *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->benchmark_values);
 		o->logical_aggregator = step_parser.parse_constant(object_attributes[8]);
 		o->objective_qualifier = step_parser.parse_constant(object_attributes[9]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_qualifier = step_parser.parse_string(object_attributes[10]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcOccupant")) {
 		Ifc_occupant *o = new Ifc_occupant();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->the_actor = (Ifc_actor_select *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->the_actor);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
@@ -5521,42 +5523,42 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcOpeningElement")) {
 		Ifc_opening_element *o = new Ifc_opening_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcOpeningStandardCase")) {
 		Ifc_opening_standard_case *o = new Ifc_opening_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcOrganization")) {
 		Ifc_organization *o = new Ifc_organization();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[0]);
+		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->roles.push_back((Ifc_actor_role *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->roles);
@@ -5567,7 +5569,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcOrganizationRelationship")) {
 		Ifc_organization_relationship *o = new Ifc_organization_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_organization = (Ifc_organization *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_organization);
@@ -5598,35 +5600,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcOutlet")) {
 		Ifc_outlet *o = new Ifc_outlet();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcOutletType")) {
 		Ifc_outlet_type *o = new Ifc_outlet_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -5651,7 +5653,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcParameterizedProfileDef")) {
 		Ifc_parameterized_profile_def *o = new Ifc_parameterized_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		return o;
@@ -5675,24 +5677,24 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPerformanceHistory")) {
 		Ifc_performance_history *o = new Ifc_performance_history();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
+		o->life_cycle_phase = step_parser.parse_string(object_attributes[6]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPermeableCoveringProperties")) {
 		Ifc_permeable_covering_properties *o = new Ifc_permeable_covering_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->operation_type = step_parser.parse_constant(object_attributes[4]);
 		o->panel_position = step_parser.parse_constant(object_attributes[5]);
@@ -5705,24 +5707,24 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPermit")) {
 		Ifc_permit *o = new Ifc_permit();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[7]);
 		o->long_description = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPerson")) {
 		Ifc_person *o = new Ifc_person();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identification = step_parser.parse_string(object_attributes[0]);
+		o->family_name = step_parser.parse_string(object_attributes[1]);
+		o->given_name = step_parser.parse_string(object_attributes[2]);
 		//TODO: parse container of type
 		//TODO: parse container of type
 		//TODO: parse container of type
@@ -5746,26 +5748,26 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPhysicalComplexQuantity")) {
 		Ifc_physical_complex_quantity *o = new Ifc_physical_complex_quantity();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->has_quantities.push_back((Ifc_physical_quantity *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_quantities);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->discrimination = step_parser.parse_string(object_attributes[3]);
+		o->quality = step_parser.parse_string(object_attributes[4]);
+		o->usage = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPhysicalQuantity")) {
 		Ifc_physical_quantity *o = new Ifc_physical_quantity();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPhysicalSimpleQuantity")) {
 		Ifc_physical_simple_quantity *o = new Ifc_physical_simple_quantity();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
@@ -5774,17 +5776,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPile")) {
 		Ifc_pile *o = new Ifc_pile();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		o->construction_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
@@ -5792,88 +5794,88 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPileType")) {
 		Ifc_pile_type *o = new Ifc_pile_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPipeFitting")) {
 		Ifc_pipe_fitting *o = new Ifc_pipe_fitting();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPipeFittingType")) {
 		Ifc_pipe_fitting_type *o = new Ifc_pipe_fitting_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPipeSegment")) {
 		Ifc_pipe_segment *o = new Ifc_pipe_segment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPipeSegmentType")) {
 		Ifc_pipe_segment_type *o = new Ifc_pipe_segment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -5882,7 +5884,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_pixel_texture *o = new Ifc_pixel_texture();
 		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
 		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
 		//TODO: parse container of type
@@ -5925,52 +5927,52 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPlate")) {
 		Ifc_plate *o = new Ifc_plate();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPlateStandardCase")) {
 		Ifc_plate_standard_case *o = new Ifc_plate_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPlateType")) {
 		Ifc_plate_type *o = new Ifc_plate_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -6025,12 +6027,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPort")) {
 		Ifc_port *o = new Ifc_port();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -6042,32 +6044,32 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_postal_address *o = new Ifc_postal_address();
 		o->purpose = step_parser.parse_constant(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
+		o->internal_location = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse container of type
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->postal_box = step_parser.parse_string(object_attributes[5]);
+		o->town = step_parser.parse_string(object_attributes[6]);
+		o->region = step_parser.parse_string(object_attributes[7]);
+		o->postal_code = step_parser.parse_string(object_attributes[8]);
+		o->country = step_parser.parse_string(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPreDefinedColour")) {
 		Ifc_pre_defined_colour *o = new Ifc_pre_defined_colour();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPreDefinedCurveFont")) {
 		Ifc_pre_defined_curve_font *o = new Ifc_pre_defined_curve_font();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPreDefinedItem")) {
 		Ifc_pre_defined_item *o = new Ifc_pre_defined_item();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
@@ -6078,17 +6080,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPreDefinedPropertySet")) {
 		Ifc_pre_defined_property_set *o = new Ifc_pre_defined_property_set();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPreDefinedTextFont")) {
 		Ifc_pre_defined_text_font *o = new Ifc_pre_defined_text_font();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
@@ -6099,21 +6101,21 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPresentationLayerAssignment")) {
 		Ifc_presentation_layer_assignment *o = new Ifc_presentation_layer_assignment();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->assigned_items.push_back((Ifc_layered_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->assigned_items);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identifier = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPresentationLayerWithStyle")) {
 		Ifc_presentation_layer_with_style *o = new Ifc_presentation_layer_with_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->assigned_items.push_back((Ifc_layered_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->assigned_items);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identifier = step_parser.parse_string(object_attributes[3]);
 		o->layer_on = step_parser.parse_integer(object_attributes[4]);
 		o->layer_frozen = step_parser.parse_integer(object_attributes[5]);
 		o->layer_blocked = step_parser.parse_integer(object_attributes[6]);
@@ -6124,7 +6126,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPresentationStyle")) {
 		Ifc_presentation_style *o = new Ifc_presentation_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
@@ -6137,13 +6139,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProcedure")) {
 		Ifc_procedure *o = new Ifc_procedure();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[7]);
 		return o;
@@ -6151,42 +6153,42 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProcedureType")) {
 		Ifc_procedure_type *o = new Ifc_procedure_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->process_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProcess")) {
 		Ifc_process *o = new Ifc_process();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProduct")) {
 		Ifc_product *o = new Ifc_product();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -6196,7 +6198,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProductDefinitionShape")) {
 		Ifc_product_definition_shape *o = new Ifc_product_definition_shape();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->representations.push_back((Ifc_representation *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representations);
@@ -6205,7 +6207,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProductRepresentation")) {
 		Ifc_product_representation *o = new Ifc_product_representation();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->representations.push_back((Ifc_representation *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representations);
@@ -6215,13 +6217,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcProfileDef")) {
 		Ifc_profile_def *o = new Ifc_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProfileProperties")) {
 		Ifc_profile_properties *o = new Ifc_profile_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->properties.push_back((Ifc_property *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->properties);
@@ -6232,14 +6234,14 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProject")) {
 		Ifc_project *o = new Ifc_project();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
+		o->phase = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->representation_contexts.push_back((Ifc_representation_context *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_contexts);
 		o->units_in_context = (Ifc_unit_assignment *)step_parser.parse_link(object_attributes[8]);
@@ -6249,14 +6251,14 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProjectLibrary")) {
 		Ifc_project_library *o = new Ifc_project_library();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
+		o->phase = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->representation_contexts.push_back((Ifc_representation_context *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_contexts);
 		o->units_in_context = (Ifc_unit_assignment *)step_parser.parse_link(object_attributes[8]);
@@ -6266,27 +6268,27 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProjectOrder")) {
 		Ifc_project_order *o = new Ifc_project_order();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[7]);
 		o->long_description = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProjectedCRS")) {
 		Ifc_projected_c_r_s *o = new Ifc_projected_c_r_s();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->geodetic_datum = step_parser.parse_string(object_attributes[2]);
+		o->vertical_datum = step_parser.parse_string(object_attributes[3]);
+		o->map_projection = step_parser.parse_string(object_attributes[4]);
+		o->map_zone = step_parser.parse_string(object_attributes[5]);
 		o->map_unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->map_unit);
 		return o;
@@ -6294,24 +6296,24 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcProjectionElement")) {
 		Ifc_projection_element *o = new Ifc_projection_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProperty")) {
 		Ifc_property *o = new Ifc_property();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
@@ -6323,7 +6325,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyBoundedValue")) {
 		Ifc_property_bounded_value *o = new Ifc_property_bounded_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->upper_bound_value = (Ifc_value *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->upper_bound_value);
@@ -6338,17 +6340,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyDefinition")) {
 		Ifc_property_definition *o = new Ifc_property_definition();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPropertyDependencyRelationship")) {
 		Ifc_property_dependency_relationship *o = new Ifc_property_dependency_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->depending_property = (Ifc_property *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->depending_property);
@@ -6360,7 +6362,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyEnumeratedValue")) {
 		Ifc_property_enumerated_value *o = new Ifc_property_enumerated_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->enumeration_values.push_back((Ifc_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->enumeration_values);
@@ -6371,7 +6373,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyEnumeration")) {
 		Ifc_property_enumeration *o = new Ifc_property_enumeration();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->enumeration_values.push_back((Ifc_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->enumeration_values);
 		o->unit = (Ifc_unit *)step_parser.parse_link(object_attributes[2]);
@@ -6381,7 +6383,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyListValue")) {
 		Ifc_property_list_value *o = new Ifc_property_list_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->list_values.push_back((Ifc_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->list_values);
@@ -6392,7 +6394,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyReferenceValue")) {
 		Ifc_property_reference_value *o = new Ifc_property_reference_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->usage_name = step_parser.parse_string(object_attributes[2]);
 		o->property_reference = (Ifc_object_reference_select *)step_parser.parse_link(object_attributes[3]);
@@ -6402,10 +6404,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertySet")) {
 		Ifc_property_set *o = new Ifc_property_set();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->has_properties.push_back((Ifc_property *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_properties);
@@ -6414,23 +6416,23 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertySetDefinition")) {
 		Ifc_property_set_definition *o = new Ifc_property_set_definition();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPropertySetTemplate")) {
 		Ifc_property_set_template *o = new Ifc_property_set_template();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->template_type = step_parser.parse_constant(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_entity = step_parser.parse_string(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->has_property_templates.push_back((Ifc_property_template *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_templates);
 		return o;
@@ -6438,7 +6440,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertySingleValue")) {
 		Ifc_property_single_value *o = new Ifc_property_single_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->nominal_value = (Ifc_value *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->nominal_value);
@@ -6449,7 +6451,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyTableValue")) {
 		Ifc_property_table_value *o = new Ifc_property_table_value();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->defining_values.push_back((Ifc_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->defining_values);
@@ -6466,323 +6468,323 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcPropertyTemplate")) {
 		Ifc_property_template *o = new Ifc_property_template();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPropertyTemplateDefinition")) {
 		Ifc_property_template_definition *o = new Ifc_property_template_definition();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProtectiveDevice")) {
 		Ifc_protective_device *o = new Ifc_protective_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProtectiveDeviceTrippingUnit")) {
 		Ifc_protective_device_tripping_unit *o = new Ifc_protective_device_tripping_unit();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProtectiveDeviceTrippingUnitType")) {
 		Ifc_protective_device_tripping_unit_type *o = new Ifc_protective_device_tripping_unit_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProtectiveDeviceType")) {
 		Ifc_protective_device_type *o = new Ifc_protective_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcProxy")) {
 		Ifc_proxy *o = new Ifc_proxy();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
 		o->proxy_type = step_parser.parse_constant(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPump")) {
 		Ifc_pump *o = new Ifc_pump();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcPumpType")) {
 		Ifc_pump_type *o = new Ifc_pump_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityArea")) {
 		Ifc_quantity_area *o = new Ifc_quantity_area();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->area_value = step_parser.parse_double(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityCount")) {
 		Ifc_quantity_count *o = new Ifc_quantity_count();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		//TODO: parse non-pointer type: typedef unsigned int Ifc_count_measure;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityLength")) {
 		Ifc_quantity_length *o = new Ifc_quantity_length();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->length_value = step_parser.parse_double(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantitySet")) {
 		Ifc_quantity_set *o = new Ifc_quantity_set();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityTime")) {
 		Ifc_quantity_time *o = new Ifc_quantity_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->time_value = step_parser.parse_double(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityVolume")) {
 		Ifc_quantity_volume *o = new Ifc_quantity_volume();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->volume_value = step_parser.parse_double(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcQuantityWeight")) {
 		Ifc_quantity_weight *o = new Ifc_quantity_weight();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->unit = (Ifc_named_unit *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->weight_value = step_parser.parse_double(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->formula = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRailing")) {
 		Ifc_railing *o = new Ifc_railing();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRailingType")) {
 		Ifc_railing_type *o = new Ifc_railing_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRamp")) {
 		Ifc_ramp *o = new Ifc_ramp();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRampFlight")) {
 		Ifc_ramp_flight *o = new Ifc_ramp_flight();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRampFlightType")) {
 		Ifc_ramp_flight_type *o = new Ifc_ramp_flight_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRampType")) {
 		Ifc_ramp_type *o = new Ifc_ramp_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -6823,7 +6825,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcRectangleHollowProfileDef")) {
 		Ifc_rectangle_hollow_profile_def *o = new Ifc_rectangle_hollow_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -6837,7 +6839,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcRectangleProfileDef")) {
 		Ifc_rectangle_profile_def *o = new Ifc_rectangle_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -6884,9 +6886,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReference")) {
 		Ifc_reference *o = new Ifc_reference();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->type_identifier = step_parser.parse_string(object_attributes[0]);
+		o->attribute_identifier = step_parser.parse_string(object_attributes[1]);
+		o->instance_name = step_parser.parse_string(object_attributes[2]);
 		//TODO: parse container of type
 		o->inner_reference = (Ifc_reference *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->inner_reference);
@@ -6895,13 +6897,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRegularTimeSeries")) {
 		Ifc_regular_time_series *o = new Ifc_regular_time_series();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->start_time = step_parser.parse_string(object_attributes[2]);
 		o->end_time = step_parser.parse_string(object_attributes[3]);
 		o->time_series_data_type = step_parser.parse_constant(object_attributes[4]);
 		o->data_origin = step_parser.parse_constant(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[6]);
 		o->unit = (Ifc_unit *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		o->time_step = step_parser.parse_double(object_attributes[8]);
@@ -6913,7 +6915,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcReinforcementBarProperties")) {
 		Ifc_reinforcement_bar_properties *o = new Ifc_reinforcement_bar_properties();
 		o->total_cross_section_area = step_parser.parse_double(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->steel_grade = step_parser.parse_string(object_attributes[1]);
 		o->bar_surface = step_parser.parse_constant(object_attributes[2]);
 		o->effective_depth = step_parser.parse_double(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -6923,12 +6925,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReinforcementDefinitionProperties")) {
 		Ifc_reinforcement_definition_properties *o = new Ifc_reinforcement_definition_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->definition_type = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->reinforcement_section_definitions.push_back((Ifc_section_reinforcement_properties *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->reinforcement_section_definitions);
 		return o;
@@ -6936,18 +6938,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReinforcingBar")) {
 		Ifc_reinforcing_bar *o = new Ifc_reinforcing_bar();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->steel_grade = step_parser.parse_string(object_attributes[8]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->cross_section_area = step_parser.parse_double(object_attributes[10]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -6958,24 +6960,24 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReinforcingBarType")) {
 		Ifc_reinforcing_bar_type *o = new Ifc_reinforcing_bar_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->cross_section_area = step_parser.parse_double(object_attributes[11]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->bar_surface = step_parser.parse_constant(object_attributes[13]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->bending_shape_code = step_parser.parse_string(object_attributes[14]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->bending_parameters.push_back((Ifc_bending_parameter_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->bending_parameters);
 		return o;
@@ -6983,52 +6985,52 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReinforcingElement")) {
 		Ifc_reinforcing_element *o = new Ifc_reinforcing_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->steel_grade = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcReinforcingElementType")) {
 		Ifc_reinforcing_element_type *o = new Ifc_reinforcing_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcReinforcingMesh")) {
 		Ifc_reinforcing_mesh *o = new Ifc_reinforcing_mesh();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->steel_grade = step_parser.parse_string(object_attributes[8]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -7043,18 +7045,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcReinforcingMeshType")) {
 		Ifc_reinforcing_mesh_type *o = new Ifc_reinforcing_mesh_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -7064,7 +7066,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		o->transverse_bar_cross_section_area = step_parser.parse_double(object_attributes[15]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->bending_shape_code = step_parser.parse_string(object_attributes[18]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[19])) o->bending_parameters.push_back((Ifc_bending_parameter_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->bending_parameters);
 		return o;
@@ -7072,10 +7074,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAggregates")) {
 		Ifc_rel_aggregates *o = new Ifc_rel_aggregates();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_object = (Ifc_object_definition *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_object);
@@ -7086,10 +7088,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssigns")) {
 		Ifc_rel_assigns *o = new Ifc_rel_assigns();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7099,10 +7101,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToActor")) {
 		Ifc_rel_assigns_to_actor *o = new Ifc_rel_assigns_to_actor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7116,10 +7118,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToControl")) {
 		Ifc_rel_assigns_to_control *o = new Ifc_rel_assigns_to_control();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7131,10 +7133,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToGroup")) {
 		Ifc_rel_assigns_to_group *o = new Ifc_rel_assigns_to_group();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7146,10 +7148,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToGroupByFactor")) {
 		Ifc_rel_assigns_to_group_by_factor *o = new Ifc_rel_assigns_to_group_by_factor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7162,10 +7164,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToProcess")) {
 		Ifc_rel_assigns_to_process *o = new Ifc_rel_assigns_to_process();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7179,10 +7181,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToProduct")) {
 		Ifc_rel_assigns_to_product *o = new Ifc_rel_assigns_to_product();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7194,10 +7196,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssignsToResource")) {
 		Ifc_rel_assigns_to_resource *o = new Ifc_rel_assigns_to_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7209,10 +7211,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociates")) {
 		Ifc_rel_associates *o = new Ifc_rel_associates();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7221,10 +7223,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesApproval")) {
 		Ifc_rel_associates_approval *o = new Ifc_rel_associates_approval();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7235,10 +7237,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesClassification")) {
 		Ifc_rel_associates_classification *o = new Ifc_rel_associates_classification();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7249,14 +7251,14 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesConstraint")) {
 		Ifc_rel_associates_constraint *o = new Ifc_rel_associates_constraint();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->intent = step_parser.parse_string(object_attributes[5]);
 		o->relating_constraint = (Ifc_constraint *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->relating_constraint);
 		return o;
@@ -7264,10 +7266,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesDocument")) {
 		Ifc_rel_associates_document *o = new Ifc_rel_associates_document();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7278,10 +7280,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesLibrary")) {
 		Ifc_rel_associates_library *o = new Ifc_rel_associates_library();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7292,10 +7294,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelAssociatesMaterial")) {
 		Ifc_rel_associates_material *o = new Ifc_rel_associates_material();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_definition_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7306,20 +7308,20 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnects")) {
 		Ifc_rel_connects *o = new Ifc_rel_connects();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelConnectsElements")) {
 		Ifc_rel_connects_elements *o = new Ifc_rel_connects_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->connection_geometry = (Ifc_connection_geometry *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->connection_geometry);
@@ -7332,10 +7334,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsPathElements")) {
 		Ifc_rel_connects_path_elements *o = new Ifc_rel_connects_path_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->connection_geometry = (Ifc_connection_geometry *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->connection_geometry);
@@ -7352,10 +7354,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsPortToElement")) {
 		Ifc_rel_connects_port_to_element *o = new Ifc_rel_connects_port_to_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_port = (Ifc_port *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_port);
@@ -7366,10 +7368,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsPorts")) {
 		Ifc_rel_connects_ports *o = new Ifc_rel_connects_ports();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_port = (Ifc_port *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_port);
@@ -7382,10 +7384,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsStructuralActivity")) {
 		Ifc_rel_connects_structural_activity *o = new Ifc_rel_connects_structural_activity();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_element = (Ifc_structural_activity_assignment_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_element);
@@ -7396,10 +7398,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsStructuralMember")) {
 		Ifc_rel_connects_structural_member *o = new Ifc_rel_connects_structural_member();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_structural_member = (Ifc_structural_member *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_structural_member);
@@ -7417,10 +7419,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsWithEccentricity")) {
 		Ifc_rel_connects_with_eccentricity *o = new Ifc_rel_connects_with_eccentricity();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_structural_member = (Ifc_structural_member *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_structural_member);
@@ -7440,10 +7442,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelConnectsWithRealizingElements")) {
 		Ifc_rel_connects_with_realizing_elements *o = new Ifc_rel_connects_with_realizing_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->connection_geometry = (Ifc_connection_geometry *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->connection_geometry);
@@ -7453,16 +7455,16 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->related_element);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->realizing_elements.push_back((Ifc_element *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->realizing_elements);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->connection_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelContainedInSpatialStructure")) {
 		Ifc_rel_contained_in_spatial_structure *o = new Ifc_rel_contained_in_spatial_structure();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_elements.push_back((Ifc_product *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_elements);
@@ -7473,10 +7475,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelCoversBldgElements")) {
 		Ifc_rel_covers_bldg_elements *o = new Ifc_rel_covers_bldg_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_building_element = (Ifc_element *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_building_element);
@@ -7487,10 +7489,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelCoversSpaces")) {
 		Ifc_rel_covers_spaces *o = new Ifc_rel_covers_spaces();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_space = (Ifc_space *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_space);
@@ -7501,10 +7503,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelDeclares")) {
 		Ifc_rel_declares *o = new Ifc_rel_declares();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_context = (Ifc_context *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_context);
@@ -7515,30 +7517,30 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelDecomposes")) {
 		Ifc_rel_decomposes *o = new Ifc_rel_decomposes();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelDefines")) {
 		Ifc_rel_defines *o = new Ifc_rel_defines();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelDefinesByObject")) {
 		Ifc_rel_defines_by_object *o = new Ifc_rel_defines_by_object();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7549,10 +7551,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelDefinesByProperties")) {
 		Ifc_rel_defines_by_properties *o = new Ifc_rel_defines_by_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7563,10 +7565,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelDefinesByTemplate")) {
 		Ifc_rel_defines_by_template *o = new Ifc_rel_defines_by_template();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_property_sets);
@@ -7577,10 +7579,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelDefinesByType")) {
 		Ifc_rel_defines_by_type *o = new Ifc_rel_defines_by_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_objects.push_back((Ifc_object *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_objects);
@@ -7591,10 +7593,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelFillsElement")) {
 		Ifc_rel_fills_element *o = new Ifc_rel_fills_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_opening_element = (Ifc_opening_element *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_opening_element);
@@ -7605,10 +7607,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelFlowControlElements")) {
 		Ifc_rel_flow_control_elements *o = new Ifc_rel_flow_control_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_control_elements.push_back((Ifc_distribution_control_element *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_control_elements);
@@ -7619,10 +7621,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelInterferesElements")) {
 		Ifc_rel_interferes_elements *o = new Ifc_rel_interferes_elements();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_element = (Ifc_element *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_element);
@@ -7630,17 +7632,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->related_element);
 		o->interference_geometry = (Ifc_connection_geometry *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->interference_geometry);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->interference_type = step_parser.parse_string(object_attributes[7]);
 		//o->implied_order = step_parser.parse_logical(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelNests")) {
 		Ifc_rel_nests *o = new Ifc_rel_nests();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_object = (Ifc_object_definition *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_object);
@@ -7651,10 +7653,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelProjectsElement")) {
 		Ifc_rel_projects_element *o = new Ifc_rel_projects_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_element = (Ifc_element *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_element);
@@ -7665,10 +7667,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelReferencedInSpatialStructure")) {
 		Ifc_rel_referenced_in_spatial_structure *o = new Ifc_rel_referenced_in_spatial_structure();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[4])) o->related_elements.push_back((Ifc_product *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_elements);
@@ -7679,10 +7681,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelSequence")) {
 		Ifc_rel_sequence *o = new Ifc_rel_sequence();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_process = (Ifc_process *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_process);
@@ -7691,16 +7693,16 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		o->time_lag = (Ifc_lag_time *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->time_lag);
 		o->sequence_type = step_parser.parse_constant(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_sequence_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRelServicesBuildings")) {
 		Ifc_rel_services_buildings *o = new Ifc_rel_services_buildings();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_system = (Ifc_system *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_system);
@@ -7711,10 +7713,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelSpaceBoundary")) {
 		Ifc_rel_space_boundary *o = new Ifc_rel_space_boundary();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_space = (Ifc_space_boundary_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_space);
@@ -7729,10 +7731,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelSpaceBoundary1stLevel")) {
 		Ifc_rel_space_boundary_1st_level *o = new Ifc_rel_space_boundary_1st_level();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_space = (Ifc_space_boundary_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_space);
@@ -7749,10 +7751,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelSpaceBoundary2ndLevel")) {
 		Ifc_rel_space_boundary_2nd_level *o = new Ifc_rel_space_boundary_2nd_level();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_space = (Ifc_space_boundary_select *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_space);
@@ -7771,10 +7773,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelVoidsElement")) {
 		Ifc_rel_voids_element *o = new Ifc_rel_voids_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->relating_building_element = (Ifc_element *)step_parser.parse_link(object_attributes[4]);
 		links_to_resolve.push_back((Ifc **)&o->relating_building_element);
@@ -7785,10 +7787,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRelationship")) {
 		Ifc_relationship *o = new Ifc_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
@@ -7807,8 +7809,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_representation *o = new Ifc_representation();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -7816,8 +7818,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRepresentationContext")) {
 		Ifc_representation_context *o = new Ifc_representation_context();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->context_identifier = step_parser.parse_string(object_attributes[0]);
+		o->context_type = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
 
@@ -7837,20 +7839,20 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcResource")) {
 		Ifc_resource *o = new Ifc_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcResourceApprovalRelationship")) {
 		Ifc_resource_approval_relationship *o = new Ifc_resource_approval_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->related_resource_objects.push_back((Ifc_resource_object_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->related_resource_objects);
@@ -7861,7 +7863,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcResourceConstraintRelationship")) {
 		Ifc_resource_constraint_relationship *o = new Ifc_resource_constraint_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->relating_constraint = (Ifc_constraint *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->relating_constraint);
@@ -7872,21 +7874,21 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcResourceLevelRelationship")) {
 		Ifc_resource_level_relationship *o = new Ifc_resource_level_relationship();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcResourceTime")) {
 		Ifc_resource_time *o = new Ifc_resource_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->schedule_work = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
 		o->schedule_start = step_parser.parse_string(object_attributes[5]);
 		o->schedule_finish = step_parser.parse_string(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->schedule_contour = step_parser.parse_string(object_attributes[7]);
 		o->leveling_delay = step_parser.parse_string(object_attributes[8]);
 		o->is_over_allocated = step_parser.parse_boolean(object_attributes[9]);
 		o->status_time = step_parser.parse_string(object_attributes[10]);
@@ -7946,45 +7948,45 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcRoof")) {
 		Ifc_roof *o = new Ifc_roof();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRoofType")) {
 		Ifc_roof_type *o = new Ifc_roof_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcRoot")) {
 		Ifc_root *o = new Ifc_root();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		return o;
 	}
@@ -7992,7 +7994,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcRoundedRectangleProfileDef")) {
 		Ifc_rounded_rectangle_profile_def *o = new Ifc_rounded_rectangle_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -8013,44 +8015,44 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSanitaryTerminal")) {
 		Ifc_sanitary_terminal *o = new Ifc_sanitary_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSanitaryTerminalType")) {
 		Ifc_sanitary_terminal_type *o = new Ifc_sanitary_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSchedulingTime")) {
 		Ifc_scheduling_time *o = new Ifc_scheduling_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -8090,70 +8092,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSensor")) {
 		Ifc_sensor *o = new Ifc_sensor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSensorType")) {
 		Ifc_sensor_type *o = new Ifc_sensor_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcShadingDevice")) {
 		Ifc_shading_device *o = new Ifc_shading_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcShadingDeviceType")) {
 		Ifc_shading_device_type *o = new Ifc_shading_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -8162,7 +8164,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_shape_aspect *o = new Ifc_shape_aspect();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->shape_representations.push_back((Ifc_shape_model *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->shape_representations);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		o->product_definitional = step_parser.parse_integer(object_attributes[3]);
 		o->part_of_product_definition_shape = (Ifc_product_representation_select *)step_parser.parse_link(object_attributes[4]);
@@ -8174,8 +8176,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_shape_model *o = new Ifc_shape_model();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -8185,8 +8187,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_shape_representation *o = new Ifc_shape_representation();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -8201,50 +8203,50 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSimpleProperty")) {
 		Ifc_simple_property *o = new Ifc_simple_property();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSimplePropertyTemplate")) {
 		Ifc_simple_property_template *o = new Ifc_simple_property_template();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->template_type = step_parser.parse_constant(object_attributes[4]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->primary_measure_type = step_parser.parse_string(object_attributes[5]);
+		o->secondary_measure_type = step_parser.parse_string(object_attributes[6]);
 		o->enumerators = (Ifc_property_enumeration *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->enumerators);
 		o->primary_unit = (Ifc_unit *)step_parser.parse_link(object_attributes[8]);
 		links_to_resolve.push_back((Ifc **)&o->primary_unit);
 		o->secondary_unit = (Ifc_unit *)step_parser.parse_link(object_attributes[9]);
 		links_to_resolve.push_back((Ifc **)&o->secondary_unit);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->expression = step_parser.parse_string(object_attributes[10]);
 		o->access_state = step_parser.parse_constant(object_attributes[11]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSite")) {
 		Ifc_site *o = new Ifc_site();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->composition_type = step_parser.parse_constant(object_attributes[8]);
 		//TODO: parse non-pointer type: typedef std::vector<int> Ifc_compound_plane_angle_measure;
 		//TODO: parse non-pointer type: typedef std::vector<int> Ifc_compound_plane_angle_measure;
 		o->ref_elevation = step_parser.parse_double(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->land_title_number = step_parser.parse_string(object_attributes[12]);
 		o->site_address = (Ifc_postal_address *)step_parser.parse_link(object_attributes[13]);
 		links_to_resolve.push_back((Ifc **)&o->site_address);
 		return o;
@@ -8252,76 +8254,76 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSlab")) {
 		Ifc_slab *o = new Ifc_slab();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSlabElementedCase")) {
 		Ifc_slab_elemented_case *o = new Ifc_slab_elemented_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSlabStandardCase")) {
 		Ifc_slab_standard_case *o = new Ifc_slab_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSlabType")) {
 		Ifc_slab_type *o = new Ifc_slab_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSlippageConnectionCondition")) {
 		Ifc_slippage_connection_condition *o = new Ifc_slippage_connection_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->slippage_x = step_parser.parse_double(object_attributes[1]);
 		o->slippage_y = step_parser.parse_double(object_attributes[2]);
 		o->slippage_z = step_parser.parse_double(object_attributes[3]);
@@ -8330,35 +8332,35 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSolarDevice")) {
 		Ifc_solar_device *o = new Ifc_solar_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSolarDeviceType")) {
 		Ifc_solar_device_type *o = new Ifc_solar_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -8370,17 +8372,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSpace")) {
 		Ifc_space *o = new Ifc_space();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->composition_type = step_parser.parse_constant(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->elevation_with_flooring = step_parser.parse_double(object_attributes[10]);
@@ -8389,158 +8391,158 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSpaceHeater")) {
 		Ifc_space_heater *o = new Ifc_space_heater();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpaceHeaterType")) {
 		Ifc_space_heater_type *o = new Ifc_space_heater_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpaceType")) {
 		Ifc_space_type *o = new Ifc_space_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[10]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialElement")) {
 		Ifc_spatial_element *o = new Ifc_spatial_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialElementType")) {
 		Ifc_spatial_element_type *o = new Ifc_spatial_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialStructureElement")) {
 		Ifc_spatial_structure_element *o = new Ifc_spatial_structure_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->composition_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialStructureElementType")) {
 		Ifc_spatial_structure_element_type *o = new Ifc_spatial_structure_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialZone")) {
 		Ifc_spatial_zone *o = new Ifc_spatial_zone();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSpatialZoneType")) {
 		Ifc_spatial_zone_type *o = new Ifc_spatial_zone_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->long_name = step_parser.parse_string(object_attributes[10]);
 		return o;
 	}
 
@@ -8554,69 +8556,69 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStackTerminal")) {
 		Ifc_stack_terminal *o = new Ifc_stack_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStackTerminalType")) {
 		Ifc_stack_terminal_type *o = new Ifc_stack_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStair")) {
 		Ifc_stair *o = new Ifc_stair();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStairFlight")) {
 		Ifc_stair_flight *o = new Ifc_stair_flight();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->number_of_risers = step_parser.parse_integer(object_attributes[8]);
 		o->number_of_treads = step_parser.parse_integer(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -8627,48 +8629,48 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStairFlightType")) {
 		Ifc_stair_flight_type *o = new Ifc_stair_flight_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStairType")) {
 		Ifc_stair_type *o = new Ifc_stair_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralAction")) {
 		Ifc_structural_action *o = new Ifc_structural_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8682,12 +8684,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralActivity")) {
 		Ifc_structural_activity *o = new Ifc_structural_activity();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8700,12 +8702,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralAnalysisModel")) {
 		Ifc_structural_analysis_model *o = new Ifc_structural_analysis_model();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
 		o->orientation_of_2_d_plane = (Ifc_axis_2_placement_3_d *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->orientation_of_2_d_plane);
@@ -8720,12 +8722,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralConnection")) {
 		Ifc_structural_connection *o = new Ifc_structural_connection();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8737,18 +8739,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralConnectionCondition")) {
 		Ifc_structural_connection_condition *o = new Ifc_structural_connection_condition();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralCurveAction")) {
 		Ifc_structural_curve_action *o = new Ifc_structural_curve_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8764,12 +8766,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralCurveConnection")) {
 		Ifc_structural_curve_connection *o = new Ifc_structural_curve_connection();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8783,12 +8785,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralCurveMember")) {
 		Ifc_structural_curve_member *o = new Ifc_structural_curve_member();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8801,12 +8803,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralCurveMemberVarying")) {
 		Ifc_structural_curve_member_varying *o = new Ifc_structural_curve_member_varying();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8819,12 +8821,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralCurveReaction")) {
 		Ifc_structural_curve_reaction *o = new Ifc_structural_curve_reaction();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8838,12 +8840,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralItem")) {
 		Ifc_structural_item *o = new Ifc_structural_item();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8853,12 +8855,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLinearAction")) {
 		Ifc_structural_linear_action *o = new Ifc_structural_linear_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -8874,30 +8876,30 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoad")) {
 		Ifc_structural_load *o = new Ifc_structural_load();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadCase")) {
 		Ifc_structural_load_case *o = new Ifc_structural_load_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
 		o->action_type = step_parser.parse_constant(object_attributes[6]);
 		o->action_source = step_parser.parse_constant(object_attributes[7]);
 		o->coefficient = step_parser.parse_double(object_attributes[8]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->purpose = step_parser.parse_string(object_attributes[9]);
 		//TODO: parse container of type
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadConfiguration")) {
 		Ifc_structural_load_configuration *o = new Ifc_structural_load_configuration();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->values.push_back((Ifc_structural_load_or_result *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->values);
 				//TODO: parse container of container
@@ -8906,23 +8908,23 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadGroup")) {
 		Ifc_structural_load_group *o = new Ifc_structural_load_group();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[5]);
 		o->action_type = step_parser.parse_constant(object_attributes[6]);
 		o->action_source = step_parser.parse_constant(object_attributes[7]);
 		o->coefficient = step_parser.parse_double(object_attributes[8]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->purpose = step_parser.parse_string(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadLinearForce")) {
 		Ifc_structural_load_linear_force *o = new Ifc_structural_load_linear_force();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->linear_force_x = step_parser.parse_double(object_attributes[1]);
 		o->linear_force_y = step_parser.parse_double(object_attributes[2]);
 		o->linear_force_z = step_parser.parse_double(object_attributes[3]);
@@ -8934,13 +8936,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadOrResult")) {
 		Ifc_structural_load_or_result *o = new Ifc_structural_load_or_result();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadPlanarForce")) {
 		Ifc_structural_load_planar_force *o = new Ifc_structural_load_planar_force();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->planar_force_x = step_parser.parse_double(object_attributes[1]);
 		o->planar_force_y = step_parser.parse_double(object_attributes[2]);
 		o->planar_force_z = step_parser.parse_double(object_attributes[3]);
@@ -8949,7 +8951,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadSingleDisplacement")) {
 		Ifc_structural_load_single_displacement *o = new Ifc_structural_load_single_displacement();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->displacement_x = step_parser.parse_double(object_attributes[1]);
 		o->displacement_y = step_parser.parse_double(object_attributes[2]);
 		o->displacement_z = step_parser.parse_double(object_attributes[3]);
@@ -8961,7 +8963,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadSingleDisplacementDistortion")) {
 		Ifc_structural_load_single_displacement_distortion *o = new Ifc_structural_load_single_displacement_distortion();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->displacement_x = step_parser.parse_double(object_attributes[1]);
 		o->displacement_y = step_parser.parse_double(object_attributes[2]);
 		o->displacement_z = step_parser.parse_double(object_attributes[3]);
@@ -8974,7 +8976,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadSingleForce")) {
 		Ifc_structural_load_single_force *o = new Ifc_structural_load_single_force();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->force_x = step_parser.parse_double(object_attributes[1]);
 		o->force_y = step_parser.parse_double(object_attributes[2]);
 		o->force_z = step_parser.parse_double(object_attributes[3]);
@@ -8986,7 +8988,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadSingleForceWarping")) {
 		Ifc_structural_load_single_force_warping *o = new Ifc_structural_load_single_force_warping();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->force_x = step_parser.parse_double(object_attributes[1]);
 		o->force_y = step_parser.parse_double(object_attributes[2]);
 		o->force_z = step_parser.parse_double(object_attributes[3]);
@@ -8999,13 +9001,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadStatic")) {
 		Ifc_structural_load_static *o = new Ifc_structural_load_static();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcStructuralLoadTemperature")) {
 		Ifc_structural_load_temperature *o = new Ifc_structural_load_temperature();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->delta_t_constant = step_parser.parse_double(object_attributes[1]);
 		o->delta_t_y = step_parser.parse_double(object_attributes[2]);
 		o->delta_t_z = step_parser.parse_double(object_attributes[3]);
@@ -9014,12 +9016,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralMember")) {
 		Ifc_structural_member *o = new Ifc_structural_member();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9029,12 +9031,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralPlanarAction")) {
 		Ifc_structural_planar_action *o = new Ifc_structural_planar_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9050,12 +9052,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralPointAction")) {
 		Ifc_structural_point_action *o = new Ifc_structural_point_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9069,12 +9071,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralPointConnection")) {
 		Ifc_structural_point_connection *o = new Ifc_structural_point_connection();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9088,12 +9090,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralPointReaction")) {
 		Ifc_structural_point_reaction *o = new Ifc_structural_point_reaction();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9106,12 +9108,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralReaction")) {
 		Ifc_structural_reaction *o = new Ifc_structural_reaction();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9124,12 +9126,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralResultGroup")) {
 		Ifc_structural_result_group *o = new Ifc_structural_result_group();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->theory_type = step_parser.parse_constant(object_attributes[5]);
 		o->result_for_load_group = (Ifc_structural_load_group *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->result_for_load_group);
@@ -9139,12 +9141,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralSurfaceAction")) {
 		Ifc_structural_surface_action *o = new Ifc_structural_surface_action();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9160,12 +9162,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralSurfaceConnection")) {
 		Ifc_structural_surface_connection *o = new Ifc_structural_surface_connection();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9177,12 +9179,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralSurfaceMember")) {
 		Ifc_structural_surface_member *o = new Ifc_structural_surface_member();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9194,12 +9196,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralSurfaceMemberVarying")) {
 		Ifc_structural_surface_member_varying *o = new Ifc_structural_surface_member_varying();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9211,12 +9213,12 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcStructuralSurfaceReaction")) {
 		Ifc_structural_surface_reaction *o = new Ifc_structural_surface_reaction();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
@@ -9232,8 +9234,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_style_model *o = new Ifc_style_model();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -9245,7 +9247,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		links_to_resolve.push_back((Ifc **)&o->item);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->styles.push_back((Ifc_style_assignment_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->styles);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		return o;
 	}
 
@@ -9253,8 +9255,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_styled_representation *o = new Ifc_styled_representation();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -9262,13 +9264,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSubContractResource")) {
 		Ifc_sub_contract_resource *o = new Ifc_sub_contract_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
 		o->usage = (Ifc_resource_time *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->usage);
@@ -9282,17 +9284,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSubContractResourceType")) {
 		Ifc_sub_contract_resource_type *o = new Ifc_sub_contract_resource_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[9])) o->base_costs.push_back((Ifc_applied_value *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->base_costs);
 		o->base_quantity = (Ifc_physical_quantity *)step_parser.parse_link(object_attributes[10]);
@@ -9334,17 +9336,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSurfaceFeature")) {
 		Ifc_surface_feature *o = new Ifc_surface_feature();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
@@ -9374,7 +9376,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSurfaceReinforcementArea")) {
 		Ifc_surface_reinforcement_area *o = new Ifc_surface_reinforcement_area();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		//TODO: parse container of type
 		//TODO: parse container of type
 		o->shear_reinforcement = step_parser.parse_double(object_attributes[3]);
@@ -9383,7 +9385,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSurfaceStyle")) {
 		Ifc_surface_style *o = new Ifc_surface_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->side = step_parser.parse_constant(object_attributes[1]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->styles.push_back((Ifc_surface_style_element_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->styles);
@@ -9450,7 +9452,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_surface_texture *o = new Ifc_surface_texture();
 		o->repeat_s = step_parser.parse_boolean(object_attributes[0]);
 		o->repeat_t = step_parser.parse_boolean(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
 		//TODO: parse container of type
@@ -9500,81 +9502,81 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcSwitchingDevice")) {
 		Ifc_switching_device *o = new Ifc_switching_device();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSwitchingDeviceType")) {
 		Ifc_switching_device_type *o = new Ifc_switching_device_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSystem")) {
 		Ifc_system *o = new Ifc_system();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSystemFurnitureElement")) {
 		Ifc_system_furniture_element *o = new Ifc_system_furniture_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcSystemFurnitureElementType")) {
 		Ifc_system_furniture_element_type *o = new Ifc_system_furniture_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -9582,7 +9584,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcTShapeProfileDef")) {
 		Ifc_t_shape_profile_def *o = new Ifc_t_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -9599,7 +9601,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTable")) {
 		Ifc_table *o = new Ifc_table();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[1])) o->rows.push_back((Ifc_table_row *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->rows);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[2])) o->columns.push_back((Ifc_table_column *)i);
@@ -9609,8 +9611,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTableColumn")) {
 		Ifc_table_column *o = new Ifc_table_column();
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->identifier = step_parser.parse_string(object_attributes[0]);
+		o->name = step_parser.parse_string(object_attributes[1]);
 		o->description = step_parser.parse_string(object_attributes[2]);
 		o->unit = (Ifc_unit *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
@@ -9629,51 +9631,51 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTank")) {
 		Ifc_tank *o = new Ifc_tank();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTankType")) {
 		Ifc_tank_type *o = new Ifc_tank_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTask")) {
 		Ifc_task *o = new Ifc_task();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->long_description = step_parser.parse_string(object_attributes[6]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->status = step_parser.parse_string(object_attributes[7]);
+		o->work_method = step_parser.parse_string(object_attributes[8]);
 		o->is_milestone = step_parser.parse_boolean(object_attributes[9]);
 		o->priority = step_parser.parse_integer(object_attributes[10]);
 		o->task_time = (Ifc_task_time *)step_parser.parse_link(object_attributes[11]);
@@ -9684,9 +9686,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTaskTime")) {
 		Ifc_task_time *o = new Ifc_task_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->duration_type = step_parser.parse_constant(object_attributes[3]);
 		o->schedule_duration = step_parser.parse_string(object_attributes[4]);
 		o->schedule_start = step_parser.parse_string(object_attributes[5]);
@@ -9709,9 +9711,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTaskTimeRecurring")) {
 		Ifc_task_time_recurring *o = new Ifc_task_time_recurring();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->duration_type = step_parser.parse_constant(object_attributes[3]);
 		o->schedule_duration = step_parser.parse_string(object_attributes[4]);
 		o->schedule_start = step_parser.parse_string(object_attributes[5]);
@@ -9736,19 +9738,19 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTaskType")) {
 		Ifc_task_type *o = new Ifc_task_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->process_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->work_method = step_parser.parse_string(object_attributes[10]);
 		return o;
 	}
 
@@ -9756,10 +9758,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_telecom_address *o = new Ifc_telecom_address();
 		o->purpose = step_parser.parse_constant(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
 		//TODO: parse container of type
 		//TODO: parse container of type
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->pager_number = step_parser.parse_string(object_attributes[5]);
 		//TODO: parse container of type
 		o->w_w_w_home_page_u_r_l = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse container of type
@@ -9768,18 +9770,18 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTendon")) {
 		Ifc_tendon *o = new Ifc_tendon();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->steel_grade = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->cross_section_area = step_parser.parse_double(object_attributes[11]);
@@ -9793,54 +9795,54 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTendonAnchor")) {
 		Ifc_tendon_anchor *o = new Ifc_tendon_anchor();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->steel_grade = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTendonAnchorType")) {
 		Ifc_tendon_anchor_type *o = new Ifc_tendon_anchor_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTendonType")) {
 		Ifc_tendon_type *o = new Ifc_tendon_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->cross_section_area = step_parser.parse_double(object_attributes[11]);
@@ -9885,7 +9887,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTextStyle")) {
 		Ifc_text_style *o = new Ifc_text_style();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->text_character_appearance = (Ifc_text_style_for_defined_font *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->text_character_appearance);
 		o->text_style = (Ifc_text_style_text_model *)step_parser.parse_link(object_attributes[2]);
@@ -9898,7 +9900,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTextStyleFontModel")) {
 		Ifc_text_style_font_model *o = new Ifc_text_style_font_model();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		//TODO: parse container of type
 		o->font_style = step_parser.parse_string(object_attributes[2]);
 		o->font_variant = step_parser.parse_string(object_attributes[3]);
@@ -9944,7 +9946,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_texture_coordinate_generator *o = new Ifc_texture_coordinate_generator();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->maps.push_back((Ifc_surface_texture *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->mode = step_parser.parse_string(object_attributes[1]);
 		//TODO: parse container of type
 		return o;
 	}
@@ -9981,13 +9983,13 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTimeSeries")) {
 		Ifc_time_series *o = new Ifc_time_series();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->start_time = step_parser.parse_string(object_attributes[2]);
 		o->end_time = step_parser.parse_string(object_attributes[3]);
 		o->time_series_data_type = step_parser.parse_constant(object_attributes[4]);
 		o->data_origin = step_parser.parse_constant(object_attributes[5]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[6]);
 		o->unit = (Ifc_unit *)step_parser.parse_link(object_attributes[7]);
 		links_to_resolve.push_back((Ifc **)&o->unit);
 		return o;
@@ -10009,8 +10011,8 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 		Ifc_topology_representation *o = new Ifc_topology_representation();
 		o->context_of_items = (Ifc_representation_context *)step_parser.parse_link(object_attributes[0]);
 		links_to_resolve.push_back((Ifc **)&o->context_of_items);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->representation_identifier = step_parser.parse_string(object_attributes[1]);
+		o->representation_type = step_parser.parse_string(object_attributes[2]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[3])) o->items.push_back((Ifc_representation_item *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->items);
 		return o;
@@ -10018,70 +10020,70 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTransformer")) {
 		Ifc_transformer *o = new Ifc_transformer();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTransformerType")) {
 		Ifc_transformer_type *o = new Ifc_transformer_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTransportElement")) {
 		Ifc_transport_element *o = new Ifc_transport_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTransportElementType")) {
 		Ifc_transport_element_type *o = new Ifc_transport_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -10089,7 +10091,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcTrapeziumProfileDef")) {
 		Ifc_trapezium_profile_def *o = new Ifc_trapezium_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -10125,47 +10127,47 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTubeBundle")) {
 		Ifc_tube_bundle *o = new Ifc_tube_bundle();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTubeBundleType")) {
 		Ifc_tube_bundle_type *o = new Ifc_tube_bundle_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTypeObject")) {
 		Ifc_type_object *o = new Ifc_type_object();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		return o;
@@ -10173,56 +10175,56 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcTypeProcess")) {
 		Ifc_type_process *o = new Ifc_type_process();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->process_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTypeProduct")) {
 		Ifc_type_product *o = new Ifc_type_product();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcTypeResource")) {
 		Ifc_type_resource *o = new Ifc_type_resource();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->identification = step_parser.parse_string(object_attributes[6]);
 		o->long_description = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->resource_type = step_parser.parse_string(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcUShapeProfileDef")) {
 		Ifc_u_shape_profile_def *o = new Ifc_u_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -10244,105 +10246,105 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcUnitaryControlElement")) {
 		Ifc_unitary_control_element *o = new Ifc_unitary_control_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcUnitaryControlElementType")) {
 		Ifc_unitary_control_element_type *o = new Ifc_unitary_control_element_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcUnitaryEquipment")) {
 		Ifc_unitary_equipment *o = new Ifc_unitary_equipment();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcUnitaryEquipmentType")) {
 		Ifc_unitary_equipment_type *o = new Ifc_unitary_equipment_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcValve")) {
 		Ifc_valve *o = new Ifc_valve();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcValveType")) {
 		Ifc_valve_type *o = new Ifc_valve_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
@@ -10376,52 +10378,52 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcVibrationIsolator")) {
 		Ifc_vibration_isolator *o = new Ifc_vibration_isolator();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcVibrationIsolatorType")) {
 		Ifc_vibration_isolator_type *o = new Ifc_vibration_isolator_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcVirtualElement")) {
 		Ifc_virtual_element *o = new Ifc_virtual_element();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
 
@@ -10435,152 +10437,152 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcVoidingFeature")) {
 		Ifc_voiding_feature *o = new Ifc_voiding_feature();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWall")) {
 		Ifc_wall *o = new Ifc_wall();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWallElementedCase")) {
 		Ifc_wall_elemented_case *o = new Ifc_wall_elemented_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWallStandardCase")) {
 		Ifc_wall_standard_case *o = new Ifc_wall_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWallType")) {
 		Ifc_wall_type *o = new Ifc_wall_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWasteTerminal")) {
 		Ifc_waste_terminal *o = new Ifc_waste_terminal();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[8]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWasteTerminalType")) {
 		Ifc_waste_terminal_type *o = new Ifc_waste_terminal_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWindow")) {
 		Ifc_window *o = new Ifc_window();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
 		o->partitioning_type = step_parser.parse_constant(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_partitioning_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWindowLiningProperties")) {
 		Ifc_window_lining_properties *o = new Ifc_window_lining_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_non_negative_length_measure;
@@ -10600,10 +10602,10 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWindowPanelProperties")) {
 		Ifc_window_panel_properties *o = new Ifc_window_panel_properties();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
 		o->operation_type = step_parser.parse_constant(object_attributes[4]);
 		o->panel_position = step_parser.parse_constant(object_attributes[5]);
@@ -10616,38 +10618,38 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWindowStandardCase")) {
 		Ifc_window_standard_case *o = new Ifc_window_standard_case();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
 		o->object_placement = (Ifc_object_placement *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->object_placement);
 		o->representation = (Ifc_product_representation *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->representation);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		o->predefined_type = step_parser.parse_constant(object_attributes[10]);
 		o->partitioning_type = step_parser.parse_constant(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_partitioning_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWindowStyle")) {
 		Ifc_window_style *o = new Ifc_window_style();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
 		o->construction_type = step_parser.parse_constant(object_attributes[8]);
 		o->operation_type = step_parser.parse_constant(object_attributes[9]);
 		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[10]);
@@ -10657,34 +10659,34 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWindowType")) {
 		Ifc_window_type *o = new Ifc_window_type();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->applicable_occurrence = step_parser.parse_string(object_attributes[4]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[5])) o->has_property_sets.push_back((Ifc_property_set_definition *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->has_property_sets);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->representation_maps.push_back((Ifc_representation_map *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->representation_maps);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->tag = step_parser.parse_string(object_attributes[7]);
+		o->element_type = step_parser.parse_string(object_attributes[8]);
 		o->predefined_type = step_parser.parse_constant(object_attributes[9]);
 		o->partitioning_type = step_parser.parse_constant(object_attributes[10]);
 		o->parameter_takes_precedence = step_parser.parse_boolean(object_attributes[11]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_partitioning_type = step_parser.parse_string(object_attributes[12]);
 		return o;
 	}
 
 	else if (boost::iequals(object_class, "IfcWorkCalendar")) {
 		Ifc_work_calendar *o = new Ifc_work_calendar();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->working_times.push_back((Ifc_work_time *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->working_times);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->exception_times.push_back((Ifc_work_time *)i);
@@ -10695,17 +10697,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWorkControl")) {
 		Ifc_work_control *o = new Ifc_work_control();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->creation_date = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->creators.push_back((Ifc_person *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->creators);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->purpose = step_parser.parse_string(object_attributes[8]);
 		o->duration = step_parser.parse_string(object_attributes[9]);
 		o->total_float = step_parser.parse_string(object_attributes[10]);
 		o->start_time = step_parser.parse_string(object_attributes[11]);
@@ -10715,17 +10717,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWorkPlan")) {
 		Ifc_work_plan *o = new Ifc_work_plan();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->creation_date = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->creators.push_back((Ifc_person *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->creators);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->purpose = step_parser.parse_string(object_attributes[8]);
 		o->duration = step_parser.parse_string(object_attributes[9]);
 		o->total_float = step_parser.parse_string(object_attributes[10]);
 		o->start_time = step_parser.parse_string(object_attributes[11]);
@@ -10736,17 +10738,17 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWorkSchedule")) {
 		Ifc_work_schedule *o = new Ifc_work_schedule();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_identifier;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->identification = step_parser.parse_string(object_attributes[5]);
 		o->creation_date = step_parser.parse_string(object_attributes[6]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->creators.push_back((Ifc_person *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->creators);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->purpose = step_parser.parse_string(object_attributes[8]);
 		o->duration = step_parser.parse_string(object_attributes[9]);
 		o->total_float = step_parser.parse_string(object_attributes[10]);
 		o->start_time = step_parser.parse_string(object_attributes[11]);
@@ -10757,9 +10759,9 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcWorkTime")) {
 		Ifc_work_time *o = new Ifc_work_time();
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[0]);
 		o->data_origin = step_parser.parse_constant(object_attributes[1]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->user_defined_data_origin = step_parser.parse_string(object_attributes[2]);
 		o->recurrence_pattern = (Ifc_recurrence_pattern *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->recurrence_pattern);
 		o->start = step_parser.parse_string(object_attributes[4]);
@@ -10770,7 +10772,7 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 	else if (boost::iequals(object_class, "IfcZShapeProfileDef")) {
 		Ifc_z_shape_profile_def *o = new Ifc_z_shape_profile_def();
 		o->profile_type = step_parser.parse_constant(object_attributes[0]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->profile_name = step_parser.parse_string(object_attributes[1]);
 		o->position = (Ifc_axis_2_placement_2_d *)step_parser.parse_link(object_attributes[2]);
 		links_to_resolve.push_back((Ifc **)&o->position);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
@@ -10784,20 +10786,20 @@ Ifc *Ifc_4_add_1_schema::parse_ifc_object_definition(std::string &object_class, 
 
 	else if (boost::iequals(object_class, "IfcZone")) {
 		Ifc_zone *o = new Ifc_zone();
-		//TODO: parse non-pointer type: typedef  Ifc_globally_unique_id;
+		o->global_id = step_parser.parse_string(object_attributes[0]);
 		o->owner_history = (Ifc_owner_history *)step_parser.parse_link(object_attributes[1]);
 		links_to_resolve.push_back((Ifc **)&o->owner_history);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->name = step_parser.parse_string(object_attributes[2]);
 		o->description = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse non-pointer type: typedef  Ifc_label;
-		//TODO: parse non-pointer type: typedef  Ifc_label;
+		o->object_type = step_parser.parse_string(object_attributes[4]);
+		o->long_name = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
 
 	else return new Ifc();
 }
 
-void Ifc_4_add_1_schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
+void Schema::print_object_info(Ifc *object) {	if (object->entity == "Ifc_action_request") {
 		Ifc_action_request *o = reinterpret_cast<Ifc_action_request *>(object);
 		std::cout << *o;
 	}

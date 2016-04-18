@@ -338,7 +338,9 @@ void Express_parser::parse_entity(const std::string &contents) {
           if (enumerations_code.count(this_type) > 0) {
             std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_strings(object_attributes[%d]);");
           } else if (types_code.count(this_type) > 0) {
-            std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse container of type");
+            if (types_code[this_type].substr(8, 6) == "double") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_doubles(object_attributes[%d]);");
+            else if (types_code[this_type].substr(8, 11) == "std::string") std::get<2>(this->entity_attributes[entity_name]).push_back("o->" + format_attribute(*current_attribute_name) + " = step_parser.parse_list_of_strings(object_attributes[%d]);");
+            else std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse container of type");
           } else {
             std::get<2>(this->entity_attributes[entity_name]).push_back("//TODO: parse container of unknown");
           }

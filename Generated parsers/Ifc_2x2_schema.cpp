@@ -829,7 +829,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcCartesianPoint")) {
 		Ifc_cartesian_point *o = new Ifc_cartesian_point();
-		//TODO: parse container of type
+		o->coordinates = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -3709,8 +3709,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 	else if (boost::iequals(object_class, "IfcLightDistributionData")) {
 		Ifc_light_distribution_data *o = new Ifc_light_distribution_data();
 		o->main_plane_angle = step_parser.parse_double(object_attributes[0]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->secondary_plane_angle = step_parser.parse_list_of_doubles(object_attributes[1]);
+		o->luminous_intensity = step_parser.parse_list_of_doubles(object_attributes[2]);
 		return o;
 	}
 
@@ -4112,7 +4112,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		links_to_resolve.push_back((Ifc **)&o->move_from);
 		o->move_to = (Ifc_spatial_structure_element *)step_parser.parse_link(object_attributes[11]);
 		links_to_resolve.push_back((Ifc **)&o->move_to);
-		//TODO: parse container of type
+		o->punch_list = step_parser.parse_list_of_strings(object_attributes[12]);
 		return o;
 	}
 
@@ -4388,9 +4388,9 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->_id = step_parser.parse_string(object_attributes[0]);
 		o->family_name = step_parser.parse_string(object_attributes[1]);
 		o->given_name = step_parser.parse_string(object_attributes[2]);
-		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->middle_names = step_parser.parse_list_of_strings(object_attributes[3]);
+		o->prefix_titles = step_parser.parse_list_of_strings(object_attributes[4]);
+		o->suffix_titles = step_parser.parse_list_of_strings(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->roles.push_back((Ifc_actor_role *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->roles);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->addresses.push_back((Ifc_address *)i);
@@ -4619,7 +4619,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
 		o->internal_location = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse container of type
+		o->address_lines = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->postal_box = step_parser.parse_string(object_attributes[5]);
 		o->town = step_parser.parse_string(object_attributes[6]);
 		o->region = step_parser.parse_string(object_attributes[7]);
@@ -7547,10 +7547,10 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->purpose = step_parser.parse_constant(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->telephone_numbers = step_parser.parse_list_of_strings(object_attributes[3]);
+		o->facsimile_numbers = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->pager_number = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse container of type
+		o->electronic_mail_addresses = step_parser.parse_list_of_strings(object_attributes[6]);
 		o->w_w_w_home_page_u_r_l = step_parser.parse_string(object_attributes[7]);
 		return o;
 	}
@@ -7696,7 +7696,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcTextureVertex")) {
 		Ifc_texture_vertex *o = new Ifc_texture_vertex();
-		//TODO: parse container of type
+		o->coordinates = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -8030,7 +8030,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_virtual_grid_intersection *o = new Ifc_virtual_grid_intersection();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->intersecting_axes.push_back((Ifc_grid_axis *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->intersecting_axes);
-		//TODO: parse container of type
+		o->offset_distances = step_parser.parse_list_of_doubles(object_attributes[1]);
 		return o;
 	}
 

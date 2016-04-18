@@ -415,7 +415,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->cost_elements);
 		o->status = step_parser.parse_string(object_attributes[12]);
 		o->intended_use = step_parser.parse_string(object_attributes[13]);
-		//TODO: parse container of type
+		o->comments = step_parser.parse_list_of_strings(object_attributes[14]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->target_users.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->target_users);
 		o->valid_from_date = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[16]);
@@ -637,7 +637,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		//TODO: parse container of type
+		o->remarks = step_parser.parse_list_of_strings(object_attributes[11]);
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -1114,7 +1114,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		//TODO: parse non-pointer type: typedef Ifc_ratio_measure Ifc_positive_ratio_measure;
 		o->primary_energy_source = step_parser.parse_constant(object_attributes[11]);
 		o->cooling_tower_type = step_parser.parse_constant(object_attributes[12]);
-		//TODO: parse container of type
+		o->ambient_design_temperature = step_parser.parse_list_of_doubles(object_attributes[13]);
 		return o;
 	}
 
@@ -1202,7 +1202,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->cost_elements);
 		o->status = step_parser.parse_string(object_attributes[12]);
 		o->intended_use = step_parser.parse_string(object_attributes[13]);
-		//TODO: parse container of type
+		o->comments = step_parser.parse_list_of_strings(object_attributes[14]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[15])) o->target_users.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->target_users);
 		o->valid_from_date = (Ifc_calendar_date *)step_parser.parse_link(object_attributes[16]);
@@ -2016,10 +2016,10 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->fluid = (Ifc_material *)step_parser.parse_link(object_attributes[10]);
 		links_to_resolve.push_back((Ifc **)&o->fluid);
 		o->design_velocity = step_parser.parse_double(object_attributes[11]);
-		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->design_temperature = step_parser.parse_list_of_doubles(object_attributes[12]);
+		o->maximum_temperature = step_parser.parse_list_of_doubles(object_attributes[13]);
+		o->minimum_temperature = step_parser.parse_list_of_doubles(object_attributes[14]);
+		o->working_temperature = step_parser.parse_list_of_doubles(object_attributes[15]);
 		o->working_quality = step_parser.parse_double(object_attributes[16]);
 		return o;
 	}
@@ -2307,7 +2307,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->base_unit = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[6]);
 		links_to_resolve.push_back((Ifc **)&o->base_unit);
 		o->title = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse container of type
+		o->skill_set = step_parser.parse_list_of_strings(object_attributes[8]);
 		return o;
 	}
 
@@ -2421,7 +2421,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		//TODO: parse container of type
+		o->remarks = step_parser.parse_list_of_strings(object_attributes[11]);
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -2431,7 +2431,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->long_job_description = step_parser.parse_string(object_attributes[16]);
 		o->work_type_requested = step_parser.parse_string(object_attributes[17]);
 		o->contractual_type = step_parser.parse_string(object_attributes[18]);
-		//TODO: parse container of type
+		o->if_not_accomplished = step_parser.parse_list_of_strings(object_attributes[19]);
 		o->requested_start_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[20]);
 		links_to_resolve.push_back((Ifc **)&o->requested_start_time);
 		o->requested_finish_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[21]);
@@ -2450,7 +2450,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->performed_by);
 		o->actual_cost = (Ifc_cost_value *)step_parser.parse_link(object_attributes[29]);
 		links_to_resolve.push_back((Ifc **)&o->actual_cost);
-		//TODO: parse container of type
+		o->spares_tools_equipment_consumables = step_parser.parse_list_of_strings(object_attributes[30]);
 		o->maintenance_type = step_parser.parse_constant(object_attributes[31]);
 		o->fault_priority = step_parser.parse_constant(object_attributes[32]);
 		o->location_priority = step_parser.parse_constant(object_attributes[33]);
@@ -2628,8 +2628,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->productivity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->productivity);
 		o->task_id = step_parser.parse_string(object_attributes[6]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->w_b_s_code = step_parser.parse_list_of_strings(object_attributes[7]);
+		o->w_b_s_source = step_parser.parse_list_of_strings(object_attributes[8]);
 		o->status = step_parser.parse_constant(object_attributes[9]);
 		o->milestones = step_parser.parse_list_of_strings(object_attributes[10]);
 		o->work_method = step_parser.parse_string(object_attributes[11]);
@@ -2646,7 +2646,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		links_to_resolve.push_back((Ifc **)&o->move_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[18])) o->move_constraints.push_back((Ifc_action_time_control *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->move_constraints);
-		//TODO: parse container of type
+		o->punch_list = step_parser.parse_list_of_strings(object_attributes[19]);
 		return o;
 	}
 
@@ -3093,7 +3093,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		//TODO: parse container of type
+		o->remarks = step_parser.parse_list_of_strings(object_attributes[11]);
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -3271,7 +3271,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		//TODO: parse container of type
+		o->remarks = step_parser.parse_list_of_strings(object_attributes[11]);
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -4708,8 +4708,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->productivity = (Ifc_measure_with_unit *)step_parser.parse_link(object_attributes[5]);
 		links_to_resolve.push_back((Ifc **)&o->productivity);
 		o->task_id = step_parser.parse_string(object_attributes[6]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->w_b_s_code = step_parser.parse_list_of_strings(object_attributes[7]);
+		o->w_b_s_source = step_parser.parse_list_of_strings(object_attributes[8]);
 		o->status = step_parser.parse_constant(object_attributes[9]);
 		o->milestones = step_parser.parse_list_of_strings(object_attributes[10]);
 		o->work_method = step_parser.parse_string(object_attributes[11]);
@@ -4843,8 +4843,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		links_to_resolve.push_back((Ifc **)&o->tube_material);
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
 		//TODO: parse non-pointer type: typedef Ifc_length_measure Ifc_positive_length_measure;
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->tube_fluid_entering_temperature = step_parser.parse_list_of_doubles(object_attributes[16]);
+		o->tube_fluid_leaving_temperature = step_parser.parse_list_of_doubles(object_attributes[17]);
 		o->fin_material = (Ifc_material_select *)step_parser.parse_link(object_attributes[18]);
 		links_to_resolve.push_back((Ifc **)&o->fin_material);
 		o->shell_material = (Ifc_material_select *)step_parser.parse_link(object_attributes[19]);
@@ -4853,8 +4853,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->tube_fouling_factor = step_parser.parse_double(object_attributes[21]);
 		o->number_of_tube_circuits = step_parser.parse_integer(object_attributes[22]);
 		o->number_of_tube_rows = step_parser.parse_integer(object_attributes[23]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->shell_fluid_leaving_temperature = step_parser.parse_list_of_doubles(object_attributes[24]);
+		o->shell_fluid_entering_temperature = step_parser.parse_list_of_doubles(object_attributes[25]);
 		return o;
 	}
 
@@ -5113,7 +5113,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->issued_to);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[10])) o->additional_contacts.push_back((Ifc_actor_select *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->additional_contacts);
-		//TODO: parse container of type
+		o->remarks = step_parser.parse_list_of_strings(object_attributes[11]);
 		o->signoff = (Ifc_person *)step_parser.parse_link(object_attributes[12]);
 		links_to_resolve.push_back((Ifc **)&o->signoff);
 		o->budget_source = (Ifc_budget *)step_parser.parse_link(object_attributes[13]);
@@ -5123,7 +5123,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->long_job_description = step_parser.parse_string(object_attributes[16]);
 		o->work_type_requested = step_parser.parse_string(object_attributes[17]);
 		o->contractual_type = step_parser.parse_string(object_attributes[18]);
-		//TODO: parse container of type
+		o->if_not_accomplished = step_parser.parse_list_of_strings(object_attributes[19]);
 		o->requested_start_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[20]);
 		links_to_resolve.push_back((Ifc **)&o->requested_start_time);
 		o->requested_finish_time = (Ifc_date_and_time *)step_parser.parse_link(object_attributes[21]);

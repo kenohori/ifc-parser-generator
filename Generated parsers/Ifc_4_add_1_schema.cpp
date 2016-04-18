@@ -489,7 +489,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->closed_curve = step_parser.parse_integer(object_attributes[3]);
 		o->self_intersect = step_parser.parse_integer(object_attributes[4]);
 		//TODO: parse container of type
-		//TODO: parse container of type
+		o->knots = step_parser.parse_list_of_doubles(object_attributes[6]);
 		o->knot_spec = step_parser.parse_constant(object_attributes[7]);
 		return o;
 	}
@@ -517,8 +517,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
 		//TODO: parse container of type
 		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
+		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[10]);
 		o->knot_spec = step_parser.parse_constant(object_attributes[11]);
 		return o;
 	}
@@ -582,7 +582,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
-		//TODO: parse container of type
+		o->parameter = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->raster_format = step_parser.parse_string(object_attributes[5]);
 		//TODO: parse non-pointer type: typedef char * Ifc_binary;
 		return o;
@@ -1111,7 +1111,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcCartesianPoint")) {
 		Ifc_cartesian_point *o = new Ifc_cartesian_point();
-		//TODO: parse container of type
+		o->coordinates = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -1349,7 +1349,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->name = step_parser.parse_string(object_attributes[3]);
 		o->description = step_parser.parse_string(object_attributes[4]);
 		o->location = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse container of type
+		o->reference_tokens = step_parser.parse_list_of_strings(object_attributes[6]);
 		return o;
 	}
 
@@ -2410,7 +2410,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcDirection")) {
 		Ifc_direction *o = new Ifc_direction();
-		//TODO: parse container of type
+		o->direction_ratios = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -4543,7 +4543,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
-		//TODO: parse container of type
+		o->parameter = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->u_r_l_reference = step_parser.parse_string(object_attributes[5]);
 		return o;
 	}
@@ -4836,8 +4836,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 	else if (boost::iequals(object_class, "IfcLightDistributionData")) {
 		Ifc_light_distribution_data *o = new Ifc_light_distribution_data();
 		o->main_plane_angle = step_parser.parse_double(object_attributes[0]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->secondary_plane_angle = step_parser.parse_list_of_doubles(object_attributes[1]);
+		o->luminous_intensity = step_parser.parse_list_of_doubles(object_attributes[2]);
 		return o;
 	}
 
@@ -5123,7 +5123,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->category = step_parser.parse_string(object_attributes[5]);
 		o->priority = step_parser.parse_integer(object_attributes[6]);
 		o->offset_direction = step_parser.parse_constant(object_attributes[7]);
-		//TODO: parse container of type
+		o->offset_values = step_parser.parse_list_of_doubles(object_attributes[8]);
 		return o;
 	}
 
@@ -5189,7 +5189,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		links_to_resolve.push_back((Ifc **)&o->profile);
 		o->priority = step_parser.parse_integer(object_attributes[4]);
 		o->category = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse container of type
+		o->offset_values = step_parser.parse_list_of_doubles(object_attributes[6]);
 		return o;
 	}
 
@@ -5725,9 +5725,9 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->identification = step_parser.parse_string(object_attributes[0]);
 		o->family_name = step_parser.parse_string(object_attributes[1]);
 		o->given_name = step_parser.parse_string(object_attributes[2]);
-		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->middle_names = step_parser.parse_list_of_strings(object_attributes[3]);
+		o->prefix_titles = step_parser.parse_list_of_strings(object_attributes[4]);
+		o->suffix_titles = step_parser.parse_list_of_strings(object_attributes[5]);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[6])) o->roles.push_back((Ifc_actor_role *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->roles);
 		for (auto i : step_parser.parse_list_of_links(object_attributes[7])) o->addresses.push_back((Ifc_address *)i);
@@ -5887,7 +5887,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
-		//TODO: parse container of type
+		o->parameter = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->width = step_parser.parse_integer(object_attributes[5]);
 		o->height = step_parser.parse_integer(object_attributes[6]);
 		o->colour_components = step_parser.parse_integer(object_attributes[7]);
@@ -6046,7 +6046,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
 		o->internal_location = step_parser.parse_string(object_attributes[3]);
-		//TODO: parse container of type
+		o->address_lines = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->postal_box = step_parser.parse_string(object_attributes[5]);
 		o->town = step_parser.parse_string(object_attributes[6]);
 		o->region = step_parser.parse_string(object_attributes[7]);
@@ -6798,9 +6798,9 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->closed_curve = step_parser.parse_integer(object_attributes[3]);
 		o->self_intersect = step_parser.parse_integer(object_attributes[4]);
 		//TODO: parse container of type
-		//TODO: parse container of type
+		o->knots = step_parser.parse_list_of_doubles(object_attributes[6]);
 		o->knot_spec = step_parser.parse_constant(object_attributes[7]);
-		//TODO: parse container of type
+		o->weights_data = step_parser.parse_list_of_doubles(object_attributes[8]);
 		return o;
 	}
 
@@ -6815,8 +6815,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->self_intersect = step_parser.parse_integer(object_attributes[6]);
 		//TODO: parse container of type
 		//TODO: parse container of type
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->u_knots = step_parser.parse_list_of_doubles(object_attributes[9]);
+		o->v_knots = step_parser.parse_list_of_doubles(object_attributes[10]);
 		o->knot_spec = step_parser.parse_constant(object_attributes[11]);
 				//TODO: parse container of container
 		return o;
@@ -8893,7 +8893,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->action_source = step_parser.parse_constant(object_attributes[7]);
 		o->coefficient = step_parser.parse_double(object_attributes[8]);
 		o->purpose = step_parser.parse_string(object_attributes[9]);
-		//TODO: parse container of type
+		o->self_weight_coefficients = step_parser.parse_list_of_doubles(object_attributes[10]);
 		return o;
 	}
 
@@ -9377,8 +9377,8 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 	else if (boost::iequals(object_class, "IfcSurfaceReinforcementArea")) {
 		Ifc_surface_reinforcement_area *o = new Ifc_surface_reinforcement_area();
 		o->name = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->surface_reinforcement_1 = step_parser.parse_list_of_doubles(object_attributes[1]);
+		o->surface_reinforcement_2 = step_parser.parse_list_of_doubles(object_attributes[2]);
 		o->shear_reinforcement = step_parser.parse_double(object_attributes[3]);
 		return o;
 	}
@@ -9455,7 +9455,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->mode = step_parser.parse_string(object_attributes[2]);
 		o->texture_transform = (Ifc_cartesian_transformation_operator_2_d *)step_parser.parse_link(object_attributes[3]);
 		links_to_resolve.push_back((Ifc **)&o->texture_transform);
-		//TODO: parse container of type
+		o->parameter = step_parser.parse_list_of_strings(object_attributes[4]);
 		return o;
 	}
 
@@ -9759,12 +9759,12 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		o->purpose = step_parser.parse_constant(object_attributes[0]);
 		o->description = step_parser.parse_string(object_attributes[1]);
 		o->user_defined_purpose = step_parser.parse_string(object_attributes[2]);
-		//TODO: parse container of type
-		//TODO: parse container of type
+		o->telephone_numbers = step_parser.parse_list_of_strings(object_attributes[3]);
+		o->facsimile_numbers = step_parser.parse_list_of_strings(object_attributes[4]);
 		o->pager_number = step_parser.parse_string(object_attributes[5]);
-		//TODO: parse container of type
+		o->electronic_mail_addresses = step_parser.parse_list_of_strings(object_attributes[6]);
 		o->w_w_w_home_page_u_r_l = step_parser.parse_string(object_attributes[7]);
-		//TODO: parse container of type
+		o->messaging_i_ds = step_parser.parse_list_of_strings(object_attributes[8]);
 		return o;
 	}
 
@@ -9901,7 +9901,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 	else if (boost::iequals(object_class, "IfcTextStyleFontModel")) {
 		Ifc_text_style_font_model *o = new Ifc_text_style_font_model();
 		o->name = step_parser.parse_string(object_attributes[0]);
-		//TODO: parse container of type
+		o->font_family = step_parser.parse_list_of_strings(object_attributes[1]);
 		o->font_style = step_parser.parse_string(object_attributes[2]);
 		o->font_variant = step_parser.parse_string(object_attributes[3]);
 		o->font_weight = step_parser.parse_string(object_attributes[4]);
@@ -9947,7 +9947,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->maps.push_back((Ifc_surface_texture *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->maps);
 		o->mode = step_parser.parse_string(object_attributes[1]);
-		//TODO: parse container of type
+		o->parameter = step_parser.parse_list_of_doubles(object_attributes[2]);
 		return o;
 	}
 
@@ -9964,7 +9964,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 
 	else if (boost::iequals(object_class, "IfcTextureVertex")) {
 		Ifc_texture_vertex *o = new Ifc_texture_vertex();
-		//TODO: parse container of type
+		o->coordinates = step_parser.parse_list_of_doubles(object_attributes[0]);
 		return o;
 	}
 
@@ -10431,7 +10431,7 @@ Ifc *Schema::parse_ifc_object_definition(std::string &object_class, std::vector<
 		Ifc_virtual_grid_intersection *o = new Ifc_virtual_grid_intersection();
 		for (auto i : step_parser.parse_list_of_links(object_attributes[0])) o->intersecting_axes.push_back((Ifc_grid_axis *)i);
 		lists_of_links_to_resolve.push_back((std::vector<Ifc *> *)&o->intersecting_axes);
-		//TODO: parse container of type
+		o->offset_distances = step_parser.parse_list_of_doubles(object_attributes[1]);
 		return o;
 	}
 
